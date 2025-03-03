@@ -1,16 +1,12 @@
 public class EventService
 {
     private static EventService instance;
-
     public static EventService Instance
     {
         get
         {
             if (instance == null)
-            {
                 instance = new EventService();
-
-            }
             return instance;
         }
     }
@@ -28,7 +24,7 @@ public class EventService
     {
         OnShopToggledOnEvent = new EventController();
         OnInventoryToggledOnEvent = new EventController();
-        
+
         OnItemSelectedEvent = new EventController();
         OnItemSelectedEventWithParams = new EventController<bool, ItemView>();
 

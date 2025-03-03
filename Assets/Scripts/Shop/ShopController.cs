@@ -16,15 +16,8 @@ public class ShopController
         LoadShopItems();
     }
 
-    public void EnableShopVisibility()
-    {
-        shopView.EnableShopVisibility();
-    }
-
-    public void DisableShopVisibility()
-    {
-        shopView.DisableShopVisibility();
-    }
+    public void EnableShopVisibility() => shopView.EnableShopVisibility();
+    public void DisableShopVisibility() => shopView.DisableShopVisibility();
 
     public void LoadShopItems()
     {
@@ -32,20 +25,7 @@ public class ShopController
         shopView.DisplayItems(items);
     }
 
-    public void StoreItem(ItemView itemDisplay, FilterController shopFilterController)
-    {
-        shopFilterController.AddItemDisplay(itemDisplay);
-    }
-
-    public void SetItemQuantities(int itemID,int quantity )
-    {
-        shopModel.SetItemQuantities(itemID, quantity);
-    }
-
-    public void SetCurrentSelectedItem(ItemView itemView)
-    {
-        shopModel.currentItem = itemView;
-    }
+    public void StoreItem(ItemView itemDisplay, FilterController shopFilterController) => shopFilterController.AddItemDisplay(itemDisplay);
 
     public ItemView GetCurrentItem()
     {
@@ -58,30 +38,7 @@ public class ShopController
         return shopModel.currentItem;
     }
 
-    public int GetItemQuantity(int itemID)
-    {
-        return shopModel.GetQuantity(itemID);
-    }
-
-    public bool ISShopOn()
-    {
-        return shopView.isShopOn;
-    }
-
-    public float GetPlayerBagWeight()
-    {
-        return GameManager.Instance.playerController.GetBagWeight();
-    }
-
-    public float GetPlayerBagCapacity()
-    {
-        return GameManager.Instance.playerController.GetBagCapacity();
-    }
-
-    public int GetPlayerCoin()
-    {
-        return GameManager.Instance.playerController.GetPlayerCoinCount();
-    }
+    public bool ISShopOn() => shopView.isShopOn;
 
     public void DisplayBroughtItems(ItemView itemView, int quantity)
     { 
@@ -89,31 +46,18 @@ public class ShopController
         PlayBroughtSound();
     }
 
-    public void PlayBroughtSound()
-    {
-        SoundManager.Instance.PlaySound(Sounds.MoneySound);
-    }
+    public void PlayBroughtSound() => SoundManager.Instance.PlaySound(Sounds.MoneySound);
+    public void PlayQuantityChangedSound() => SoundManager.Instance.PlaySound(Sounds.QuantityChanged);
+    public void PlayPopUpSound() => SoundManager.Instance.PlaySound(Sounds.ErrorSound);
+    public void PlayNonClickableSound() => SoundManager.Instance.PlaySound(Sounds.NonClickable);
 
-    public void SetItemWeight(int itemID, float newWeight)
-    {
-        shopModel.SetItemWeight(itemID, newWeight);
-    }
+    public int GetItemQuantity(int itemID) => shopModel.GetQuantity(itemID);
+    public float GetPlayerBagWeight() => GameManager.Instance.playerController.GetBagWeight();
+    public float GetPlayerBagCapacity() => GameManager.Instance.playerController.GetBagCapacity();
+    public int GetPlayerCoin() => GameManager.Instance.playerController.GetPlayerCoinCount();
+    public float GetItemWeight(int itemID) => shopModel.GetItemWeight(itemID);
 
-    public float GetItemWeight(int itemID)
-    {
-        return shopModel.GetItemWeight(itemID);
-    }
-
-    public void PlayQuantityChangedSound()
-    {
-        SoundManager.Instance.PlaySound(Sounds.QuantityChanged);
-    }
-    public void PlayPopUpSound()
-    {
-        SoundManager.Instance.PlaySound(Sounds.ErrorSound);
-    }
-    public void PlayNonClickableSound()
-    {
-        SoundManager.Instance.PlaySound(Sounds.NonClickable);
-    }
+    public void SetItemQuantities(int itemID,int quantity ) => shopModel.SetItemQuantities(itemID, quantity);
+    public void SetCurrentSelectedItem(ItemView itemView) => shopModel.currentItem = itemView;
+    public void SetItemWeight(int itemID, float newWeight) => shopModel.SetItemWeight(itemID, newWeight);
 }

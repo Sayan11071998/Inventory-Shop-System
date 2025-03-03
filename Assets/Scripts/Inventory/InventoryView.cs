@@ -21,34 +21,28 @@ public class InventoryView : MonoBehaviour
 
     private void OnEnable()
     {
-        EventService.Instance.OnInventoryToggledOnEvent.AddListener
-            (EnableInventoryVisibility);
-
+        EventService.Instance.OnInventoryToggledOnEvent.AddListener(EnableInventoryVisibility);
         EventService.Instance.OnShopToggledOnEvent.AddListener(DisableInventoryVisibility);
         EventService.Instance.OnShopToggledOnEvent.AddListener(DisableSellSection);
-
         EventService.Instance.OnItemSelectedEvent.AddListener(EnableSellSection);
         EventService.Instance.OnItemSelectedEventWithParams.AddListener(SetSelecteddItem);
     }
 
     private void OnDisable()
     {
-        EventService.Instance.OnInventoryToggledOnEvent.RemoveListener
-           (EnableInventoryVisibility);
-
+        EventService.Instance.OnInventoryToggledOnEvent.RemoveListener(EnableInventoryVisibility);
         EventService.Instance.OnShopToggledOnEvent.RemoveListener(DisableInventoryVisibility);
         EventService.Instance.OnShopToggledOnEvent.RemoveListener(DisableSellSection);
-
         EventService.Instance.OnItemSelectedEvent.RemoveListener(EnableSellSection);
         EventService.Instance.onItemChanged.RemoveListener(inventoryController.SetPanelViews);
     }
+
     public void SetInventoryController(InventoryController inventoryController)
     {
         this.inventoryController = inventoryController;
         inventoryCanvas = this.GetComponent<CanvasGroup>();
         EventService.Instance.onItemChanged.AddListener(inventoryController.SetPanelViews);
     }
-
 
     public void EnableInventoryVisibility()
     {
@@ -133,6 +127,7 @@ public class InventoryView : MonoBehaviour
                 itemView.InventoryDisplayUI(inventoryController.GetItemQuantity(itemView.itemProperty.itemID));
             }
         }
+
         inventoryController.ApplyFilter(inventoryFilterController);
         EventSystem.current.SetSelectedGameObject(null);
     }
@@ -207,7 +202,6 @@ public class InventoryView : MonoBehaviour
         else
         {
             inventoryController.PlayNonClickableSound();
-
         }
     }
 
@@ -234,11 +228,7 @@ public class InventoryView : MonoBehaviour
             EventService.Instance.onItemSoldWithIntParams.InvokeEvent(amount);
             EventService.Instance.onItemSoldWithFloatParams.InvokeEvent(inventoryController.GetTotalWeight());
 
-            if (quantity <= 0)
-            {
-                RemoveItem(itemID);
-            }
-
+            if (quantity <= 0) RemoveItem(itemID);
         }
         else
         {

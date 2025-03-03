@@ -7,12 +7,8 @@ public class GenericMonoSingelton<T> : MonoBehaviour where T : GenericMonoSingel
     public virtual void Awake()
     {
         if (instance == null)
-        {
-            instance = (T)this;        
-        }
+            instance = (T)this;
         else
-        {
             Destroy(gameObject);
-        }
     }
 }

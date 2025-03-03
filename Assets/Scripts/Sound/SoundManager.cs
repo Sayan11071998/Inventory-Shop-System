@@ -15,25 +15,18 @@ public class SoundManager : MonoBehaviour
     private void Awake()
     {
         if (instance == null)
-        {
             instance = this;
-        }
         else
-        {
             Destroy(gameObject);
-        }
     }
 
-    private void Start()
-    {
-        Play(Sounds.Music);
-    }
+    private void Start() => Play(Sounds.Music);
 
     public void Play(Sounds sound)
     {
         SoundType soundType = GetSoundType(sound);
 
-        if(soundType!=null)
+        if (soundType != null)
         {
             soundMusic.clip = soundType.soundClip;
             soundMusic.volume = soundType.volume / 100f;
@@ -55,7 +48,6 @@ public class SoundManager : MonoBehaviour
     private SoundType GetSoundType(Sounds sound)
     {
         SoundType type = Array.Find(sounds, i => i.sound == sound);
-
         return type;
     }
 }

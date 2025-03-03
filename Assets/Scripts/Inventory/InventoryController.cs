@@ -5,17 +5,19 @@ public class InventoryController
 {
     private InventoryView inventoryView;
     private InventoryModel inventoryModel;
+
     public InventoryController(InventoryView inventoryView, InventoryModel inventoryModel)
     {
         this.inventoryView = inventoryView;
-        this.inventoryView.SetInventoryController(this);
-
         this.inventoryModel = inventoryModel;
+
+        this.inventoryView.SetInventoryController(this);
     }
 
     public void GatherResource()
     {
         PlayGatherResourceSound();
+
         for (int i = 0; i < inventoryModel.numberOfResource; i++)
         {
             int index = GetRandomIndex();
@@ -23,21 +25,19 @@ public class InventoryController
         }
     }
 
-    private void PlayGatherResourceSound()
-    {
-        SoundManager.Instance.PlaySound(Sounds.GatherResource);
-    }
-
     private int GetRandomIndex()
     {
         SetAvailableRarity();
+
         bool isItemForValue;
         int index;
+
         do
         {
             index = UnityEngine.Random.Range(0, GetItemDatabase().Count);
             isItemForValue = IsItemForValue(index);
-        } while (!isItemForValue);
+        }
+        while (!isItemForValue);
 
         return index;
     }
@@ -75,7 +75,6 @@ public class InventoryController
                         inventoryModel.SetRarityAvailable(ItemProperty.Rarity.Epic, true);
                         break;
                 }
-
             }
         }
         else
@@ -87,37 +86,10 @@ public class InventoryController
     private bool IsItemForValue(int index)
     {
         ItemProperty.Rarity itemRarity = GetItemDatabase()[index].rarity;
-        if (inventoryModel.IsRarityAvailable(itemRarity))
-        {
-            return true;
-        }
+
+        if (inventoryModel.IsRarityAvailable(itemRarity)) return true;
 
         return false;
-    }
-
-    public void EnableInventoryVisibility()
-    {
-        inventoryView.EnableInventoryVisibility();
-    }
-
-    public void DisableInventoryVisibility()
-    {
-        inventoryView.DisableInventoryVisibility();
-    }
-
-    public List<ItemProperty> GetItemDatabase()
-    {
-        return inventoryModel.getItemDatabase();
-    }
-
-    public void ApplyFilter(FilterController inventoryFilterController)
-    {
-        inventoryFilterController.ApplyFilter();
-    }
-
-    public void StoreItem(ItemView itemDisplay, FilterController inventoryFilterController)
-    {
-        inventoryFilterController.AddItemDisplay(itemDisplay);
     }
 
     public int GenerateRandomQuantity()
@@ -126,135 +98,59 @@ public class InventoryController
         return quantity;
     }
 
-    public void SetQuantity(int itemId, int quantity)
-    {
-        inventoryModel.SetItemQuantities(itemId, quantity);
-    }
-
-    public int GetItemQuantity(int itemID)
-    {
-        return inventoryModel.GetQuantity(itemID).Sum();
-    }
-
-    public bool IsItemAlreadyInstantiated(int itemID)
-    {
-        return inventoryModel.GetInstatiatedItems().ContainsKey(itemID);
-    }
-
-    public ItemView GetInstantiatedItem(int itemID)
-    {
-        return inventoryModel.GetInstatiatedItems().TryGetValue(itemID, out ItemView itemView) ? itemView : null;
-    }
-
-    public void StoreInstantiatedItem(int itemID, ItemView itemView)
-    {
-        inventoryModel.StoreInstantiatedItems(itemID, itemView);
-    }
-
-    public void SetCurrentItem(ItemView itemView)
-    {
-        inventoryModel.currentItem = itemView;
-    }
-
-    public ItemView GetCurrentItem()
-    {
-        return inventoryModel.currentItem;
-    }
-
-    public bool ISInventoryOn()
-    {
-        return inventoryView.isInventoryOn;
-    }
-
-    public void ResetQuantities(int itemID)
-    {
-        inventoryModel.ResetQuantities(itemID);
-    }
-
-    public void SetPanelViews()
-    {
-        GameManager.Instance.uiController.SetItemDetailsPanel(true, GetCurrentItem());
-    }
-
-    public void RemoveWeight(int itemID, int quantity)
-    {
-        inventoryModel.RemoveWeight(itemID, quantity);
-    }
     public void RemoveItem(int itemID)
     {
         inventoryModel.SetRarityAvailable(GetCurrentItem().itemProperty.rarity, false);
         inventoryModel.RemoveInstatiatedItem(itemID);
 
         if (inventoryModel.GetInstatiatedItems().Count <= 0)
-        {
             DisablePanel();
-        }
-    }
-
-    public void DisablePanel()
-    {
-        GameManager.Instance.uiController.DisableItemDetailsPanel();
-    }
-
-    public void SetItemWeight(int itemID, float newWeight)
-    {
-        inventoryModel.SetItemWeight(itemID, newWeight);
-    }
-
-    public float GetItemWeight(int itemID)
-    {
-        return inventoryModel.GetItemWeight(itemID).Sum();
-    }
-
-    public void SetBagWeight(float weight)
-    {
-        GameManager.Instance.playerController.SetBagWeight(weight);
     }
 
     public float GetTotalWeight()
     {
         float totalWeight = 0;
+
         foreach (var totalItemWeight in inventoryModel.GetInstatiatedItems())
         {
             int itemID = totalItemWeight.Key;
             totalWeight += GetItemWeight(itemID);
         }
+
         return totalWeight;
     }
 
-    public float GetPlayerBagWeight()
-    {
-        return GameManager.Instance.playerController.GetBagWeight();
-    }
+    public void EnableInventoryVisibility() => inventoryView.EnableInventoryVisibility();
+    public void DisableInventoryVisibility() => inventoryView.DisableInventoryVisibility();
+    public void ApplyFilter(FilterController inventoryFilterController) => inventoryFilterController.ApplyFilter();
+    public void StoreItem(ItemView itemDisplay, FilterController inventoryFilterController) => inventoryFilterController.AddItemDisplay(itemDisplay);
 
-    public float GetPlayerBagCapacity()
-    {
-        return GameManager.Instance.playerController.GetBagCapacity();
-    }
+    public bool IsItemAlreadyInstantiated(int itemID) => inventoryModel.GetInstatiatedItems().ContainsKey(itemID);
+    public void StoreInstantiatedItem(int itemID, ItemView itemView) => inventoryModel.StoreInstantiatedItems(itemID, itemView);
+    
+    public bool ISInventoryOn() => inventoryView.isInventoryOn;
+    public void ResetQuantities(int itemID) => inventoryModel.ResetQuantities(itemID);
+    public void RemoveWeight(int itemID, int quantity) => inventoryModel.RemoveWeight(itemID, quantity);
+    public void DisablePanel() => GameManager.Instance.uiController.DisableItemDetailsPanel();
+    public void DisplayBroughtItems(ItemView itemView, int newQuantity) => inventoryView.DisplayBroughtItem(itemView, newQuantity);
 
-    public void DisplayBroughtItems(ItemView itemView, int newQuantity)
-    {
-        inventoryView.DisplayBroughtItem(itemView, newQuantity);
-    }
+    private void PlayGatherResourceSound() => SoundManager.Instance.PlaySound(Sounds.GatherResource);
+    public void PlaySoldSound() => SoundManager.Instance.PlaySound(Sounds.MoneySound);
+    public void PlayQuantityChangedSound() => SoundManager.Instance.PlaySound(Sounds.QuantityChanged);
+    public void PlayPopSound() => SoundManager.Instance.PlaySound(Sounds.ErrorSound);
+    public void PlayNonClickableSound() => SoundManager.Instance.PlaySound(Sounds.NonClickable);
 
-
-    public void PlaySoldSound()
-    {
-        SoundManager.Instance.PlaySound(Sounds.MoneySound);
-    }
-
-    public void PlayQuantityChangedSound()
-    {
-        SoundManager.Instance.PlaySound(Sounds.QuantityChanged);
-    }
-
-    public void PlayPopSound()
-    {
-        SoundManager.Instance.PlaySound(Sounds.ErrorSound);
-    }
-
-    public void PlayNonClickableSound()
-    {
-        SoundManager.Instance.PlaySound(Sounds.NonClickable);
-    }
+    public List<ItemProperty> GetItemDatabase() => inventoryModel.getItemDatabase();
+    public int GetItemQuantity(int itemID) => inventoryModel.GetQuantity(itemID).Sum();
+    public ItemView GetCurrentItem() => inventoryModel.currentItem;
+    public ItemView GetInstantiatedItem(int itemID) => inventoryModel.GetInstatiatedItems().TryGetValue(itemID, out ItemView itemView) ? itemView : null;
+    public float GetItemWeight(int itemID) => inventoryModel.GetItemWeight(itemID).Sum();
+    public float GetPlayerBagWeight() => GameManager.Instance.playerController.GetBagWeight();
+    public float GetPlayerBagCapacity() => GameManager.Instance.playerController.GetBagCapacity();
+    
+    public void SetQuantity(int itemId, int quantity) => inventoryModel.SetItemQuantities(itemId, quantity);
+    public void SetCurrentItem(ItemView itemView) => inventoryModel.currentItem = itemView;
+    public void SetPanelViews() => GameManager.Instance.uiController.SetItemDetailsPanel(true, GetCurrentItem());
+    public void SetItemWeight(int itemID, float newWeight) => inventoryModel.SetItemWeight(itemID, newWeight);
+    public void SetBagWeight(float weight) => GameManager.Instance.playerController.SetBagWeight(weight);
 }

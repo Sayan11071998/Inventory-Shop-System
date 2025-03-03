@@ -25,10 +25,8 @@ public class UIView : MonoBehaviour
 
     private UIController uiController;
 
-    private void OnDisable()
-    {
-        EventService.Instance.OnItemSelectedEventWithParams.RemoveListener(uiController.SetItemDetailsPanel);
-    }
+    private void OnDisable() => EventService.Instance.OnItemSelectedEventWithParams.RemoveListener(uiController.SetItemDetailsPanel);
+
     public void OnShopToggleChanged(bool isOn)
     {
         uiController.OnShopToggleChanged(isOn);
@@ -70,12 +68,6 @@ public class UIView : MonoBehaviour
         this.itemSellingPriceText.text = itemView.itemProperty.sellingPrice.ToString();
     }
 
-    public void DisableItemDetailsPanel()
-    {
-        itemDeatilsPanelCanvasGroup.alpha = 0;
-    }
-    private string FormatEnumText(Enum enumValue)
-    {
-        return System.Text.RegularExpressions.Regex.Replace(enumValue.ToString(), "(\\B[A-Z])", " $1");
-    }
+    public void DisableItemDetailsPanel() => itemDeatilsPanelCanvasGroup.alpha = 0;
+    private string FormatEnumText(Enum enumValue) => System.Text.RegularExpressions.Regex.Replace(enumValue.ToString(), "(\\B[A-Z])", " $1");
 }

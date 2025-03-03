@@ -26,7 +26,6 @@ public class ItemView : MonoBehaviour
         SetQuantityText(quantityValue);
     }
 
-
     public void SetValues()
     {
         itemToggleGroup = GetComponentInParent<ToggleGroup>();
@@ -36,7 +35,6 @@ public class ItemView : MonoBehaviour
         itemType = itemProperty.item;
         rarity = itemProperty.rarity;
     }
-
 
     public void SetQuantityText(int quantity)
     {
@@ -57,16 +55,12 @@ public class ItemView : MonoBehaviour
     public void disableItem()
     {
         if (this.gameObject != null)
-        {
             this.gameObject.SetActive(false);
-        }
     }
 
     public void EnabaleItem()
     {
         if (this.gameObject != null)
-        {
             this.gameObject.SetActive(true);
-        }
     }
 }
