@@ -3897,10 +3897,10 @@ MonoBehaviour:
     volume: 0
   - sound: 7
     soundClip: {fileID: 8300000, guid: 24d73765699ce3e46bb23cabc3a46494, type: 3}
-    volume: 0
+    volume: 1
   - sound: 8
     soundClip: {fileID: 8300000, guid: 559364a28ab6c8147bad2812ed47cc6d, type: 3}
-    volume: 0
+    volume: 100
 --- !u!4 &425236398
 Transform:
   m_ObjectHideFlags: 0
