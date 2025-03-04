@@ -5,12 +5,10 @@ public class SoundManager : MonoBehaviour
 {
     private static SoundManager instance;
     public static SoundManager Instance { get { return instance; } }
-    [SerializeField]
-    private AudioSource soundEffect;
-    [SerializeField]
-    private AudioSource soundMusic;
-    [SerializeField]
-    private SoundType[] sounds;
+
+    [SerializeField] private AudioSource soundEffect;
+    [SerializeField] private AudioSource soundMusic;
+    [SerializeField] private SoundType[] sounds;
 
     private void Awake()
     {
@@ -50,6 +48,7 @@ public class SoundManager : MonoBehaviour
         SoundType type = Array.Find(sounds, i => i.sound == sound);
         return type;
     }
+
 }
 
 [Serializable]

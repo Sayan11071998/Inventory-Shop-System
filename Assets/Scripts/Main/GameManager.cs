@@ -6,6 +6,7 @@ public class GameManager : GenericMonoSingelton<GameManager>
     public InventoryController inventoryController { get; private set; }
     public UIController uiController { get; private set; }
     public PlayerController playerController { get; private set; }
+    public SoundService soundService { get; private set; }
 
     private UIView uiView;
     private ShopView shopView;
@@ -16,6 +17,8 @@ public class GameManager : GenericMonoSingelton<GameManager>
     
     private void Start()
     {
+        soundService = new SoundService();
+
         CreateUI();
         CreatePlayer();
         CreateShop();
@@ -33,7 +36,7 @@ public class GameManager : GenericMonoSingelton<GameManager>
     {
         InventoryModel inventoryModel = new InventoryModel(itemDatabase);
         inventoryView = GameObject.FindFirstObjectByType<InventoryView>();
-        inventoryController = new InventoryController(inventoryView, inventoryModel);
+        inventoryController = new InventoryController(inventoryView, inventoryModel, soundService);
     }
 
     private void CreateUI()
