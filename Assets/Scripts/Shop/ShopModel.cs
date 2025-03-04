@@ -11,10 +11,10 @@ public class ShopModel
 
     public ShopModel(ItemDatabase itemDatabase) => Initilize(itemDatabase);
 
-    private void Initilize(ItemDatabase itemDatabase)
+    private void Initilize(ItemDatabase _itemDatabase)
     {
-        this.itemDatabase = itemDatabase;
-        this.items = new List<ItemProperty>();
+        itemDatabase = _itemDatabase;
+        items = new List<ItemProperty>();
 
         InitializeItemQuantities(itemDatabase);
         InitializeItemWeight(itemDatabase);

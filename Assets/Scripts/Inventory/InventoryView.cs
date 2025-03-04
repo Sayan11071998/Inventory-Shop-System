@@ -6,7 +6,6 @@ public class InventoryView : MonoBehaviour
 {
     private InventoryController inventoryController;
     private CanvasGroup inventoryCanvas;
-    private SoundService soundService;
 
     [SerializeField] private Transform parentPanel;
     [SerializeField] private GameObject itemPrefab;
@@ -71,7 +70,6 @@ public class InventoryView : MonoBehaviour
         }
         else
         {
-            // inventoryController.PlayPopSound();
             EventService.Instance.OnMaximumWeightExceed.InvokeEvent();
             weightExceededPopup.alpha = 1;
             weightExceededPopup.blocksRaycasts = true;
@@ -178,14 +176,12 @@ public class InventoryView : MonoBehaviour
 
         if (quantity < AvailableQuantity)
         {
-            // inventoryController.PlayQuantityChangedSound();
             EventService.Instance.OnQuantityChanged.InvokeEvent();
             quantityText.text = (quantity + 1).ToString();
             sellingPriceText.text = (sellingPrice + inventoryController.GetCurrentItem().itemProperty.sellingPrice).ToString();
         }
         else
         {
-            // inventoryController.PlayNonClickableSound();
             EventService.Instance.OnNonClickableButtonPressed.InvokeEvent();
         }
     }
@@ -199,14 +195,12 @@ public class InventoryView : MonoBehaviour
 
         if (quantity > 0)
         {
-            // inventoryController.PlayQuantityChangedSound();
             EventService.Instance.OnQuantityChanged.InvokeEvent();
             quantityText.text = (quantity - 1).ToString();
             sellingPriceText.text = (sellingPrice - inventoryController.GetCurrentItem().itemProperty.sellingPrice).ToString();
         }
         else
         {
-            // inventoryController.PlayNonClickableSound();
             EventService.Instance.OnNonClickableButtonPressed.InvokeEvent();
         }
     }
@@ -237,7 +231,6 @@ public class InventoryView : MonoBehaviour
         }
         else
         {
-            // inventoryController.PlayNonClickableSound();
             EventService.Instance.OnNonClickableButtonPressed.InvokeEvent();
         }
     }

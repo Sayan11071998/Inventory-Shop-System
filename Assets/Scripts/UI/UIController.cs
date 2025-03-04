@@ -2,9 +2,9 @@ public class UIController
 {
     private UIView uiView;
 
-    public UIController(UIView uiView)
+    public UIController(UIView _uiView)
     {
-        this.uiView = uiView;
+        uiView = _uiView;
         uiView.SetUIController(this);
     }
 
