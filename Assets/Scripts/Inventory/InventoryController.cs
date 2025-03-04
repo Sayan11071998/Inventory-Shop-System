@@ -135,11 +135,10 @@ public class InventoryController
     public void RemoveWeight(int itemID, int quantity) => inventoryModel.RemoveWeight(itemID, quantity);
     public void DisablePanel() => GameManager.Instance.uiController.DisableItemDetailsPanel();
     public void DisplayBroughtItems(ItemView itemView, int newQuantity) => inventoryView.DisplayBroughtItem(itemView, newQuantity);
-
-    public void PlaySoldSound() => SoundManager.Instance.PlaySound(Sounds.MoneySound);
-    public void PlayQuantityChangedSound() => SoundManager.Instance.PlaySound(Sounds.QuantityChanged);
-    public void PlayPopSound() => SoundManager.Instance.PlaySound(Sounds.ErrorSound);
-    public void PlayNonClickableSound() => SoundManager.Instance.PlaySound(Sounds.NonClickable);
+    
+    public void PlayQuantityChangedSound() => soundService.PlayQuantityChangedSound();
+    public void PlayPopSound() => soundService.PlayPopSound();
+    public void PlayNonClickableSound() => soundService.PlayNonClickableSound();
 
     public List<ItemProperty> GetItemDatabase() => inventoryModel.getItemDatabase();
     public int GetItemQuantity(int itemID) => inventoryModel.GetQuantity(itemID).Sum();

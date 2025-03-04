@@ -20,6 +20,8 @@ public class EventService
     public EventController<float> onItemSoldWithFloatParams { get; private set; }
     public EventController onItemChanged { get; private set; }
 
+    // public EventController OnItemSoldWithIntParams { get; private set; }
+
     public EventService()
     {
         OnShopToggledOnEvent = new EventController();
@@ -33,5 +35,8 @@ public class EventService
         onItemChanged = new EventController();
 
         onItemSoldWithIntParams = new EventController<int>();
+
+
+        // OnItemSoldWithIntParams = new EventController();
     }
 }

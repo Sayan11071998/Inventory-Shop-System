@@ -6,6 +6,7 @@ public class InventoryView : MonoBehaviour
 {
     private InventoryController inventoryController;
     private CanvasGroup inventoryCanvas;
+    private SoundService soundService;
 
     [SerializeField] private Transform parentPanel;
     [SerializeField] private GameObject itemPrefab;
@@ -222,7 +223,6 @@ public class InventoryView : MonoBehaviour
             inventoryController.ResetQuantities(itemID);
             inventoryController.SetQuantity(itemID, quantity);
             inventoryController.GetCurrentItem().SetQuantityText(quantity);
-            inventoryController.PlaySoldSound();
 
             EventService.Instance.onItemChanged.InvokeEvent();
             EventService.Instance.onItemSoldWithIntParams.InvokeEvent(amount);
