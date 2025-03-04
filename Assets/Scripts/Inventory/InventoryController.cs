@@ -5,18 +5,20 @@ public class InventoryController
 {
     private InventoryView inventoryView;
     private InventoryModel inventoryModel;
+    private SoundService soundService;
 
-    public InventoryController(InventoryView inventoryView, InventoryModel inventoryModel)
+    public InventoryController(InventoryView _inventoryView, InventoryModel _inventoryModel, SoundService _soundService)
     {
-        this.inventoryView = inventoryView;
-        this.inventoryModel = inventoryModel;
+        inventoryView = _inventoryView;
+        inventoryModel = _inventoryModel;
+        soundService = _soundService;
 
-        this.inventoryView.SetInventoryController(this);
+        inventoryView.SetInventoryController(this);
     }
 
     public void GatherResource()
     {
-        PlayGatherResourceSound();
+        EventService.Instance.OnGatherResourceButtonPressed.InvokeEvent();
 
         for (int i = 0; i < inventoryModel.numberOfResource; i++)
         {
@@ -133,12 +135,6 @@ public class InventoryController
     public void RemoveWeight(int itemID, int quantity) => inventoryModel.RemoveWeight(itemID, quantity);
     public void DisablePanel() => GameManager.Instance.uiController.DisableItemDetailsPanel();
     public void DisplayBroughtItems(ItemView itemView, int newQuantity) => inventoryView.DisplayBroughtItem(itemView, newQuantity);
-
-    private void PlayGatherResourceSound() => SoundManager.Instance.PlaySound(Sounds.GatherResource);
-    public void PlaySoldSound() => SoundManager.Instance.PlaySound(Sounds.MoneySound);
-    public void PlayQuantityChangedSound() => SoundManager.Instance.PlaySound(Sounds.QuantityChanged);
-    public void PlayPopSound() => SoundManager.Instance.PlaySound(Sounds.ErrorSound);
-    public void PlayNonClickableSound() => SoundManager.Instance.PlaySound(Sounds.NonClickable);
 
     public List<ItemProperty> GetItemDatabase() => inventoryModel.getItemDatabase();
     public int GetItemQuantity(int itemID) => inventoryModel.GetQuantity(itemID).Sum();

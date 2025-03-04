@@ -5,7 +5,6 @@ public class ShopController
 {
     private ShopView shopView;
     private ShopModel shopModel;
-    FilterController filter;
 
     public ShopController(ShopView shopView, ShopModel shopModel)
     {

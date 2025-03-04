@@ -3,12 +3,12 @@ public class PlayerController
     private PlayerView playerView;
     private PlayerModel playerModel;
 
-    public PlayerController(PlayerView playerView, PlayerModel playerModel)
+    public PlayerController(PlayerView _playerView, PlayerModel _playerModel)
     {
-        this.playerView = playerView;
-        this.playerModel = playerModel;
+        playerView = _playerView;
+        playerModel = _playerModel;
 
-        this.playerView.SetPlayerController(this);
+        playerView.SetPlayerController(this);
     }
 
     public void IncreasePlayerCoin(int coin)

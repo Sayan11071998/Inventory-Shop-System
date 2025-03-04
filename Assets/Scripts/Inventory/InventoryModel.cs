@@ -16,9 +16,9 @@ public class InventoryModel
 
     public InventoryModel(ItemDatabase itemDatabase) => Initialize(itemDatabase);
 
-    private void Initialize(ItemDatabase itemDatabase)
+    private void Initialize(ItemDatabase _itemDatabase)
     {
-        this.itemDatabase = itemDatabase;
+        itemDatabase = _itemDatabase;
         Items = new List<ItemProperty>();
         numberOfResource = 5;
 

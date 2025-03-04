@@ -70,7 +70,7 @@ public class InventoryView : MonoBehaviour
         }
         else
         {
-            inventoryController.PlayPopSound();
+            EventService.Instance.OnMaximumWeightExceed.InvokeEvent();
             weightExceededPopup.alpha = 1;
             weightExceededPopup.blocksRaycasts = true;
             weightExceededPopup.interactable = true;
@@ -176,13 +176,13 @@ public class InventoryView : MonoBehaviour
 
         if (quantity < AvailableQuantity)
         {
-            inventoryController.PlayQuantityChangedSound();
+            EventService.Instance.OnQuantityChanged.InvokeEvent();
             quantityText.text = (quantity + 1).ToString();
             sellingPriceText.text = (sellingPrice + inventoryController.GetCurrentItem().itemProperty.sellingPrice).ToString();
         }
         else
         {
-            inventoryController.PlayNonClickableSound();
+            EventService.Instance.OnNonClickableButtonPressed.InvokeEvent();
         }
     }
 
@@ -195,13 +195,13 @@ public class InventoryView : MonoBehaviour
 
         if (quantity > 0)
         {
-            inventoryController.PlayQuantityChangedSound();
+            EventService.Instance.OnQuantityChanged.InvokeEvent();
             quantityText.text = (quantity - 1).ToString();
             sellingPriceText.text = (sellingPrice - inventoryController.GetCurrentItem().itemProperty.sellingPrice).ToString();
         }
         else
         {
-            inventoryController.PlayNonClickableSound();
+            EventService.Instance.OnNonClickableButtonPressed.InvokeEvent();
         }
     }
 
@@ -222,7 +222,6 @@ public class InventoryView : MonoBehaviour
             inventoryController.ResetQuantities(itemID);
             inventoryController.SetQuantity(itemID, quantity);
             inventoryController.GetCurrentItem().SetQuantityText(quantity);
-            inventoryController.PlaySoldSound();
 
             EventService.Instance.onItemChanged.InvokeEvent();
             EventService.Instance.onItemSoldWithIntParams.InvokeEvent(amount);
@@ -232,7 +231,7 @@ public class InventoryView : MonoBehaviour
         }
         else
         {
-            inventoryController.PlayNonClickableSound();
+            EventService.Instance.OnNonClickableButtonPressed.InvokeEvent();
         }
     }
 
