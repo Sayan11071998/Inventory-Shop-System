@@ -5,18 +5,20 @@ public class InventoryController
 {
     private InventoryView inventoryView;
     private InventoryModel inventoryModel;
+    private SoundService soundService;
 
-    public InventoryController(InventoryView inventoryView, InventoryModel inventoryModel)
+    public InventoryController(InventoryView inventoryView, InventoryModel inventoryModel, SoundService soundService)
     {
         this.inventoryView = inventoryView;
         this.inventoryModel = inventoryModel;
+        this.soundService = soundService;
 
         this.inventoryView.SetInventoryController(this);
     }
 
     public void GatherResource()
     {
-        PlayGatherResourceSound();
+        soundService.PlayGatherResourceSound();
 
         for (int i = 0; i < inventoryModel.numberOfResource; i++)
         {
@@ -134,7 +136,6 @@ public class InventoryController
     public void DisablePanel() => GameManager.Instance.uiController.DisableItemDetailsPanel();
     public void DisplayBroughtItems(ItemView itemView, int newQuantity) => inventoryView.DisplayBroughtItem(itemView, newQuantity);
 
-    private void PlayGatherResourceSound() => SoundManager.Instance.PlaySound(Sounds.GatherResource);
     public void PlaySoldSound() => SoundManager.Instance.PlaySound(Sounds.MoneySound);
     public void PlayQuantityChangedSound() => SoundManager.Instance.PlaySound(Sounds.QuantityChanged);
     public void PlayPopSound() => SoundManager.Instance.PlaySound(Sounds.ErrorSound);
