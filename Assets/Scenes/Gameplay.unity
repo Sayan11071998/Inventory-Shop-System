@@ -4057,32 +4057,32 @@ MonoBehaviour:
   soundMusic: {fileID: 109994560}
   sounds:
   - sound: 0
-    soundClip: {fileID: 8300000, guid: 24d73765699ce3e46bb23cabc3a46494, type: 3}
+    soundClip: {fileID: 8300000, guid: f8835462a7dfef8438c7ebcd90315eed, type: 3}
     volume: 100
   - sound: 1
-    soundClip: {fileID: 8300000, guid: 24d73765699ce3e46bb23cabc3a46494, type: 3}
+    soundClip: {fileID: 8300000, guid: e7b35dee6270af248a8fbee241c9b478, type: 3}
     volume: 100
   - sound: 2
-    soundClip: {fileID: 8300000, guid: 24d73765699ce3e46bb23cabc3a46494, type: 3}
+    soundClip: {fileID: 8300000, guid: e036cfaa1c71ab94aa6706a9022f1dc7, type: 3}
     volume: 100
   - sound: 3
-    soundClip: {fileID: 8300000, guid: 24d73765699ce3e46bb23cabc3a46494, type: 3}
+    soundClip: {fileID: 8300000, guid: 13ddde635b8c17f4aa0b5089bbba01e7, type: 3}
     volume: 100
   - sound: 4
-    soundClip: {fileID: 8300000, guid: 24d73765699ce3e46bb23cabc3a46494, type: 3}
+    soundClip: {fileID: 8300000, guid: 7a80dd244549f7944ab1b42a0f8045c6, type: 3}
     volume: 100
   - sound: 5
-    soundClip: {fileID: 8300000, guid: d1698dd553af8ef4d887bc83b9687173, type: 3}
+    soundClip: {fileID: 8300000, guid: 987cc1b76a5d5d9478ef95c3dd1a8dcd, type: 3}
     volume: 100
   - sound: 6
-    soundClip: {fileID: 8300000, guid: 87e2452fe2c754248926c9a9ab93a467, type: 3}
+    soundClip: {fileID: 8300000, guid: a035b26b5f4a04d4986d781fc354b546, type: 3}
     volume: 100
   - sound: 7
-    soundClip: {fileID: 8300000, guid: 24d73765699ce3e46bb23cabc3a46494, type: 3}
+    soundClip: {fileID: 8300000, guid: 2de493236aac45648b74448e2b6e6f15, type: 3}
     volume: 100
   - sound: 8
-    soundClip: {fileID: 8300000, guid: c40e73cecfc584646abb677d1caf9867, type: 3}
-    volume: 65
+    soundClip: {fileID: 8300000, guid: a4251531c8be6534bb42afbffcfa62d2, type: 3}
+    volume: 50
 --- !u!4 &425236398
 Transform:
   m_ObjectHideFlags: 0
