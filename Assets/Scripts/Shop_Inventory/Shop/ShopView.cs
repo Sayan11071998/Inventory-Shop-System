@@ -1,21 +1,19 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class ShopView : MonoBehaviour
+public class ShopView : BaseView
 {
     private ShopController shopController;
-    private CanvasGroup shopCanvas;
     [SerializeField] private FilterController shopFilterController;
-
     [SerializeField] private GameObject itemPrefab;
-
     [SerializeField] private Transform parentPanel;
 
     [Header("Buy Section")]
     [SerializeField] private CanvasGroup buySection;
-    [SerializeField] private TextMeshProUGUI quantityText;
-    [SerializeField] private TextMeshProUGUI buyingPriceText;
+    // Use TransactionSectionController for the buy section.
+    [SerializeField] private TransactionSectionController buySectionController;
     [SerializeField] private CanvasGroup notEnoughMoneyPopup;
     [SerializeField] private CanvasGroup weightExceededPopUp;
 
@@ -25,9 +23,7 @@ public class ShopView : MonoBehaviour
     {
         EventService.Instance.OnInventoryToggledOnEvent.AddListener(DisableShopVisibility);
         EventService.Instance.OnInventoryToggledOnEvent.AddListener(DisableBuyingSection);
-
         EventService.Instance.OnShopToggledOnEvent.AddListener(EnableShopVisibility);
-
         EventService.Instance.OnItemSelectedEvent.AddListener(EnableBuyingSection);
         EventService.Instance.OnItemSelectedEventWithParams.AddListener(SetCurrentSelected);
     }
@@ -36,33 +32,32 @@ public class ShopView : MonoBehaviour
     {
         EventService.Instance.OnInventoryToggledOnEvent.RemoveListener(DisableShopVisibility);
         EventService.Instance.OnInventoryToggledOnEvent.RemoveListener(DisableBuyingSection);
-
         EventService.Instance.OnShopToggledOnEvent.RemoveListener(EnableShopVisibility);
-
         EventService.Instance.OnItemSelectedEvent.RemoveListener(EnableBuyingSection);
         EventService.Instance.OnItemSelectedEventWithParams.RemoveListener(SetCurrentSelected);
     }
 
-    public void SetShopController(ShopController shopController)
+    public void SetShopController(ShopController controller)
     {
-        this.shopController = shopController;
-        shopCanvas = this.GetComponent<CanvasGroup>();
+        shopController = controller;
+
+        // Set up the TransactionSectionController delegates.
+        buySectionController.GetAvailableQuantity = () => shopController.GetItemQuantity(shopController.GetCurrentItem().itemProperty.itemID);
+        buySectionController.GetUnitPrice = () => shopController.GetCurrentItem().itemProperty.buyingPrice;
+        buySectionController.PlayQuantityChangedSound = () => shopController.PlayQuantityChangedSound();
+        buySectionController.PlayNonClickableSound = () => shopController.PlayNonClickableSound();
     }
 
     public void EnableShopVisibility()
     {
         isShopOn = true;
-        shopCanvas.alpha = 1;
-        shopCanvas.interactable = true;
-        shopCanvas.blocksRaycasts = true;
+        EnableVisibility();
     }
 
     public void DisableShopVisibility()
     {
         isShopOn = false;
-        shopCanvas.alpha = 0;
-        shopCanvas.interactable = false;
-        shopCanvas.blocksRaycasts = false;
+        DisableVisibility();
     }
 
     public void DisplayItems(List<ItemProperty> items)
@@ -72,7 +67,6 @@ public class ShopView : MonoBehaviour
             GameObject newItem = Instantiate(itemPrefab, parentPanel);
             ItemView itemDisplay = newItem.GetComponent<ItemView>();
             shopController.StoreItem(itemDisplay, shopFilterController);
-
             if (itemDisplay != null)
             {
                 itemDisplay.itemProperty = item;
@@ -84,98 +78,49 @@ public class ShopView : MonoBehaviour
 
     public void EnableBuyingSection()
     {
-        if (isShopOn == true)
+        if (isShopOn)
         {
             buySection.alpha = 1;
             buySection.interactable = true;
             buySection.blocksRaycasts = true;
+            buySectionController.ResetSection();
         }
     }
 
     public void SetCurrentSelected(bool isOn, ItemView itemView)
     {
         shopController.SetCurrentSelectedItem(itemView);
-        SetBuySectionValues(isOn);
-    }
-
-    private void SetBuySectionValues(bool isOn)
-    {
-        if (isOn)
-        {
-            quantityText.text = 0.ToString();
-            buyingPriceText.text = 0.ToString();
-        }
-    }
-
-    public void AddBuySectionValues()
-    {
-        int itemID = shopController.GetCurrentItem().itemProperty.itemID;
-        int AvailableQuantity = shopController.GetItemQuantity(itemID);
-        int quantity = int.Parse(quantityText.text);
-        int buyingPrice = int.Parse(buyingPriceText.text);
-
-        if (quantity < AvailableQuantity)
-        {
-            shopController.PlayQuantityChangedSound();
-            quantityText.text = (quantity + 1).ToString();
-            buyingPriceText.text = (buyingPrice + shopController.GetCurrentItem().itemProperty.buyingPrice).ToString();
-        }
-        else
-        {
-            shopController.PlayNonClickableSound();
-        }
-    }
-
-    public void ReduceBuySectionValues()
-    {
-        int itemID = shopController.GetCurrentItem().itemProperty.itemID;
-        int AvailableQuantity = shopController.GetItemQuantity(itemID);
-        int quantity = int.Parse(quantityText.text);
-        int buyingPrice = int.Parse(buyingPriceText.text);
-
-        if (quantity > 0)
-        {
-            shopController.PlayQuantityChangedSound();
-            quantityText.text = (quantity - 1).ToString();
-            buyingPriceText.text = (buyingPrice - shopController.GetCurrentItem().itemProperty.buyingPrice).ToString();
-        }
-        else
-        {
-            shopController.PlayNonClickableSound();
-        }
+        buySectionController.ResetSection();
     }
 
     public void DisableBuyingSection()
     {
-        if (isShopOn == false)
+        if (!isShopOn)
         {
             buySection.alpha = 0;
             buySection.interactable = false;
             buySection.blocksRaycasts = false;
         }
     }
+
     public void Buy()
     {
-        int amount = int.Parse(buyingPriceText.text);
-        int seletcedQuantity = int.Parse(quantityText.text);
-
+        int amount = int.Parse(buySectionController.GetPriceText());
+        int selectedQuantity = int.Parse(buySectionController.GetQuantityText());
         int itemID = shopController.GetCurrentItem().itemProperty.itemID;
-
-        if (amount > 0 && seletcedQuantity > 0)
+        if (amount > 0 && selectedQuantity > 0)
         {
             if (shopController.GetPlayerCoin() >= amount)
             {
                 if (shopController.GetPlayerBagWeight() < shopController.GetPlayerBagCapacity())
                 {
-                    SetBuySectionValues(true);
+                    buySectionController.ResetSection();
                     int playerCoin = shopController.GetPlayerCoin();
                     int newAmount = playerCoin - amount;
-                    int newQuantity = shopController.GetItemQuantity(itemID) - seletcedQuantity;
-
-                    shopController.DisplayBroughtItems(shopController.GetCurrentItem(), seletcedQuantity);
+                    int newQuantity = shopController.GetItemQuantity(itemID) - selectedQuantity;
+                    shopController.DisplayBroughtItems(shopController.GetCurrentItem(), selectedQuantity);
                     shopController.SetItemQuantities(itemID, newQuantity);
                     shopController.GetCurrentItem().SetQuantityText(newQuantity);
-
                     EventService.Instance.onItemChanged.InvokeEvent();
                     EventService.Instance.onItemBroughtWithIntParams.InvokeEvent(newAmount);
                 }

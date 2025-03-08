@@ -1,47 +1,26 @@
 using System.Collections.Generic;
 
-public class ShopModel
+public class ShopModel : BaseItemModel
 {
-    private ItemDatabase itemDatabase;
     public ItemView currentItem;
-
-    private List<ItemProperty> items;
     public Dictionary<int, int> itemQuantities;
     public Dictionary<int, float> itemWeight;
 
-    public ShopModel(ItemDatabase itemDatabase) => Initilize(itemDatabase);
-
-    private void Initilize(ItemDatabase _itemDatabase)
+    public ShopModel(ItemDatabase _itemDatabase) : base(_itemDatabase)
     {
-        itemDatabase = _itemDatabase;
-        items = new List<ItemProperty>();
-
-        InitializeItemQuantities(itemDatabase);
-        InitializeItemWeight(itemDatabase);
+        Initialize();
     }
 
-    private void InitializeItemQuantities(ItemDatabase itemDatabase)
+    private void Initialize()
     {
         itemQuantities = new Dictionary<int, int>();
-
-        foreach (ItemProperty item in itemDatabase.items)
-            itemQuantities[item.itemID] = 0;
-    }
-
-    public List<ItemProperty> GetItemDatabase()
-    {
-        if (items.Count == 0)
-            items.AddRange(itemDatabase.items);
-
-        return items;
-    }
-
-    private void InitializeItemWeight(ItemDatabase itemDatabase)
-    {
         itemWeight = new Dictionary<int, float>();
 
         foreach (ItemProperty item in itemDatabase.items)
-            itemWeight[item.itemID] = 0;
+        {
+            itemQuantities[item.itemID] = 0;
+            itemWeight[item.itemID] = 0f;
+        }
     }
 
     public void SetItemQuantities(int itemID, int quantity)
@@ -67,6 +46,6 @@ public class ShopModel
     {
         if (itemWeight.ContainsKey(itemID))
             return itemWeight[itemID];
-        return 0;
+        return 0f;
     }
 }

@@ -2227,9 +2227,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1256356023}
-        m_TargetAssemblyTypeName: InventoryView, Assembly-CSharp
-        m_MethodName: AddSellSectionValues
+      - m_Target: {fileID: 2012966703}
+        m_TargetAssemblyTypeName: TransactionSectionController, Assembly-CSharp
+        m_MethodName: AddValue
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3129,6 +3129,7 @@ GameObject:
   - component: {fileID: 332643905}
   - component: {fileID: 332643907}
   - component: {fileID: 332643906}
+  - component: {fileID: 332643908}
   m_Layer: 5
   m_Name: BuySection
   m_TagString: Untagged
@@ -3179,6 +3180,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 332643904}
   m_CullTransparentMesh: 1
+--- !u!114 &332643908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 332643904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2aa4242853c6864d93963d791e753e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  quantityText: {fileID: 416220911}
+  priceText: {fileID: 889151434}
 --- !u!1 &337387128
 GameObject:
   m_ObjectHideFlags: 0
@@ -7582,8 +7597,7 @@ MonoBehaviour:
   inventoryFilterController: {fileID: 14331740}
   weightExceededPopup: {fileID: 817565330}
   sellSection: {fileID: 2012966701}
-  quantityText: {fileID: 224580539}
-  sellingPriceText: {fileID: 1924023567}
+  sellSectionController: {fileID: 2012966703}
   isInventoryOn: 0
 --- !u!1 &1278348768
 GameObject:
@@ -8117,9 +8131,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1715876825}
-        m_TargetAssemblyTypeName: ShopView, Assembly-CSharp
-        m_MethodName: ReduceBuySectionValues
+      - m_Target: {fileID: 332643908}
+        m_TargetAssemblyTypeName: TransactionSectionController, Assembly-CSharp
+        m_MethodName: ReduceValue
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9047,9 +9061,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1715876825}
-        m_TargetAssemblyTypeName: ShopView, Assembly-CSharp
-        m_MethodName: AddBuySectionValues
+      - m_Target: {fileID: 332643908}
+        m_TargetAssemblyTypeName: TransactionSectionController, Assembly-CSharp
+        m_MethodName: AddValue
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10172,8 +10186,7 @@ MonoBehaviour:
   itemPrefab: {fileID: 5574034519984340831, guid: 3507a89bbccd38d47ab862d82ab23637, type: 3}
   parentPanel: {fileID: 1550876531}
   buySection: {fileID: 332643906}
-  quantityText: {fileID: 416220911}
-  buyingPriceText: {fileID: 889151434}
+  buySectionController: {fileID: 332643908}
   notEnoughMoneyPopup: {fileID: 1147830697}
   weightExceededPopUp: {fileID: 817565330}
   isShopOn: 1
@@ -10831,9 +10844,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1256356023}
-        m_TargetAssemblyTypeName: InventoryView, Assembly-CSharp
-        m_MethodName: ReduceSellSectionValues
+      - m_Target: {fileID: 2012966703}
+        m_TargetAssemblyTypeName: TransactionSectionController, Assembly-CSharp
+        m_MethodName: ReduceValue
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11823,6 +11836,7 @@ GameObject:
   - component: {fileID: 2012966700}
   - component: {fileID: 2012966702}
   - component: {fileID: 2012966701}
+  - component: {fileID: 2012966703}
   m_Layer: 5
   m_Name: SellSection
   m_TagString: Untagged
@@ -11873,6 +11887,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2012966699}
   m_CullTransparentMesh: 1
+--- !u!114 &2012966703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2012966699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2aa4242853c6864d93963d791e753e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  quantityText: {fileID: 224580539}
+  priceText: {fileID: 1924023567}
 --- !u!1 &2020468042
 GameObject:
   m_ObjectHideFlags: 0
