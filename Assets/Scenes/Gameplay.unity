@@ -618,14 +618,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.47843137}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 730c911464148054487bb3efd7ef0d07, type: 3}
+  m_Sprite: {fileID: -3797742030821838211, guid: 39384b5910a48e540894ae44953e18ba, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -7592,8 +7592,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f6efefa8f482f342bf41c48a7e00ff9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parentPanel: {fileID: 95600236}
   itemPrefab: {fileID: 5574034519984340831, guid: 3507a89bbccd38d47ab862d82ab23637, type: 3}
+  parentPanel: {fileID: 95600236}
   inventoryFilterController: {fileID: 14331740}
   weightExceededPopup: {fileID: 817565330}
   sellSection: {fileID: 2012966701}
@@ -10182,9 +10182,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fdce93a73d78174aa8d88448fe3d87a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopFilterController: {fileID: 1749669371}
   itemPrefab: {fileID: 5574034519984340831, guid: 3507a89bbccd38d47ab862d82ab23637, type: 3}
   parentPanel: {fileID: 1550876531}
+  shopFilterController: {fileID: 1749669371}
   buySection: {fileID: 332643906}
   buySectionController: {fileID: 332643908}
   notEnoughMoneyPopup: {fileID: 1147830697}
