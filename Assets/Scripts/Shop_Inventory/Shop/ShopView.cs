@@ -3,16 +3,13 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ShopView : BaseView
+public class ShopView : BaseItemListView, IItemListView
 {
     private ShopController shopController;
     [SerializeField] private FilterController shopFilterController;
-    [SerializeField] private GameObject itemPrefab;
-    [SerializeField] private Transform parentPanel;
 
     [Header("Buy Section")]
     [SerializeField] private CanvasGroup buySection;
-    // Use TransactionSectionController for the buy section.
     [SerializeField] private TransactionSectionController buySectionController;
     [SerializeField] private CanvasGroup notEnoughMoneyPopup;
     [SerializeField] private CanvasGroup weightExceededPopUp;
@@ -40,12 +37,15 @@ public class ShopView : BaseView
     public void SetShopController(ShopController controller)
     {
         shopController = controller;
-
         // Set up the TransactionSectionController delegates.
-        buySectionController.GetAvailableQuantity = () => shopController.GetItemQuantity(shopController.GetCurrentItem().itemProperty.itemID);
-        buySectionController.GetUnitPrice = () => shopController.GetCurrentItem().itemProperty.buyingPrice;
-        buySectionController.PlayQuantityChangedSound = () => shopController.PlayQuantityChangedSound();
-        buySectionController.PlayNonClickableSound = () => shopController.PlayNonClickableSound();
+        buySectionController.GetAvailableQuantity = () =>
+            shopController.GetItemQuantity(shopController.GetCurrentItem().itemProperty.itemID);
+        buySectionController.GetUnitPrice = () =>
+            shopController.GetCurrentItem().itemProperty.buyingPrice;
+        buySectionController.PlayQuantityChangedSound = () =>
+            shopController.PlayQuantityChangedSound();
+        buySectionController.PlayNonClickableSound = () =>
+            shopController.PlayNonClickableSound();
     }
 
     public void EnableShopVisibility()
@@ -64,12 +64,10 @@ public class ShopView : BaseView
     {
         foreach (ItemProperty item in items)
         {
-            GameObject newItem = Instantiate(itemPrefab, parentPanel);
-            ItemView itemDisplay = newItem.GetComponent<ItemView>();
+            ItemView itemDisplay = CreateItemView(item);
             shopController.StoreItem(itemDisplay, shopFilterController);
             if (itemDisplay != null)
             {
-                itemDisplay.itemProperty = item;
                 shopController.SetItemQuantities(itemDisplay.itemProperty.itemID, itemDisplay.itemProperty.quantity);
                 itemDisplay.ShopDisplayUI();
             }

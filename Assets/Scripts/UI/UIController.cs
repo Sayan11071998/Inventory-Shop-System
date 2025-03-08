@@ -11,8 +11,7 @@ public class UIController
     public void OnShopToggleChanged(bool isOn)
     {
         SoundManager.Instance.PlaySound(Sounds.ShopInventorySwitchButton);
-
-        if (isOn == false)
+        if (!isOn)
             EventService.Instance.OnShopToggledOnEvent.InvokeEvent();
         else
             EventService.Instance.OnInventoryToggledOnEvent.InvokeEvent();
@@ -28,18 +27,14 @@ public class UIController
         {
             int itemID = GameManager.Instance.inventoryController.GetCurrentItem().itemProperty.itemID;
             int quantity = GameManager.Instance.inventoryController.GetItemQuantity(itemID);
-
             return quantity;
         }
-
         if (GameManager.Instance.shopController.ISShopOn())
         {
             int itemID = GameManager.Instance.shopController.GetCurrentItem().itemProperty.itemID;
             int quantity = GameManager.Instance.shopController.GetItemQuantity(itemID);
-
             return quantity;
         }
-
         return 0;
     }
 
