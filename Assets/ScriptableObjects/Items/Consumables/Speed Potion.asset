@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 640bac49251657d47bb1207f83593d81, type: 3}
-  m_Name: ManaPotion_SO
+  m_Name: Speed Potion
   m_EditorClassIdentifier: 
-  itemID: 302
-  itemName: Mana Potion
+  itemID: 305
+  itemName: Speed Potion
   item: 2
   itemIcon: {fileID: -6945818833939484963, guid: 0ca527c638f20b14990d4d36c0dbfefe, type: 3}
-  ItemDescription: A potion that replenishes mana for casting spells
-  buyingPrice: 25
-  sellingPrice: 18
-  weight: 0.5
+  ItemDescription: Temporarily increases movement speed
+  buyingPrice: 35
+  sellingPrice: 25
+  weight: 0.4
   rarity: 2
-  quantity: 1
+  quantity: 5

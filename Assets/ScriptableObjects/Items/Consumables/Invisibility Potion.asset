@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 640bac49251657d47bb1207f83593d81, type: 3}
-  m_Name: HealthPotion_SO
+  m_Name: Invisibility Potion
   m_EditorClassIdentifier: 
-  itemID: 301
-  itemName: Health Potion
+  itemID: 306
+  itemName: Invisibility Potion
   item: 2
-  itemIcon: {fileID: 3079238211075767060, guid: f69461998871bc042b5adca2e2f99fa8, type: 3}
-  ItemDescription: A potion that restores a portion of health when consumed
-  buyingPrice: 20
-  sellingPrice: 15
-  weight: 0.5
-  rarity: 1
+  itemIcon: {fileID: 6651665345201606284, guid: 6a32564659c513f4a8234e61785fd1f0, type: 3}
+  ItemDescription: Grants temporary invisibility
+  buyingPrice: 50
+  sellingPrice: 35
+  weight: 0.3
+  rarity: 3
   quantity: 1

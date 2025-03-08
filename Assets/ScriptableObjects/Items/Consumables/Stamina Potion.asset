@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 640bac49251657d47bb1207f83593d81, type: 3}
+  m_Name: Stamina Potion
+  m_EditorClassIdentifier: 
+  itemID: 303
+  itemName: Stamina Potion
+  item: 2
+  itemIcon: {fileID: 8515339128860447486, guid: 24a43bc3f03a76f49b8e71076e53da89, type: 3}
+  ItemDescription: A potion that restores a portion of stamina when consumed
+  buyingPrice: 22
+  sellingPrice: 16
+  weight: 0.5
+  rarity: 1
+  quantity: 6
