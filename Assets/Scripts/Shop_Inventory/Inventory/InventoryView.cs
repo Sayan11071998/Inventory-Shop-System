@@ -2,14 +2,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class InventoryView : MonoBehaviour
+public class InventoryView : BaseView
 {
     private InventoryController inventoryController;
-    private CanvasGroup inventoryCanvas;
-
     [SerializeField] private Transform parentPanel;
     [SerializeField] private GameObject itemPrefab;
-
     [SerializeField] private FilterController inventoryFilterController;
     [SerializeField] private CanvasGroup weightExceededPopup;
 
@@ -25,7 +22,7 @@ public class InventoryView : MonoBehaviour
         EventService.Instance.OnShopToggledOnEvent.AddListener(DisableInventoryVisibility);
         EventService.Instance.OnShopToggledOnEvent.AddListener(DisableSellSection);
         EventService.Instance.OnItemSelectedEvent.AddListener(EnableSellSection);
-        EventService.Instance.OnItemSelectedEventWithParams.AddListener(SetSelecteddItem);
+        EventService.Instance.OnItemSelectedEventWithParams.AddListener(SetSelectedItem);
     }
 
     private void OnDisable()
@@ -37,27 +34,22 @@ public class InventoryView : MonoBehaviour
         EventService.Instance.onItemChanged.RemoveListener(inventoryController.SetPanelViews);
     }
 
-    public void SetInventoryController(InventoryController inventoryController)
+    public void SetInventoryController(InventoryController controller)
     {
-        this.inventoryController = inventoryController;
-        inventoryCanvas = this.GetComponent<CanvasGroup>();
+        inventoryController = controller;
         EventService.Instance.onItemChanged.AddListener(inventoryController.SetPanelViews);
     }
 
     public void EnableInventoryVisibility()
     {
         isInventoryOn = true;
-        inventoryCanvas.alpha = 1;
-        inventoryCanvas.blocksRaycasts = true;
-        inventoryCanvas.interactable = true;
+        EnableVisibility();
     }
 
     public void DisableInventoryVisibility()
     {
         isInventoryOn = false;
-        inventoryCanvas.alpha = 0;
-        inventoryCanvas.blocksRaycasts = false;
-        inventoryCanvas.interactable = false;
+        DisableVisibility();
     }
 
     public void GatherResource()
@@ -82,14 +74,12 @@ public class InventoryView : MonoBehaviour
         int itemID = inventoryController.GetItemDatabase()[index].itemID;
         int newQuantity = inventoryController.GenerateRandomQuantity();
         ItemProperty itemProperty = inventoryController.GetItemDatabase()[index];
-
         InstantiateItems(itemID, newQuantity, itemProperty);
     }
 
     public void DisplayBroughtItem(ItemView itemView, int newQuantity)
     {
         int itemID = itemView.itemProperty.itemID;
-
         if (itemView != null)
         {
             InstantiateItems(itemID, newQuantity, itemView.itemProperty);
@@ -104,7 +94,6 @@ public class InventoryView : MonoBehaviour
             inventoryController.SetQuantity(itemID, newQuantity);
             ItemView existingItem = inventoryController.GetInstantiatedItem(itemID);
             inventoryController.SetItemWeight(itemID, existingItem.itemProperty.weight);
-
             if (existingItem != null)
             {
                 int totalQuantity = inventoryController.GetItemQuantity(existingItem.itemProperty.itemID);
@@ -115,7 +104,6 @@ public class InventoryView : MonoBehaviour
         {
             GameObject newItem = Instantiate(itemPrefab, parentPanel);
             ItemView itemView = newItem.GetComponent<ItemView>();
-
             if (itemView != null)
             {
                 itemView.itemProperty = itemProperty;
@@ -123,18 +111,16 @@ public class InventoryView : MonoBehaviour
                 inventoryController.SetQuantity(itemView.itemProperty.itemID, newQuantity);
                 inventoryController.SetItemWeight(itemID, itemView.itemProperty.weight);
                 inventoryController.StoreInstantiatedItem(itemView.itemProperty.itemID, itemView);
-
                 itemView.InventoryDisplayUI(inventoryController.GetItemQuantity(itemView.itemProperty.itemID));
             }
         }
-
         inventoryController.ApplyFilter(inventoryFilterController);
         EventSystem.current.SetSelectedGameObject(null);
     }
 
     public void EnableSellSection()
     {
-        if (isInventoryOn == true)
+        if (isInventoryOn)
         {
             sellSection.alpha = 1;
             sellSection.interactable = true;
@@ -144,7 +130,7 @@ public class InventoryView : MonoBehaviour
 
     public void DisableSellSection()
     {
-        if (isInventoryOn == false)
+        if (!isInventoryOn)
         {
             sellSection.alpha = 0;
             sellSection.interactable = false;
@@ -152,9 +138,9 @@ public class InventoryView : MonoBehaviour
         }
     }
 
-    public void SetSelecteddItem(bool isOn, ItemView ItemView)
+    public void SetSelectedItem(bool isOn, ItemView itemView)
     {
-        inventoryController.SetCurrentItem(ItemView);
+        inventoryController.SetCurrentItem(itemView);
         SetSellSectionValues(isOn);
     }
 
@@ -162,19 +148,18 @@ public class InventoryView : MonoBehaviour
     {
         if (isOn)
         {
-            quantityText.text = 0.ToString();
-            sellingPriceText.text = 0.ToString();
+            quantityText.text = "0";
+            sellingPriceText.text = "0";
         }
     }
 
     public void AddSellSectionValues()
     {
         int itemID = inventoryController.GetCurrentItem().itemProperty.itemID;
-        int AvailableQuantity = inventoryController.GetItemQuantity(itemID);
+        int availableQuantity = inventoryController.GetItemQuantity(itemID);
         int quantity = int.Parse(quantityText.text);
         int sellingPrice = int.Parse(sellingPriceText.text);
-
-        if (quantity < AvailableQuantity)
+        if (quantity < availableQuantity)
         {
             EventService.Instance.OnQuantityChanged.InvokeEvent();
             quantityText.text = (quantity + 1).ToString();
@@ -189,10 +174,9 @@ public class InventoryView : MonoBehaviour
     public void ReduceSellSectionValues()
     {
         int itemID = inventoryController.GetCurrentItem().itemProperty.itemID;
-        int AvailableQuantity = inventoryController.GetItemQuantity(itemID);
+        int availableQuantity = inventoryController.GetItemQuantity(itemID);
         int quantity = int.Parse(quantityText.text);
         int sellingPrice = int.Parse(sellingPriceText.text);
-
         if (quantity > 0)
         {
             EventService.Instance.OnQuantityChanged.InvokeEvent();
@@ -209,25 +193,20 @@ public class InventoryView : MonoBehaviour
     {
         int amount = int.Parse(sellingPriceText.text);
         int quantity = int.Parse(quantityText.text);
-
         int itemID = inventoryController.GetCurrentItem().itemProperty.itemID;
-
         if (amount > 0 && quantity > 0)
         {
             SetSellSectionValues(true);
             inventoryController.RemoveWeight(itemID, quantity);
-
             quantity = inventoryController.GetItemQuantity(itemID) - quantity;
-
             inventoryController.ResetQuantities(itemID);
             inventoryController.SetQuantity(itemID, quantity);
             inventoryController.GetCurrentItem().SetQuantityText(quantity);
-
             EventService.Instance.onItemChanged.InvokeEvent();
             EventService.Instance.onItemSoldWithIntParams.InvokeEvent(amount);
             EventService.Instance.onItemSoldWithFloatParams.InvokeEvent(inventoryController.GetTotalWeight());
-
-            if (quantity <= 0) RemoveItem(itemID);
+            if (quantity <= 0)
+                RemoveItem(itemID);
         }
         else
         {
@@ -238,7 +217,6 @@ public class InventoryView : MonoBehaviour
     private void RemoveItem(int itemID)
     {
         ItemView itemToRemove = inventoryController.GetCurrentItem();
-
         if (itemToRemove != null)
         {
             inventoryController.RemoveItem(itemID);

@@ -1,15 +1,13 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class ShopView : MonoBehaviour
+public class ShopView : BaseView
 {
     private ShopController shopController;
-    private CanvasGroup shopCanvas;
     [SerializeField] private FilterController shopFilterController;
-
     [SerializeField] private GameObject itemPrefab;
-
     [SerializeField] private Transform parentPanel;
 
     [Header("Buy Section")]
@@ -25,9 +23,7 @@ public class ShopView : MonoBehaviour
     {
         EventService.Instance.OnInventoryToggledOnEvent.AddListener(DisableShopVisibility);
         EventService.Instance.OnInventoryToggledOnEvent.AddListener(DisableBuyingSection);
-
         EventService.Instance.OnShopToggledOnEvent.AddListener(EnableShopVisibility);
-
         EventService.Instance.OnItemSelectedEvent.AddListener(EnableBuyingSection);
         EventService.Instance.OnItemSelectedEventWithParams.AddListener(SetCurrentSelected);
     }
@@ -36,33 +32,26 @@ public class ShopView : MonoBehaviour
     {
         EventService.Instance.OnInventoryToggledOnEvent.RemoveListener(DisableShopVisibility);
         EventService.Instance.OnInventoryToggledOnEvent.RemoveListener(DisableBuyingSection);
-
         EventService.Instance.OnShopToggledOnEvent.RemoveListener(EnableShopVisibility);
-
         EventService.Instance.OnItemSelectedEvent.RemoveListener(EnableBuyingSection);
         EventService.Instance.OnItemSelectedEventWithParams.RemoveListener(SetCurrentSelected);
     }
 
-    public void SetShopController(ShopController shopController)
+    public void SetShopController(ShopController controller)
     {
-        this.shopController = shopController;
-        shopCanvas = this.GetComponent<CanvasGroup>();
+        shopController = controller;
     }
 
     public void EnableShopVisibility()
     {
         isShopOn = true;
-        shopCanvas.alpha = 1;
-        shopCanvas.interactable = true;
-        shopCanvas.blocksRaycasts = true;
+        EnableVisibility();
     }
 
     public void DisableShopVisibility()
     {
         isShopOn = false;
-        shopCanvas.alpha = 0;
-        shopCanvas.interactable = false;
-        shopCanvas.blocksRaycasts = false;
+        DisableVisibility();
     }
 
     public void DisplayItems(List<ItemProperty> items)
@@ -72,7 +61,6 @@ public class ShopView : MonoBehaviour
             GameObject newItem = Instantiate(itemPrefab, parentPanel);
             ItemView itemDisplay = newItem.GetComponent<ItemView>();
             shopController.StoreItem(itemDisplay, shopFilterController);
-
             if (itemDisplay != null)
             {
                 itemDisplay.itemProperty = item;
@@ -84,7 +72,7 @@ public class ShopView : MonoBehaviour
 
     public void EnableBuyingSection()
     {
-        if (isShopOn == true)
+        if (isShopOn)
         {
             buySection.alpha = 1;
             buySection.interactable = true;
@@ -102,19 +90,18 @@ public class ShopView : MonoBehaviour
     {
         if (isOn)
         {
-            quantityText.text = 0.ToString();
-            buyingPriceText.text = 0.ToString();
+            quantityText.text = "0";
+            buyingPriceText.text = "0";
         }
     }
 
     public void AddBuySectionValues()
     {
         int itemID = shopController.GetCurrentItem().itemProperty.itemID;
-        int AvailableQuantity = shopController.GetItemQuantity(itemID);
+        int availableQuantity = shopController.GetItemQuantity(itemID);
         int quantity = int.Parse(quantityText.text);
         int buyingPrice = int.Parse(buyingPriceText.text);
-
-        if (quantity < AvailableQuantity)
+        if (quantity < availableQuantity)
         {
             shopController.PlayQuantityChangedSound();
             quantityText.text = (quantity + 1).ToString();
@@ -129,10 +116,9 @@ public class ShopView : MonoBehaviour
     public void ReduceBuySectionValues()
     {
         int itemID = shopController.GetCurrentItem().itemProperty.itemID;
-        int AvailableQuantity = shopController.GetItemQuantity(itemID);
+        int availableQuantity = shopController.GetItemQuantity(itemID);
         int quantity = int.Parse(quantityText.text);
         int buyingPrice = int.Parse(buyingPriceText.text);
-
         if (quantity > 0)
         {
             shopController.PlayQuantityChangedSound();
@@ -147,21 +133,20 @@ public class ShopView : MonoBehaviour
 
     public void DisableBuyingSection()
     {
-        if (isShopOn == false)
+        if (!isShopOn)
         {
             buySection.alpha = 0;
             buySection.interactable = false;
             buySection.blocksRaycasts = false;
         }
     }
+
     public void Buy()
     {
         int amount = int.Parse(buyingPriceText.text);
-        int seletcedQuantity = int.Parse(quantityText.text);
-
+        int selectedQuantity = int.Parse(quantityText.text);
         int itemID = shopController.GetCurrentItem().itemProperty.itemID;
-
-        if (amount > 0 && seletcedQuantity > 0)
+        if (amount > 0 && selectedQuantity > 0)
         {
             if (shopController.GetPlayerCoin() >= amount)
             {
@@ -170,12 +155,10 @@ public class ShopView : MonoBehaviour
                     SetBuySectionValues(true);
                     int playerCoin = shopController.GetPlayerCoin();
                     int newAmount = playerCoin - amount;
-                    int newQuantity = shopController.GetItemQuantity(itemID) - seletcedQuantity;
-
-                    shopController.DisplayBroughtItems(shopController.GetCurrentItem(), seletcedQuantity);
+                    int newQuantity = shopController.GetItemQuantity(itemID) - selectedQuantity;
+                    shopController.DisplayBroughtItems(shopController.GetCurrentItem(), selectedQuantity);
                     shopController.SetItemQuantities(itemID, newQuantity);
                     shopController.GetCurrentItem().SetQuantityText(newQuantity);
-
                     EventService.Instance.onItemChanged.InvokeEvent();
                     EventService.Instance.onItemBroughtWithIntParams.InvokeEvent(newAmount);
                 }

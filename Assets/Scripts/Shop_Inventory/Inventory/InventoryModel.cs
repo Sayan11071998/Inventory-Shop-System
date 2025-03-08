@@ -1,68 +1,40 @@
 using System.Collections.Generic;
+using System.Linq;
 
-public class InventoryModel
+public class InventoryModel : BaseItemModel
 {
     public ItemView currentItem;
     public int numberOfResource { get; private set; }
-
     public Dictionary<ItemProperty.Rarity, bool> isRarityAvailable;
     public Dictionary<int, List<float>> itemWeight;
-
-    private ItemDatabase itemDatabase;
-    private List<ItemProperty> Items;
-
     private Dictionary<int, ItemView> instantiatedItems;
     public Dictionary<int, List<int>> itemQuantities;
 
-    public InventoryModel(ItemDatabase itemDatabase) => Initialize(itemDatabase);
-
-    private void Initialize(ItemDatabase _itemDatabase)
+    public InventoryModel(ItemDatabase _itemDatabase) : base(_itemDatabase)
     {
-        itemDatabase = _itemDatabase;
-        Items = new List<ItemProperty>();
+        Initialize();
+    }
+
+    private void Initialize()
+    {
         numberOfResource = 5;
-
-        InitializeInstantiatedItems();
-        InitializeItemQuantities(itemDatabase);
-        InitializeItemWeight(itemDatabase);
-        InitializeRairityValues();
-    }
-
-    private void InitializeInstantiatedItems() => instantiatedItems = new Dictionary<int, ItemView>();
-
-    private void InitializeItemQuantities(ItemDatabase itemDatabase)
-    {
+        instantiatedItems = new Dictionary<int, ItemView>();
         itemQuantities = new Dictionary<int, List<int>>();
-
-        foreach (ItemProperty item in itemDatabase.items)
-            itemQuantities[item.itemID] = new List<int>();
-    }
-
-    private void InitializeItemWeight(ItemDatabase itemDatabase)
-    {
         itemWeight = new Dictionary<int, List<float>>();
 
         foreach (ItemProperty item in itemDatabase.items)
+        {
+            itemQuantities[item.itemID] = new List<int>();
             itemWeight[item.itemID] = new List<float>();
-    }
+        }
 
-    private void InitializeRairityValues()
-    {
-        isRarityAvailable = new Dictionary<ItemProperty.Rarity, bool>();
-
-        isRarityAvailable[ItemProperty.Rarity.VeryCommon] = true;
-        isRarityAvailable[ItemProperty.Rarity.Common] = false;
-        isRarityAvailable[ItemProperty.Rarity.Legendary] = false;
-        isRarityAvailable[ItemProperty.Rarity.Epic] = false;
-        isRarityAvailable[ItemProperty.Rarity.Rare] = false;
-    }
-
-    public List<ItemProperty> getItemDatabase()
-    {
-        if (Items.Count == 0)
-            Items.AddRange(itemDatabase.items);
-
-        return Items;
+        isRarityAvailable = new Dictionary<ItemProperty.Rarity, bool> {
+            { ItemProperty.Rarity.VeryCommon, true },
+            { ItemProperty.Rarity.Common, false },
+            { ItemProperty.Rarity.Rare, false },
+            { ItemProperty.Rarity.Epic, false },
+            { ItemProperty.Rarity.Legendary, false }
+        };
     }
 
     public void SetItemQuantities(int itemID, int newQuantity)
@@ -82,7 +54,6 @@ public class InventoryModel
     {
         if (itemQuantities.ContainsKey(itemID))
             return itemQuantities[itemID];
-
         return new List<int>();
     }
 
@@ -95,7 +66,7 @@ public class InventoryModel
             isRarityAvailable[rarity] = value;
     }
 
-    public bool IsRarityAvailable(ItemProperty.Rarity rairity) => isRarityAvailable[rairity];
+    public bool IsRarityAvailable(ItemProperty.Rarity rarity) => isRarityAvailable[rarity];
 
     public void RemoveInstatiatedItem(int itemID)
     {
@@ -107,7 +78,6 @@ public class InventoryModel
     {
         if (!itemWeight.ContainsKey(itemID))
             itemWeight[itemID] = new List<float>();
-
         itemWeight[itemID].Add(newWeight);
     }
 
@@ -115,7 +85,6 @@ public class InventoryModel
     {
         if (itemWeight.ContainsKey(itemID))
             return itemWeight[itemID];
-
         return new List<float>();
     }
 
@@ -123,8 +92,11 @@ public class InventoryModel
     {
         if (itemWeight.ContainsKey(itemID))
         {
-            for (int i = 1; i < quantity; i++)
-                itemWeight.Remove(itemID);
+            // Remove as many weight entries as the sold quantity.
+            for (int i = 0; i < quantity && itemWeight[itemID].Count > 0; i++)
+            {
+                itemWeight[itemID].RemoveAt(0);
+            }
         }
     }
 }
