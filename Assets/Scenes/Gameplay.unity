@@ -4081,7 +4081,7 @@ MonoBehaviour:
     soundClip: {fileID: 8300000, guid: 24d73765699ce3e46bb23cabc3a46494, type: 3}
     volume: 100
   - sound: 8
-    soundClip: {fileID: 8300000, guid: 559364a28ab6c8147bad2812ed47cc6d, type: 3}
+    soundClip: {fileID: 8300000, guid: c40e73cecfc584646abb677d1caf9867, type: 3}
     volume: 65
 --- !u!4 &425236398
 Transform:
