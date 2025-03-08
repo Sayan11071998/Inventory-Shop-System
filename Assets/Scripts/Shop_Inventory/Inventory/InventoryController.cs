@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class InventoryController : BaseController<InventoryView, InventoryModel>
+public class InventoryController : BaseController<InventoryView, InventoryModel>, IInventoryController
 {
     private SoundService soundService;
 
@@ -104,14 +104,11 @@ public class InventoryController : BaseController<InventoryView, InventoryModel>
     public void EnableInventoryVisibility() => view.EnableInventoryVisibility();
     public void DisableInventoryVisibility() => view.DisableInventoryVisibility();
     public void ApplyFilter(FilterController inventoryFilterController) => inventoryFilterController.ApplyFilter();
-    public void StoreItem(ItemView itemDisplay, FilterController inventoryFilterController) => inventoryFilterController.AddItemDisplay(itemDisplay);
-    public bool IsItemAlreadyInstantiated(int itemID) => model.GetInstatiatedItems().ContainsKey(itemID);
     public void StoreInstantiatedItem(int itemID, ItemView itemView) => model.StoreInstantiatedItems(itemID, itemView);
-    public bool ISInventoryOn() => view.isInventoryOn;
+    public bool IsItemAlreadyInstantiated(int itemID) => model.GetInstatiatedItems().ContainsKey(itemID);
     public void ResetQuantities(int itemID) => model.ResetQuantities(itemID);
     public void RemoveWeight(int itemID, int quantity) => model.RemoveWeight(itemID, quantity);
     public void DisablePanel() => GameManager.Instance.uiController.DisableItemDetailsPanel();
-    public void DisplayBroughtItems(ItemView itemView, int newQuantity) => view.DisplayBroughtItem(itemView, newQuantity);
     public List<ItemProperty> GetItemDatabase() => model.GetItemDatabase();
     public int GetItemQuantity(int itemID) => model.GetQuantity(itemID).Sum();
     public ItemView GetCurrentItem() => model.currentItem;
@@ -119,9 +116,26 @@ public class InventoryController : BaseController<InventoryView, InventoryModel>
     public float GetItemWeight(int itemID) => model.GetItemWeight(itemID).Sum();
     public float GetPlayerBagWeight() => GameManager.Instance.playerController.GetBagWeight();
     public float GetPlayerBagCapacity() => GameManager.Instance.playerController.GetBagCapacity();
-    public void SetQuantity(int itemId, int quantity) => model.SetItemQuantities(itemId, quantity);
+    public void SetQuantity(int itemID, int quantity) => model.SetItemQuantities(itemID, quantity);
     public void SetCurrentItem(ItemView itemView) => model.currentItem = itemView;
-    public void SetPanelViews() => GameManager.Instance.uiController.SetItemDetailsPanel(true, GetCurrentItem());
     public void SetItemWeight(int itemID, float newWeight) => model.SetItemWeight(itemID, newWeight);
     public void SetBagWeight(float weight) => GameManager.Instance.playerController.SetBagWeight(weight);
+
+    public void DisplayBroughtItems(ItemView itemView, int newQuantity)
+    {
+        view.DisplayBroughtItem(itemView, newQuantity);
+    }
+
+    public void SetPanelViews()
+    {
+        GameManager.Instance.uiController.SetItemDetailsPanel(true, GetCurrentItem());
+    }
+
+    public bool ISInventoryOn() => view.isInventoryOn;
+
+    // New method added per interface contract:
+    public void StoreItem(ItemView itemDisplay, FilterController filterController)
+    {
+        filterController.AddItemDisplay(itemDisplay);
+    }
 }

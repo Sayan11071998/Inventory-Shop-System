@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ShopView : BaseItemListView
+public class ShopView : BaseItemListView, IItemListView
 {
     private ShopController shopController;
     [SerializeField] private FilterController shopFilterController;
@@ -64,7 +64,6 @@ public class ShopView : BaseItemListView
     {
         foreach (ItemProperty item in items)
         {
-            // Use the base method to instantiate a new ItemView.
             ItemView itemDisplay = CreateItemView(item);
             shopController.StoreItem(itemDisplay, shopFilterController);
             if (itemDisplay != null)

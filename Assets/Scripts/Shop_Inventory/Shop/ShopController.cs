@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShopController : BaseController<ShopView, ShopModel>
+public class ShopController : BaseController<ShopView, ShopModel>, IShopController
 {
     public ShopController(ShopView _shopView, ShopModel _shopModel)
         : base(_shopView, _shopModel)
@@ -10,14 +10,14 @@ public class ShopController : BaseController<ShopView, ShopModel>
         LoadShopItems();
     }
 
-    public void EnableShopVisibility() => view.EnableShopVisibility();
-    public void DisableShopVisibility() => view.DisableShopVisibility();
-
     public void LoadShopItems()
     {
         List<ItemProperty> items = model.GetItemDatabase();
         view.DisplayItems(items);
     }
+
+    public void EnableShopVisibility() => view.EnableShopVisibility();
+    public void DisableShopVisibility() => view.DisableShopVisibility();
 
     public void StoreItem(ItemView itemDisplay, FilterController shopFilterController) => shopFilterController.AddItemDisplay(itemDisplay);
 

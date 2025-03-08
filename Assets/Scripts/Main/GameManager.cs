@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class GameManager : GenericMonoSingelton<GameManager>
 {
-    public ShopController shopController { get; private set; }
-    public InventoryController inventoryController { get; private set; }
+    public IShopController shopController { get; private set; }
+    public IInventoryController inventoryController { get; private set; }
     public UIController uiController { get; private set; }
     public PlayerController playerController { get; private set; }
     public SoundService soundService { get; private set; }
@@ -14,7 +14,7 @@ public class GameManager : GenericMonoSingelton<GameManager>
     private PlayerView playerView;
 
     [SerializeField] private ItemDatabase itemDatabase;
-    
+
     private void Start()
     {
         soundService = new SoundService();
