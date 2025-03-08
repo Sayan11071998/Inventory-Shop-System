@@ -52,4 +52,16 @@ public class ShopController : BaseController<ShopView, ShopModel>, IShopControll
     public void SetItemQuantities(int itemID, int quantity) => model.SetItemQuantities(itemID, quantity);
     public void SetCurrentSelectedItem(ItemView itemView) => model.currentItem = itemView;
     public void SetItemWeight(int itemID, float newWeight) => model.SetItemWeight(itemID, newWeight);
+
+    public void IncreaseItemQuantity(int itemID, int soldQuantity)
+    {
+        model.IncreaseItemQuantity(itemID, soldQuantity);
+    }
+
+    // NEW: Update the shop's UI for the given item.
+    public void UpdateItemQuantityUI(int itemID)
+    {
+        int updatedQuantity = model.GetQuantity(itemID);
+        view.UpdateItemQuantityUI(itemID, updatedQuantity);
+    }
 }

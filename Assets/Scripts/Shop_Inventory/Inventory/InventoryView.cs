@@ -152,23 +152,91 @@ public class InventoryView : BaseItemListView
         sellSectionController.ResetSection();
     }
 
+    // public void Sell()
+    // {
+    //     int amount = int.Parse(sellSectionController.GetPriceText());
+    //     int quantity = int.Parse(sellSectionController.GetQuantityText());
+    //     int itemID = inventoryController.GetCurrentItem().itemProperty.itemID;
+    //     if (amount > 0 && quantity > 0)
+    //     {
+    //         sellSectionController.ResetSection();
+    //         inventoryController.RemoveWeight(itemID, quantity);
+    //         quantity = inventoryController.GetItemQuantity(itemID) - quantity;
+    //         inventoryController.ResetQuantities(itemID);
+    //         inventoryController.SetQuantity(itemID, quantity);
+    //         inventoryController.GetCurrentItem().SetQuantityText(quantity);
+    //         EventService.Instance.onItemChanged.InvokeEvent();
+    //         EventService.Instance.onItemSoldWithIntParams.InvokeEvent(amount);
+    //         EventService.Instance.onItemSoldWithFloatParams.InvokeEvent(inventoryController.GetTotalWeight());
+    //         if (quantity <= 0)
+    //             RemoveItem(itemID);
+    //     }
+    //     else
+    //     {
+    //         EventService.Instance.OnNonClickableButtonPressed.InvokeEvent();
+    //     }
+    // }
+
+    // public void Sell()
+    // {
+    //     int amount = int.Parse(sellSectionController.GetPriceText());
+    //     int sellQuantity = int.Parse(sellSectionController.GetQuantityText()); // Capture the quantity the player wants to sell
+    //     int itemID = inventoryController.GetCurrentItem().itemProperty.itemID;
+
+    //     if (amount > 0 && sellQuantity > 0)
+    //     {
+    //         sellSectionController.ResetSection();
+    //         inventoryController.RemoveWeight(itemID, sellQuantity);
+    //         // Subtract sold quantity from the inventory
+    //         int newInventoryQuantity = inventoryController.GetItemQuantity(itemID) - sellQuantity;
+    //         inventoryController.ResetQuantities(itemID);
+    //         inventoryController.SetQuantity(itemID, newInventoryQuantity);
+    //         inventoryController.GetCurrentItem().SetQuantityText(newInventoryQuantity);
+
+    //         // IMPORTANT: Increase the shop's quantity by the sold quantity
+    //         GameManager.Instance.shopController.IncreaseItemQuantity(itemID, sellQuantity);
+
+    //         EventService.Instance.onItemChanged.InvokeEvent();
+    //         EventService.Instance.onItemSoldWithIntParams.InvokeEvent(amount);
+    //         EventService.Instance.onItemSoldWithFloatParams.InvokeEvent(inventoryController.GetTotalWeight());
+
+    //         if (newInventoryQuantity <= 0)
+    //             RemoveItem(itemID);
+    //     }
+    //     else
+    //     {
+    //         EventService.Instance.OnNonClickableButtonPressed.InvokeEvent();
+    //     }
+    // }
+
+
     public void Sell()
     {
         int amount = int.Parse(sellSectionController.GetPriceText());
-        int quantity = int.Parse(sellSectionController.GetQuantityText());
+        int sellQuantity = int.Parse(sellSectionController.GetQuantityText()); // capture sell quantity
         int itemID = inventoryController.GetCurrentItem().itemProperty.itemID;
-        if (amount > 0 && quantity > 0)
+
+        if (amount > 0 && sellQuantity > 0)
         {
             sellSectionController.ResetSection();
-            inventoryController.RemoveWeight(itemID, quantity);
-            quantity = inventoryController.GetItemQuantity(itemID) - quantity;
+            inventoryController.RemoveWeight(itemID, sellQuantity);
+
+            // Subtract sold quantity from inventory.
+            int newInventoryQuantity = inventoryController.GetItemQuantity(itemID) - sellQuantity;
             inventoryController.ResetQuantities(itemID);
-            inventoryController.SetQuantity(itemID, quantity);
-            inventoryController.GetCurrentItem().SetQuantityText(quantity);
+            inventoryController.SetQuantity(itemID, newInventoryQuantity);
+            inventoryController.GetCurrentItem().SetQuantityText(newInventoryQuantity);
+
+            // Increase the shop's stock.
+            GameManager.Instance.shopController.IncreaseItemQuantity(itemID, sellQuantity);
+            // Update the shop UI.
+            GameManager.Instance.shopController.UpdateItemQuantityUI(itemID);
+
             EventService.Instance.onItemChanged.InvokeEvent();
             EventService.Instance.onItemSoldWithIntParams.InvokeEvent(amount);
             EventService.Instance.onItemSoldWithFloatParams.InvokeEvent(inventoryController.GetTotalWeight());
-            if (quantity <= 0)
+
+            if (newInventoryQuantity <= 0)
                 RemoveItem(itemID);
         }
         else
@@ -176,6 +244,9 @@ public class InventoryView : BaseItemListView
             EventService.Instance.OnNonClickableButtonPressed.InvokeEvent();
         }
     }
+
+
+
 
     private void RemoveItem(int itemID)
     {

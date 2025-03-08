@@ -16,6 +16,9 @@ public class ShopView : BaseItemListView, IItemListView
 
     public bool isShopOn = true;
 
+    // NEW: Dictionary to keep track of instantiated ItemViews by itemID.
+    private Dictionary<int, ItemView> itemViews = new Dictionary<int, ItemView>();
+
     private void OnEnable()
     {
         EventService.Instance.OnInventoryToggledOnEvent.AddListener(DisableShopVisibility);
@@ -64,13 +67,25 @@ public class ShopView : BaseItemListView, IItemListView
     {
         foreach (ItemProperty item in items)
         {
+            // Use the base method to instantiate a new ItemView.
             ItemView itemDisplay = CreateItemView(item);
-            shopController.StoreItem(itemDisplay, shopFilterController);
             if (itemDisplay != null)
             {
+                // Store the instantiated item view in the dictionary.
+                itemViews[item.itemID] = itemDisplay;
                 shopController.SetItemQuantities(itemDisplay.itemProperty.itemID, itemDisplay.itemProperty.quantity);
                 itemDisplay.ShopDisplayUI();
             }
+            shopController.StoreItem(itemDisplay, shopFilterController);
+        }
+    }
+
+    // NEW: This method updates the UI of a given item in the shop.
+    public void UpdateItemQuantityUI(int itemID, int newQuantity)
+    {
+        if (itemViews.ContainsKey(itemID))
+        {
+            itemViews[itemID].SetQuantityText(newQuantity);
         }
     }
 
