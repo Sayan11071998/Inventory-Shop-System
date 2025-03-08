@@ -12,8 +12,9 @@ public class InventoryView : BaseView
 
     [Header("Sell Section")]
     [SerializeField] private CanvasGroup sellSection;
-    [SerializeField] private TextMeshProUGUI quantityText;
-    [SerializeField] private TextMeshProUGUI sellingPriceText;
+    // Instead of separate TMP fields, we now use the TransactionSectionController.
+    [SerializeField] private TransactionSectionController sellSectionController;
+
     public bool isInventoryOn = false;
 
     private void OnEnable()
@@ -38,6 +39,12 @@ public class InventoryView : BaseView
     {
         inventoryController = controller;
         EventService.Instance.onItemChanged.AddListener(inventoryController.SetPanelViews);
+
+        // Set up the TransactionSectionController delegates.
+        sellSectionController.GetAvailableQuantity = () => inventoryController.GetItemQuantity(inventoryController.GetCurrentItem().itemProperty.itemID);
+        sellSectionController.GetUnitPrice = () => inventoryController.GetCurrentItem().itemProperty.sellingPrice;
+        sellSectionController.PlayQuantityChangedSound = () => EventService.Instance.OnQuantityChanged.InvokeEvent();
+        sellSectionController.PlayNonClickableSound = () => EventService.Instance.OnNonClickableButtonPressed.InvokeEvent();
     }
 
     public void EnableInventoryVisibility()
@@ -125,6 +132,7 @@ public class InventoryView : BaseView
             sellSection.alpha = 1;
             sellSection.interactable = true;
             sellSection.blocksRaycasts = true;
+            sellSectionController.ResetSection();
         }
     }
 
@@ -141,62 +149,18 @@ public class InventoryView : BaseView
     public void SetSelectedItem(bool isOn, ItemView itemView)
     {
         inventoryController.SetCurrentItem(itemView);
-        SetSellSectionValues(isOn);
+        sellSectionController.ResetSection();
     }
 
-    private void SetSellSectionValues(bool isOn)
-    {
-        if (isOn)
-        {
-            quantityText.text = "0";
-            sellingPriceText.text = "0";
-        }
-    }
-
-    public void AddSellSectionValues()
-    {
-        int itemID = inventoryController.GetCurrentItem().itemProperty.itemID;
-        int availableQuantity = inventoryController.GetItemQuantity(itemID);
-        int quantity = int.Parse(quantityText.text);
-        int sellingPrice = int.Parse(sellingPriceText.text);
-        if (quantity < availableQuantity)
-        {
-            EventService.Instance.OnQuantityChanged.InvokeEvent();
-            quantityText.text = (quantity + 1).ToString();
-            sellingPriceText.text = (sellingPrice + inventoryController.GetCurrentItem().itemProperty.sellingPrice).ToString();
-        }
-        else
-        {
-            EventService.Instance.OnNonClickableButtonPressed.InvokeEvent();
-        }
-    }
-
-    public void ReduceSellSectionValues()
-    {
-        int itemID = inventoryController.GetCurrentItem().itemProperty.itemID;
-        int availableQuantity = inventoryController.GetItemQuantity(itemID);
-        int quantity = int.Parse(quantityText.text);
-        int sellingPrice = int.Parse(sellingPriceText.text);
-        if (quantity > 0)
-        {
-            EventService.Instance.OnQuantityChanged.InvokeEvent();
-            quantityText.text = (quantity - 1).ToString();
-            sellingPriceText.text = (sellingPrice - inventoryController.GetCurrentItem().itemProperty.sellingPrice).ToString();
-        }
-        else
-        {
-            EventService.Instance.OnNonClickableButtonPressed.InvokeEvent();
-        }
-    }
-
+    // Updated Sell method that uses values from TransactionSectionController.
     public void Sell()
     {
-        int amount = int.Parse(sellingPriceText.text);
-        int quantity = int.Parse(quantityText.text);
+        int amount = int.Parse(sellSectionController.GetPriceText());
+        int quantity = int.Parse(sellSectionController.GetQuantityText());
         int itemID = inventoryController.GetCurrentItem().itemProperty.itemID;
         if (amount > 0 && quantity > 0)
         {
-            SetSellSectionValues(true);
+            sellSectionController.ResetSection();
             inventoryController.RemoveWeight(itemID, quantity);
             quantity = inventoryController.GetItemQuantity(itemID) - quantity;
             inventoryController.ResetQuantities(itemID);

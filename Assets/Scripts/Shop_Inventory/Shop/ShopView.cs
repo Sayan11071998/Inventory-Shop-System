@@ -12,8 +12,8 @@ public class ShopView : BaseView
 
     [Header("Buy Section")]
     [SerializeField] private CanvasGroup buySection;
-    [SerializeField] private TextMeshProUGUI quantityText;
-    [SerializeField] private TextMeshProUGUI buyingPriceText;
+    // Use TransactionSectionController for the buy section.
+    [SerializeField] private TransactionSectionController buySectionController;
     [SerializeField] private CanvasGroup notEnoughMoneyPopup;
     [SerializeField] private CanvasGroup weightExceededPopUp;
 
@@ -40,6 +40,12 @@ public class ShopView : BaseView
     public void SetShopController(ShopController controller)
     {
         shopController = controller;
+
+        // Set up the TransactionSectionController delegates.
+        buySectionController.GetAvailableQuantity = () => shopController.GetItemQuantity(shopController.GetCurrentItem().itemProperty.itemID);
+        buySectionController.GetUnitPrice = () => shopController.GetCurrentItem().itemProperty.buyingPrice;
+        buySectionController.PlayQuantityChangedSound = () => shopController.PlayQuantityChangedSound();
+        buySectionController.PlayNonClickableSound = () => shopController.PlayNonClickableSound();
     }
 
     public void EnableShopVisibility()
@@ -77,58 +83,14 @@ public class ShopView : BaseView
             buySection.alpha = 1;
             buySection.interactable = true;
             buySection.blocksRaycasts = true;
+            buySectionController.ResetSection();
         }
     }
 
     public void SetCurrentSelected(bool isOn, ItemView itemView)
     {
         shopController.SetCurrentSelectedItem(itemView);
-        SetBuySectionValues(isOn);
-    }
-
-    private void SetBuySectionValues(bool isOn)
-    {
-        if (isOn)
-        {
-            quantityText.text = "0";
-            buyingPriceText.text = "0";
-        }
-    }
-
-    public void AddBuySectionValues()
-    {
-        int itemID = shopController.GetCurrentItem().itemProperty.itemID;
-        int availableQuantity = shopController.GetItemQuantity(itemID);
-        int quantity = int.Parse(quantityText.text);
-        int buyingPrice = int.Parse(buyingPriceText.text);
-        if (quantity < availableQuantity)
-        {
-            shopController.PlayQuantityChangedSound();
-            quantityText.text = (quantity + 1).ToString();
-            buyingPriceText.text = (buyingPrice + shopController.GetCurrentItem().itemProperty.buyingPrice).ToString();
-        }
-        else
-        {
-            shopController.PlayNonClickableSound();
-        }
-    }
-
-    public void ReduceBuySectionValues()
-    {
-        int itemID = shopController.GetCurrentItem().itemProperty.itemID;
-        int availableQuantity = shopController.GetItemQuantity(itemID);
-        int quantity = int.Parse(quantityText.text);
-        int buyingPrice = int.Parse(buyingPriceText.text);
-        if (quantity > 0)
-        {
-            shopController.PlayQuantityChangedSound();
-            quantityText.text = (quantity - 1).ToString();
-            buyingPriceText.text = (buyingPrice - shopController.GetCurrentItem().itemProperty.buyingPrice).ToString();
-        }
-        else
-        {
-            shopController.PlayNonClickableSound();
-        }
+        buySectionController.ResetSection();
     }
 
     public void DisableBuyingSection()
@@ -143,8 +105,8 @@ public class ShopView : BaseView
 
     public void Buy()
     {
-        int amount = int.Parse(buyingPriceText.text);
-        int selectedQuantity = int.Parse(quantityText.text);
+        int amount = int.Parse(buySectionController.GetPriceText());
+        int selectedQuantity = int.Parse(buySectionController.GetQuantityText());
         int itemID = shopController.GetCurrentItem().itemProperty.itemID;
         if (amount > 0 && selectedQuantity > 0)
         {
@@ -152,7 +114,7 @@ public class ShopView : BaseView
             {
                 if (shopController.GetPlayerBagWeight() < shopController.GetPlayerBagCapacity())
                 {
-                    SetBuySectionValues(true);
+                    buySectionController.ResetSection();
                     int playerCoin = shopController.GetPlayerCoin();
                     int newAmount = playerCoin - amount;
                     int newQuantity = shopController.GetItemQuantity(itemID) - selectedQuantity;
