@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 640bac49251657d47bb1207f83593d81, type: 3}
-  m_Name: MagicSword_SO
+  m_Name: Leafed Staff
   m_EditorClassIdentifier: 
-  itemID: 202
-  itemName: Magic Sword
+  itemID: 208
+  itemName: Leafed Staff
   item: 1
-  itemIcon: {fileID: -8893190090612047224, guid: e72fca9c9f97d6b4b8dc544350d6a070, type: 3}
-  ItemDescription: A well-balanced magic sword, effective for ranged combat
+  itemIcon: {fileID: -1327773713344243293, guid: d904601a9598c974b878e5d42d2d799e, type: 3}
+  ItemDescription: A staff with a blue orb and living leaves, tied to nature magic
   buyingPrice: 20
-  sellingPrice: 15
-  weight: 2
-  rarity: 3
-  quantity: 1
+  sellingPrice: 16
+  weight: 1.6
+  rarity: 1
+  quantity: 5

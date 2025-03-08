@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 640bac49251657d47bb1207f83593d81, type: 3}
+  m_Name: Energy Dragger
+  m_EditorClassIdentifier: 
+  itemID: 209
+  itemName: Energy Dragger
+  item: 1
+  itemIcon: {fileID: 7463455579408542410, guid: 50150282c2ea36447a6b8f0a610268a1, type: 3}
+  ItemDescription: A dragger radiating neon-green energy, brimming with power
+  buyingPrice: 25
+  sellingPrice: 16
+  weight: 0.9
+  rarity: 4
+  quantity: 5

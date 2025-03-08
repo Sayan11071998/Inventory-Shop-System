@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 640bac49251657d47bb1207f83593d81, type: 3}
+  m_Name: Ringed Staff
+  m_EditorClassIdentifier: 
+  itemID: 206
+  itemName: Ringed Staff
+  item: 1
+  itemIcon: {fileID: 5636587757458365784, guid: c22734e7ce7c1f444922b0d6685f2168, type: 3}
+  ItemDescription: A staff with mystical rings and an orb, pulsing with energy
+  buyingPrice: 35
+  sellingPrice: 32
+  weight: 1.3
+  rarity: 2
+  quantity: 2
