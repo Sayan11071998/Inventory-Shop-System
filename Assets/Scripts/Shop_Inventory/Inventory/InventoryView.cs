@@ -2,17 +2,14 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class InventoryView : BaseView
+public class InventoryView : BaseItemListView
 {
     private InventoryController inventoryController;
-    [SerializeField] private Transform parentPanel;
-    [SerializeField] private GameObject itemPrefab;
     [SerializeField] private FilterController inventoryFilterController;
     [SerializeField] private CanvasGroup weightExceededPopup;
 
     [Header("Sell Section")]
     [SerializeField] private CanvasGroup sellSection;
-    // Instead of separate TMP fields, we now use the TransactionSectionController.
     [SerializeField] private TransactionSectionController sellSectionController;
 
     public bool isInventoryOn = false;
@@ -41,10 +38,14 @@ public class InventoryView : BaseView
         EventService.Instance.onItemChanged.AddListener(inventoryController.SetPanelViews);
 
         // Set up the TransactionSectionController delegates.
-        sellSectionController.GetAvailableQuantity = () => inventoryController.GetItemQuantity(inventoryController.GetCurrentItem().itemProperty.itemID);
-        sellSectionController.GetUnitPrice = () => inventoryController.GetCurrentItem().itemProperty.sellingPrice;
-        sellSectionController.PlayQuantityChangedSound = () => EventService.Instance.OnQuantityChanged.InvokeEvent();
-        sellSectionController.PlayNonClickableSound = () => EventService.Instance.OnNonClickableButtonPressed.InvokeEvent();
+        sellSectionController.GetAvailableQuantity = () =>
+            inventoryController.GetItemQuantity(inventoryController.GetCurrentItem().itemProperty.itemID);
+        sellSectionController.GetUnitPrice = () =>
+            inventoryController.GetCurrentItem().itemProperty.sellingPrice;
+        sellSectionController.PlayQuantityChangedSound = () =>
+            EventService.Instance.OnQuantityChanged.InvokeEvent();
+        sellSectionController.PlayNonClickableSound = () =>
+            EventService.Instance.OnNonClickableButtonPressed.InvokeEvent();
     }
 
     public void EnableInventoryVisibility()
@@ -78,24 +79,24 @@ public class InventoryView : BaseView
 
     public void DisplayGatheredItem(int index)
     {
-        int itemID = inventoryController.GetItemDatabase()[index].itemID;
-        int newQuantity = inventoryController.GenerateRandomQuantity();
         ItemProperty itemProperty = inventoryController.GetItemDatabase()[index];
-        InstantiateItems(itemID, newQuantity, itemProperty);
+        int newQuantity = inventoryController.GenerateRandomQuantity();
+        InstantiateOrUpdateItem(itemProperty, newQuantity);
     }
 
     public void DisplayBroughtItem(ItemView itemView, int newQuantity)
     {
-        int itemID = itemView.itemProperty.itemID;
-        if (itemView != null)
-        {
-            InstantiateItems(itemID, newQuantity, itemView.itemProperty);
-            inventoryController.SetBagWeight(inventoryController.GetTotalWeight());
-        }
+        // Here we assume that the item is already instantiated in inventory.
+        InstantiateOrUpdateItem(itemView.itemProperty, newQuantity);
+        inventoryController.SetBagWeight(inventoryController.GetTotalWeight());
     }
 
-    private void InstantiateItems(int itemID, int newQuantity, ItemProperty itemProperty)
+    /// <summary>
+    /// Checks if the item already exists. If yes, update its UI; otherwise, instantiate a new one.
+    /// </summary>
+    private void InstantiateOrUpdateItem(ItemProperty itemProperty, int newQuantity)
     {
+        int itemID = itemProperty.itemID;
         if (inventoryController.IsItemAlreadyInstantiated(itemID))
         {
             inventoryController.SetQuantity(itemID, newQuantity);
@@ -109,11 +110,10 @@ public class InventoryView : BaseView
         }
         else
         {
-            GameObject newItem = Instantiate(itemPrefab, parentPanel);
-            ItemView itemView = newItem.GetComponent<ItemView>();
+            // Use the base method from BaseItemListView
+            ItemView itemView = CreateItemView(itemProperty);
             if (itemView != null)
             {
-                itemView.itemProperty = itemProperty;
                 inventoryController.StoreItem(itemView, inventoryFilterController);
                 inventoryController.SetQuantity(itemView.itemProperty.itemID, newQuantity);
                 inventoryController.SetItemWeight(itemID, itemView.itemProperty.weight);
@@ -152,7 +152,6 @@ public class InventoryView : BaseView
         sellSectionController.ResetSection();
     }
 
-    // Updated Sell method that uses values from TransactionSectionController.
     public void Sell()
     {
         int amount = int.Parse(sellSectionController.GetPriceText());
