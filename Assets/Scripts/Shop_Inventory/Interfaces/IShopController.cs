@@ -21,4 +21,9 @@ public interface IShopController
     void SetItemQuantities(int itemID, int quantity);
     void SetCurrentSelectedItem(ItemView itemView);
     void SetItemWeight(int itemID, float newWeight);
+
+    // NEW: Increase the shop's available quantity when an item is sold.
+    void IncreaseItemQuantity(int itemID, int soldQuantity);
+
+    void UpdateItemQuantityUI(int itemID);
 }
