@@ -94,36 +94,84 @@ public class InventoryView : BaseItemListView
     /// <summary>
     /// Checks if the item already exists. If yes, update its UI; otherwise, instantiate a new one.
     /// </summary>
-    private void InstantiateOrUpdateItem(ItemProperty itemProperty, int newQuantity)
+    // private void InstantiateOrUpdateItem(ItemProperty itemProperty, int newQuantity)
+    // {
+    //     int itemID = itemProperty.itemID;
+    //     if (inventoryController.IsItemAlreadyInstantiated(itemID))
+    //     {
+    //         inventoryController.SetQuantity(itemID, newQuantity);
+    //         ItemView existingItem = inventoryController.GetInstantiatedItem(itemID);
+    //         inventoryController.SetItemWeight(itemID, existingItem.itemProperty.weight);
+    //         if (existingItem != null)
+    //         {
+    //             int totalQuantity = inventoryController.GetItemQuantity(existingItem.itemProperty.itemID);
+    //             existingItem.InventoryDisplayUI(totalQuantity);
+    //         }
+    //     }
+    //     else
+    //     {
+    //         // Use the base method from BaseItemListView
+    //         ItemView itemView = CreateItemView(itemProperty);
+    //         if (itemView != null)
+    //         {
+    //             inventoryController.StoreItem(itemView, inventoryFilterController);
+    //             inventoryController.SetQuantity(itemView.itemProperty.itemID, newQuantity);
+    //             inventoryController.SetItemWeight(itemID, itemView.itemProperty.weight);
+    //             inventoryController.StoreInstantiatedItem(itemView.itemProperty.itemID, itemView);
+    //             itemView.InventoryDisplayUI(inventoryController.GetItemQuantity(itemView.itemProperty.itemID));
+    //         }
+    //     }
+    //     inventoryController.ApplyFilter(inventoryFilterController);
+    //     EventSystem.current.SetSelectedGameObject(null);
+    // }
+
+    private void InstantiateOrUpdateItem(ItemProperty itemProperty, int quantityToAdd)
     {
         int itemID = itemProperty.itemID;
         if (inventoryController.IsItemAlreadyInstantiated(itemID))
         {
-            inventoryController.SetQuantity(itemID, newQuantity);
+            // Get existing quantity and calculate new total.
+            int existingQuantity = inventoryController.GetItemQuantity(itemID);
+            int newTotalQuantity = existingQuantity + quantityToAdd;
+            inventoryController.SetQuantity(itemID, newTotalQuantity);
+
+            // Add weight for each newly purchased unit.
+            for (int i = 0; i < quantityToAdd; i++)
+            {
+                inventoryController.SetItemWeight(itemID, itemProperty.weight);
+            }
+
+            // Update the UI for the existing item.
             ItemView existingItem = inventoryController.GetInstantiatedItem(itemID);
-            inventoryController.SetItemWeight(itemID, existingItem.itemProperty.weight);
             if (existingItem != null)
             {
-                int totalQuantity = inventoryController.GetItemQuantity(existingItem.itemProperty.itemID);
-                existingItem.InventoryDisplayUI(totalQuantity);
+                existingItem.InventoryDisplayUI(newTotalQuantity);
             }
         }
         else
         {
-            // Use the base method from BaseItemListView
+            // Instantiate a new item.
             ItemView itemView = CreateItemView(itemProperty);
             if (itemView != null)
             {
                 inventoryController.StoreItem(itemView, inventoryFilterController);
-                inventoryController.SetQuantity(itemView.itemProperty.itemID, newQuantity);
-                inventoryController.SetItemWeight(itemID, itemView.itemProperty.weight);
-                inventoryController.StoreInstantiatedItem(itemView.itemProperty.itemID, itemView);
-                itemView.InventoryDisplayUI(inventoryController.GetItemQuantity(itemView.itemProperty.itemID));
+                // Set quantity for the new item.
+                inventoryController.SetQuantity(itemID, quantityToAdd);
+
+                // Add weight entries for each unit purchased.
+                for (int i = 0; i < quantityToAdd; i++)
+                {
+                    inventoryController.SetItemWeight(itemID, itemProperty.weight);
+                }
+
+                inventoryController.StoreInstantiatedItem(itemID, itemView);
+                itemView.InventoryDisplayUI(quantityToAdd);
             }
         }
         inventoryController.ApplyFilter(inventoryFilterController);
         EventSystem.current.SetSelectedGameObject(null);
     }
+
 
     public void EnableSellSection()
     {
@@ -151,63 +199,6 @@ public class InventoryView : BaseItemListView
         inventoryController.SetCurrentItem(itemView);
         sellSectionController.ResetSection();
     }
-
-    // public void Sell()
-    // {
-    //     int amount = int.Parse(sellSectionController.GetPriceText());
-    //     int quantity = int.Parse(sellSectionController.GetQuantityText());
-    //     int itemID = inventoryController.GetCurrentItem().itemProperty.itemID;
-    //     if (amount > 0 && quantity > 0)
-    //     {
-    //         sellSectionController.ResetSection();
-    //         inventoryController.RemoveWeight(itemID, quantity);
-    //         quantity = inventoryController.GetItemQuantity(itemID) - quantity;
-    //         inventoryController.ResetQuantities(itemID);
-    //         inventoryController.SetQuantity(itemID, quantity);
-    //         inventoryController.GetCurrentItem().SetQuantityText(quantity);
-    //         EventService.Instance.onItemChanged.InvokeEvent();
-    //         EventService.Instance.onItemSoldWithIntParams.InvokeEvent(amount);
-    //         EventService.Instance.onItemSoldWithFloatParams.InvokeEvent(inventoryController.GetTotalWeight());
-    //         if (quantity <= 0)
-    //             RemoveItem(itemID);
-    //     }
-    //     else
-    //     {
-    //         EventService.Instance.OnNonClickableButtonPressed.InvokeEvent();
-    //     }
-    // }
-
-    // public void Sell()
-    // {
-    //     int amount = int.Parse(sellSectionController.GetPriceText());
-    //     int sellQuantity = int.Parse(sellSectionController.GetQuantityText()); // Capture the quantity the player wants to sell
-    //     int itemID = inventoryController.GetCurrentItem().itemProperty.itemID;
-
-    //     if (amount > 0 && sellQuantity > 0)
-    //     {
-    //         sellSectionController.ResetSection();
-    //         inventoryController.RemoveWeight(itemID, sellQuantity);
-    //         // Subtract sold quantity from the inventory
-    //         int newInventoryQuantity = inventoryController.GetItemQuantity(itemID) - sellQuantity;
-    //         inventoryController.ResetQuantities(itemID);
-    //         inventoryController.SetQuantity(itemID, newInventoryQuantity);
-    //         inventoryController.GetCurrentItem().SetQuantityText(newInventoryQuantity);
-
-    //         // IMPORTANT: Increase the shop's quantity by the sold quantity
-    //         GameManager.Instance.shopController.IncreaseItemQuantity(itemID, sellQuantity);
-
-    //         EventService.Instance.onItemChanged.InvokeEvent();
-    //         EventService.Instance.onItemSoldWithIntParams.InvokeEvent(amount);
-    //         EventService.Instance.onItemSoldWithFloatParams.InvokeEvent(inventoryController.GetTotalWeight());
-
-    //         if (newInventoryQuantity <= 0)
-    //             RemoveItem(itemID);
-    //     }
-    //     else
-    //     {
-    //         EventService.Instance.OnNonClickableButtonPressed.InvokeEvent();
-    //     }
-    // }
 
 
     public void Sell()
