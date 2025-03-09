@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 640bac49251657d47bb1207f83593d81, type: 3}
-  m_Name: Chronicles of the Lost Empire
+  m_Name: The Lost Empire
   m_EditorClassIdentifier: 
   itemID: 403
-  itemName: Chronicles of the Lost Empire
+  itemName: The Lost Empire
   item: 3
   itemIcon: {fileID: -836673275599225964, guid: 3483b750d3d78164898803c598a59487, type: 3}
   ItemDescription: An ancient historical record detailing the rise and fall of a
