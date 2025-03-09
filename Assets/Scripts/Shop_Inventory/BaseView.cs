@@ -4,10 +4,7 @@ public class BaseView : MonoBehaviour
 {
     protected CanvasGroup canvasGroup;
 
-    protected virtual void Awake()
-    {
-        canvasGroup = GetComponent<CanvasGroup>();
-    }
+    protected virtual void Awake() => canvasGroup = GetComponent<CanvasGroup>();
 
     public virtual void EnableVisibility()
     {

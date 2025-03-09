@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class ShopView : BaseItemListView, IItemListView
 {
@@ -16,7 +14,6 @@ public class ShopView : BaseItemListView, IItemListView
 
     public bool isShopOn = true;
 
-    // NEW: Dictionary to keep track of instantiated ItemViews by itemID.
     private Dictionary<int, ItemView> itemViews = new Dictionary<int, ItemView>();
 
     private void OnEnable()
@@ -40,15 +37,10 @@ public class ShopView : BaseItemListView, IItemListView
     public void SetShopController(ShopController controller)
     {
         shopController = controller;
-        // Set up the TransactionSectionController delegates.
-        buySectionController.GetAvailableQuantity = () =>
-            shopController.GetItemQuantity(shopController.GetCurrentItem().itemProperty.itemID);
-        buySectionController.GetUnitPrice = () =>
-            shopController.GetCurrentItem().itemProperty.buyingPrice;
-        buySectionController.PlayQuantityChangedSound = () =>
-            shopController.PlayQuantityChangedSound();
-        buySectionController.PlayNonClickableSound = () =>
-            shopController.PlayNonClickableSound();
+        buySectionController.GetAvailableQuantity = () => shopController.GetItemQuantity(shopController.GetCurrentItem().itemProperty.itemID);
+        buySectionController.GetUnitPrice = () => shopController.GetCurrentItem().itemProperty.buyingPrice;
+        buySectionController.PlayQuantityChangedSound = () => shopController.PlayQuantityChangedSound();
+        buySectionController.PlayNonClickableSound = () => shopController.PlayNonClickableSound();
     }
 
     public void EnableShopVisibility()
@@ -67,11 +59,9 @@ public class ShopView : BaseItemListView, IItemListView
     {
         foreach (ItemProperty item in items)
         {
-            // Use the base method to instantiate a new ItemView.
             ItemView itemDisplay = CreateItemView(item);
             if (itemDisplay != null)
             {
-                // Store the instantiated item view in the dictionary.
                 itemViews[item.itemID] = itemDisplay;
                 shopController.SetItemQuantities(itemDisplay.itemProperty.itemID, itemDisplay.itemProperty.quantity);
                 itemDisplay.ShopDisplayUI();
@@ -80,13 +70,10 @@ public class ShopView : BaseItemListView, IItemListView
         }
     }
 
-    // NEW: This method updates the UI of a given item in the shop.
     public void UpdateItemQuantityUI(int itemID, int newQuantity)
     {
         if (itemViews.ContainsKey(itemID))
-        {
             itemViews[itemID].SetQuantityText(newQuantity);
-        }
     }
 
     public void EnableBuyingSection()
@@ -116,49 +103,6 @@ public class ShopView : BaseItemListView, IItemListView
         }
     }
 
-    // public void Buy()
-    // {
-    //     int amount = int.Parse(buySectionController.GetPriceText());
-    //     int selectedQuantity = int.Parse(buySectionController.GetQuantityText());
-    //     int itemID = shopController.GetCurrentItem().itemProperty.itemID;
-    //     if (amount > 0 && selectedQuantity > 0)
-    //     {
-    //         if (shopController.GetPlayerCoin() >= amount)
-    //         {
-    //             if (shopController.GetPlayerBagWeight() < shopController.GetPlayerBagCapacity())
-    //             {
-    //                 buySectionController.ResetSection();
-    //                 int playerCoin = shopController.GetPlayerCoin();
-    //                 int newAmount = playerCoin - amount;
-    //                 int newQuantity = shopController.GetItemQuantity(itemID) - selectedQuantity;
-    //                 shopController.DisplayBroughtItems(shopController.GetCurrentItem(), selectedQuantity);
-    //                 shopController.SetItemQuantities(itemID, newQuantity);
-    //                 shopController.GetCurrentItem().SetQuantityText(newQuantity);
-    //                 EventService.Instance.onItemChanged.InvokeEvent();
-    //                 EventService.Instance.onItemBroughtWithIntParams.InvokeEvent(newAmount);
-    //             }
-    //             else
-    //             {
-    //                 shopController.PlayPopUpSound();
-    //                 weightExceededPopUp.alpha = 1;
-    //                 weightExceededPopUp.blocksRaycasts = true;
-    //                 weightExceededPopUp.interactable = true;
-    //             }
-    //         }
-    //         else
-    //         {
-    //             shopController.PlayPopUpSound();
-    //             notEnoughMoneyPopup.alpha = 1;
-    //             notEnoughMoneyPopup.blocksRaycasts = true;
-    //             notEnoughMoneyPopup.interactable = true;
-    //         }
-    //     }
-    //     else
-    //     {
-    //         shopController.PlayNonClickableSound();
-    //     }
-    // }
-
     public void Buy()
     {
         int amount = int.Parse(buySectionController.GetPriceText());
@@ -171,16 +115,11 @@ public class ShopView : BaseItemListView, IItemListView
                 if (shopController.GetPlayerBagWeight() < shopController.GetPlayerBagCapacity())
                 {
                     buySectionController.ResetSection();
-                    // Remove these two lines:
-                    // int playerCoin = shopController.GetPlayerCoin();
-                    // int newAmount = playerCoin - amount;
-
                     int newQuantity = shopController.GetItemQuantity(itemID) - selectedQuantity;
                     shopController.DisplayBroughtItems(shopController.GetCurrentItem(), selectedQuantity);
                     shopController.SetItemQuantities(itemID, newQuantity);
                     shopController.GetCurrentItem().SetQuantityText(newQuantity);
                     EventService.Instance.onItemChanged.InvokeEvent();
-                    // Instead of sending the new remaining balance, send the cost to subtract:
                     EventService.Instance.onItemBroughtWithIntParams.InvokeEvent(amount);
                 }
                 else

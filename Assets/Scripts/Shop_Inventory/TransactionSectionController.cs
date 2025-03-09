@@ -7,20 +7,17 @@ public class TransactionSectionController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI quantityText;
     [SerializeField] private TextMeshProUGUI priceText;
 
-    // Delegates that the parent view/controller sets up.
     public Func<int> GetAvailableQuantity;
     public Func<int> GetUnitPrice;
     public Action PlayQuantityChangedSound;
     public Action PlayNonClickableSound;
 
-    // Resets the section to zero.
     public void ResetSection()
     {
         quantityText.text = "0";
         priceText.text = "0";
     }
 
-    // Adds one unit if available.
     public void AddValue()
     {
         int availableQuantity = GetAvailableQuantity?.Invoke() ?? 0;
@@ -40,7 +37,6 @@ public class TransactionSectionController : MonoBehaviour
         }
     }
 
-    // Reduces one unit if above zero.
     public void ReduceValue()
     {
         int currentQuantity = int.Parse(quantityText.text);
@@ -59,7 +55,6 @@ public class TransactionSectionController : MonoBehaviour
         }
     }
 
-    // Helper methods to get the current values.
     public string GetQuantityText() => quantityText.text;
     public string GetPriceText() => priceText.text;
 }

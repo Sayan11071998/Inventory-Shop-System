@@ -23,10 +23,8 @@ public interface IInventoryController
     float GetPlayerBagWeight();
     float GetPlayerBagCapacity();
     void ApplyFilter(FilterController filterController);
-    // Newly added methods:
     void DisplayBroughtItems(ItemView itemView, int newQuantity);
     bool ISInventoryOn();
     void SetPanelViews();
-    // New method to store item in the view:
     void StoreItem(ItemView itemDisplay, FilterController filterController);
 }

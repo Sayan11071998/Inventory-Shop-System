@@ -49,7 +49,6 @@ public class ShopModel : BaseItemModel
         return 0f;
     }
 
-    // NEW METHOD: Increase the shop's available quantity for an item.
     public void IncreaseItemQuantity(int itemID, int soldQuantity)
     {
         if (itemQuantities.ContainsKey(itemID))
