@@ -41,8 +41,11 @@ public class InventoryModel : BaseItemModel
     {
         if (!itemQuantities.ContainsKey(itemID))
             itemQuantities[itemID] = new List<int>();
+        else
+            itemQuantities[itemID].Clear(); // Clear existing quantity entries before setting new quantity.
         itemQuantities[itemID].Add(newQuantity);
     }
+
 
     public void ResetQuantities(int itemID)
     {
