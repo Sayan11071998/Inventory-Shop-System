@@ -30,6 +30,7 @@ public class EventService
     public EventController OnMaximumWeightExceed { get; private set; }
     public EventController OnNonClickableButtonPressed { get; private set; }
     public EventController OnFilterButtonPressed { get; private set; }
+    public EventController OnShopInventorySwitchButtonPressed { get; private set; }
 
     public EventService()
     {
@@ -52,5 +53,6 @@ public class EventService
         OnMaximumWeightExceed = new EventController();
         OnNonClickableButtonPressed = new EventController();
         OnFilterButtonPressed = new EventController();
+        OnShopInventorySwitchButtonPressed = new EventController();
     }
 }

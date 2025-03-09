@@ -2,6 +2,7 @@ public class SoundService
 {
     public SoundService()
     {
+        EventService.Instance.OnShopInventorySwitchButtonPressed.AddListener(PlayOnShopInventorySwitchButtonPressed);
         EventService.Instance.OnItemSelectedSound.AddListener(PlayOnItemSelectedSound);
         EventService.Instance.OnQuantityChanged.AddListener(PlayQuantityChangedSound);
         EventService.Instance.OnItemSoldWithIntParams.AddListener((amount) => PlaySoldSound());
@@ -11,6 +12,7 @@ public class SoundService
         EventService.Instance.OnGatherResourceButtonPressed.AddListener(PlayGatherResourceSound);
     }
     
+    public void PlayOnShopInventorySwitchButtonPressed() => SoundManager.Instance.PlaySound(Sounds.ShopInventorySwitchButton);
     public void PlayOnItemSelectedSound() => SoundManager.Instance.PlaySound(Sounds.ItemSelected);
     public void PlayQuantityChangedSound() => SoundManager.Instance.PlaySound(Sounds.QuantityChanged);
     public void PlaySoldSound() => SoundManager.Instance.PlaySound(Sounds.MoneySound);
