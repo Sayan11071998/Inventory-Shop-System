@@ -108,19 +108,28 @@ public class ShopView : BaseItemListView, IItemListView
         int amount = int.Parse(buySectionController.GetPriceText());
         int selectedQuantity = int.Parse(buySectionController.GetQuantityText());
         int itemID = shopController.GetCurrentItem().itemProperty.itemID;
+
         if (amount > 0 && selectedQuantity > 0)
         {
             if (shopController.GetPlayerCoin() >= amount)
             {
-                if (shopController.GetPlayerBagWeight() < shopController.GetPlayerBagCapacity())
+                float currentInventoryWeight = GameManager.Instance.inventoryController.GetTotalWeight();
+                float additionalWeight = selectedQuantity * shopController.GetCurrentItem().itemProperty.weight;
+                float newTotalWeight = currentInventoryWeight + additionalWeight;
+
+                if (newTotalWeight <= GameManager.Instance.inventoryController.GetPlayerBagCapacity())
                 {
                     buySectionController.ResetSection();
+                    int playerCoin = shopController.GetPlayerCoin();
+                    int newAmount = playerCoin - amount;
                     int newQuantity = shopController.GetItemQuantity(itemID) - selectedQuantity;
+
                     shopController.DisplayBroughtItems(shopController.GetCurrentItem(), selectedQuantity);
                     shopController.SetItemQuantities(itemID, newQuantity);
                     shopController.GetCurrentItem().SetQuantityText(newQuantity);
+
                     EventService.Instance.OnItemChanged.InvokeEvent();
-                    EventService.Instance.OnItemBroughtWithIntParams.InvokeEvent(amount);
+                    EventService.Instance.OnItemBroughtWithIntParams.InvokeEvent(newAmount);
                 }
                 else
                 {
@@ -143,6 +152,7 @@ public class ShopView : BaseItemListView, IItemListView
             shopController.PlayNonClickableSound();
         }
     }
+
 
 
     public void DisableNotEnoughMoneyPopUp()
