@@ -51,26 +51,3 @@ public class SoundManager : MonoBehaviour
     }
 
 }
-
-[Serializable]
-public class SoundType
-{
-    public Sounds sound;
-    public AudioClip soundClip;
-
-    [Range(1, 100)]
-    public int volume;
-}
-
-public enum Sounds
-{
-    ShopInventorySwitchButton,
-    ItemSelected,
-    QuantityChanged,
-    MoneySound,
-    FilterButtonSound,
-    ErrorSound,
-    NonClickable,
-    GatherResource,
-    Music,
-}
