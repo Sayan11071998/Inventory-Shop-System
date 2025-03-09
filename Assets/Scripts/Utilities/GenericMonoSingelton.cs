@@ -6,6 +6,8 @@ public class GenericMonoSingelton<T> : MonoBehaviour where T : GenericMonoSingel
     public static T Instance { get { return instance; } }
     public virtual void Awake()
     {
+        Random.InitState((int)System.DateTime.Now.Ticks);
+
         if (instance == null)
             instance = (T)this;
         else
