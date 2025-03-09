@@ -39,7 +39,7 @@ public class ShopView : BaseItemListView, IItemListView
         shopController = controller;
         buySectionController.GetAvailableQuantity = () => shopController.GetItemQuantity(shopController.GetCurrentItem().itemProperty.itemID);
         buySectionController.GetUnitPrice = () => shopController.GetCurrentItem().itemProperty.buyingPrice;
-        buySectionController.PlayQuantityChangedSound = () => shopController.PlayQuantityChangedSound();
+        buySectionController.PlayQuantityChangedSound = () => EventService.Instance.OnQuantityChanged.InvokeEvent();
         buySectionController.PlayNonClickableSound = () => shopController.PlayNonClickableSound();
     }
 
