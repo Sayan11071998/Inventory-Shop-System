@@ -35,7 +35,7 @@ public class ShopController : BaseController<ShopView, ShopModel>, IShopControll
     public void DisplayBroughtItems(ItemView itemView, int quantity)
     {
         GameManager.Instance.inventoryController.DisplayBroughtItems(GetCurrentItem(), quantity);
-        PlayBroughtSound();
+        EventService.Instance.OnItemSoldWithIntParams?.InvokeEvent(quantity);
     }
 
     public void UpdateItemQuantityUI(int itemID)
@@ -45,11 +45,6 @@ public class ShopController : BaseController<ShopView, ShopModel>, IShopControll
     }
 
     public void IncreaseItemQuantity(int itemID, int soldQuantity) => model.IncreaseItemQuantity(itemID, soldQuantity);
-
-    public void PlayBroughtSound() => SoundManager.Instance.PlaySound(Sounds.MoneySound);
-    public void PlayQuantityChangedSound() => SoundManager.Instance.PlaySound(Sounds.QuantityChanged);
-    public void PlayPopUpSound() => SoundManager.Instance.PlaySound(Sounds.ErrorSound);
-    public void PlayNonClickableSound() => SoundManager.Instance.PlaySound(Sounds.NonClickable);
 
     public int GetItemQuantity(int itemID) => model.GetQuantity(itemID);
     public float GetPlayerBagWeight() => GameManager.Instance.playerController.GetBagWeight();

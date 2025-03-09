@@ -12,11 +12,6 @@ public interface IShopController
     void IncreaseItemQuantity(int itemID, int soldQuantity);
     void UpdateItemQuantityUI(int itemID);
 
-    void PlayBroughtSound();
-    void PlayQuantityChangedSound();
-    void PlayPopUpSound();
-    void PlayNonClickableSound();
-
     ItemView GetCurrentItem();
     int GetItemQuantity(int itemID);
     float GetPlayerBagWeight();

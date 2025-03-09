@@ -10,11 +10,12 @@ public class UIController
 
     public void OnShopToggleChanged(bool isOn)
     {
-        SoundManager.Instance.PlaySound(Sounds.ShopInventorySwitchButton);
+        EventService.Instance.OnShopInventorySwitchButtonPressed?.InvokeEvent();
+        
         if (!isOn)
-            EventService.Instance.OnShopToggledOnEvent.InvokeEvent();
+            EventService.Instance.OnShopToggledOnEvent?.InvokeEvent();
         else
-            EventService.Instance.OnInventoryToggledOnEvent.InvokeEvent();
+            EventService.Instance.OnInventoryToggledOnEvent?.InvokeEvent();
 
         uiView.UpdateShopORInventoryText(!isOn);
     }

@@ -25,10 +25,12 @@ public class EventService
     public EventController OnItemChanged { get; private set; }
     public EventController OnQuantityChanged { get; private set; }
 
+    public EventController OnItemSelectedSound { get; private set; }
     public EventController OnGatherResourceButtonPressed { get; private set; }
     public EventController OnMaximumWeightExceed { get; private set; }
     public EventController OnNonClickableButtonPressed { get; private set; }
-
+    public EventController OnFilterButtonPressed { get; private set; }
+    public EventController OnShopInventorySwitchButtonPressed { get; private set; }
 
     public EventService()
     {
@@ -46,8 +48,11 @@ public class EventService
         OnItemChanged = new EventController();
         OnQuantityChanged = new EventController();
         
+        OnItemSelectedSound = new EventController();
         OnGatherResourceButtonPressed = new EventController();
         OnMaximumWeightExceed = new EventController();
         OnNonClickableButtonPressed = new EventController();
+        OnFilterButtonPressed = new EventController();
+        OnShopInventorySwitchButtonPressed = new EventController();
     }
 }

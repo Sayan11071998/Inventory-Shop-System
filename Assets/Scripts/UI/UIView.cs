@@ -51,7 +51,7 @@ public class UIView : MonoBehaviour
         {
             itemDeatilsPanelCanvasGroup.alpha = 1;
             SetItemDetailPanelValues(itemView);
-            EventService.Instance.OnItemSelectedEvent.InvokeEvent();
+            EventService.Instance.OnItemSelectedEvent?.InvokeEvent();
         }
     }
 

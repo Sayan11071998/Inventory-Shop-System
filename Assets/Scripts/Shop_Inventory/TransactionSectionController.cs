@@ -9,8 +9,6 @@ public class TransactionSectionController : MonoBehaviour
 
     public Func<int> GetAvailableQuantity;
     public Func<int> GetUnitPrice;
-    public Action PlayQuantityChangedSound;
-    public Action PlayNonClickableSound;
 
     public void ResetSection()
     {
@@ -27,13 +25,13 @@ public class TransactionSectionController : MonoBehaviour
 
         if (currentQuantity < availableQuantity)
         {
-            PlayQuantityChangedSound?.Invoke();
+            EventService.Instance.OnQuantityChanged?.InvokeEvent();
             quantityText.text = (currentQuantity + 1).ToString();
             priceText.text = (currentPrice + unitPrice).ToString();
         }
         else
         {
-            PlayNonClickableSound?.Invoke();
+            EventService.Instance.OnNonClickableButtonPressed?.InvokeEvent();
         }
     }
 
@@ -45,13 +43,13 @@ public class TransactionSectionController : MonoBehaviour
 
         if (currentQuantity > 0)
         {
-            PlayQuantityChangedSound?.Invoke();
+            EventService.Instance.OnQuantityChanged?.InvokeEvent();
             quantityText.text = (currentQuantity - 1).ToString();
             priceText.text = (currentPrice - unitPrice).ToString();
         }
         else
         {
-            PlayNonClickableSound?.Invoke();
+            EventService.Instance.OnNonClickableButtonPressed?.InvokeEvent();
         }
     }
 
