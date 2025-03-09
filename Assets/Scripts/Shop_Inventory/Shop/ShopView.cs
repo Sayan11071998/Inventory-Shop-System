@@ -116,6 +116,49 @@ public class ShopView : BaseItemListView, IItemListView
         }
     }
 
+    // public void Buy()
+    // {
+    //     int amount = int.Parse(buySectionController.GetPriceText());
+    //     int selectedQuantity = int.Parse(buySectionController.GetQuantityText());
+    //     int itemID = shopController.GetCurrentItem().itemProperty.itemID;
+    //     if (amount > 0 && selectedQuantity > 0)
+    //     {
+    //         if (shopController.GetPlayerCoin() >= amount)
+    //         {
+    //             if (shopController.GetPlayerBagWeight() < shopController.GetPlayerBagCapacity())
+    //             {
+    //                 buySectionController.ResetSection();
+    //                 int playerCoin = shopController.GetPlayerCoin();
+    //                 int newAmount = playerCoin - amount;
+    //                 int newQuantity = shopController.GetItemQuantity(itemID) - selectedQuantity;
+    //                 shopController.DisplayBroughtItems(shopController.GetCurrentItem(), selectedQuantity);
+    //                 shopController.SetItemQuantities(itemID, newQuantity);
+    //                 shopController.GetCurrentItem().SetQuantityText(newQuantity);
+    //                 EventService.Instance.onItemChanged.InvokeEvent();
+    //                 EventService.Instance.onItemBroughtWithIntParams.InvokeEvent(newAmount);
+    //             }
+    //             else
+    //             {
+    //                 shopController.PlayPopUpSound();
+    //                 weightExceededPopUp.alpha = 1;
+    //                 weightExceededPopUp.blocksRaycasts = true;
+    //                 weightExceededPopUp.interactable = true;
+    //             }
+    //         }
+    //         else
+    //         {
+    //             shopController.PlayPopUpSound();
+    //             notEnoughMoneyPopup.alpha = 1;
+    //             notEnoughMoneyPopup.blocksRaycasts = true;
+    //             notEnoughMoneyPopup.interactable = true;
+    //         }
+    //     }
+    //     else
+    //     {
+    //         shopController.PlayNonClickableSound();
+    //     }
+    // }
+
     public void Buy()
     {
         int amount = int.Parse(buySectionController.GetPriceText());
@@ -128,14 +171,17 @@ public class ShopView : BaseItemListView, IItemListView
                 if (shopController.GetPlayerBagWeight() < shopController.GetPlayerBagCapacity())
                 {
                     buySectionController.ResetSection();
-                    int playerCoin = shopController.GetPlayerCoin();
-                    int newAmount = playerCoin - amount;
+                    // Remove these two lines:
+                    // int playerCoin = shopController.GetPlayerCoin();
+                    // int newAmount = playerCoin - amount;
+
                     int newQuantity = shopController.GetItemQuantity(itemID) - selectedQuantity;
                     shopController.DisplayBroughtItems(shopController.GetCurrentItem(), selectedQuantity);
                     shopController.SetItemQuantities(itemID, newQuantity);
                     shopController.GetCurrentItem().SetQuantityText(newQuantity);
                     EventService.Instance.onItemChanged.InvokeEvent();
-                    EventService.Instance.onItemBroughtWithIntParams.InvokeEvent(newAmount);
+                    // Instead of sending the new remaining balance, send the cost to subtract:
+                    EventService.Instance.onItemBroughtWithIntParams.InvokeEvent(amount);
                 }
                 else
                 {
@@ -158,6 +204,7 @@ public class ShopView : BaseItemListView, IItemListView
             shopController.PlayNonClickableSound();
         }
     }
+
 
     public void DisableNotEnoughMoneyPopUp()
     {
