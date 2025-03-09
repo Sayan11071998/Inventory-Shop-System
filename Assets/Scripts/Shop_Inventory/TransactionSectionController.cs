@@ -9,7 +9,6 @@ public class TransactionSectionController : MonoBehaviour
 
     public Func<int> GetAvailableQuantity;
     public Func<int> GetUnitPrice;
-    public Action PlayNonClickableSound;
 
     public void ResetSection()
     {
@@ -32,7 +31,7 @@ public class TransactionSectionController : MonoBehaviour
         }
         else
         {
-            PlayNonClickableSound?.Invoke();
+            EventService.Instance.OnNonClickableButtonPressed?.InvokeEvent();
         }
     }
 
@@ -50,7 +49,7 @@ public class TransactionSectionController : MonoBehaviour
         }
         else
         {
-            PlayNonClickableSound?.Invoke();
+            EventService.Instance.OnNonClickableButtonPressed?.InvokeEvent();
         }
     }
 

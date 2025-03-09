@@ -38,7 +38,6 @@ public class InventoryView : BaseItemListView
         EventService.Instance.OnItemChanged.AddListener(inventoryController.SetPanelViews);
         sellSectionController.GetAvailableQuantity = () => inventoryController.GetItemQuantity(inventoryController.GetCurrentItem().itemProperty.itemID);
         sellSectionController.GetUnitPrice = () => inventoryController.GetCurrentItem().itemProperty.sellingPrice;
-        sellSectionController.PlayNonClickableSound = () => EventService.Instance.OnNonClickableButtonPressed.InvokeEvent();
     }
 
     public void EnableInventoryVisibility()
