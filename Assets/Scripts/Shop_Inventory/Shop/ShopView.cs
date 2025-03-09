@@ -40,7 +40,7 @@ public class ShopView : BaseItemListView, IItemListView
         buySectionController.GetAvailableQuantity = () => shopController.GetItemQuantity(shopController.GetCurrentItem().itemProperty.itemID);
         buySectionController.GetUnitPrice = () => shopController.GetCurrentItem().itemProperty.buyingPrice;
         buySectionController.PlayQuantityChangedSound = () => EventService.Instance.OnQuantityChanged.InvokeEvent();
-        buySectionController.PlayNonClickableSound = () => shopController.PlayNonClickableSound();
+        buySectionController.PlayNonClickableSound = () => EventService.Instance.OnNonClickableButtonPressed.InvokeEvent();
     }
 
     public void EnableShopVisibility()
@@ -131,7 +131,7 @@ public class ShopView : BaseItemListView, IItemListView
                 }
                 else
                 {
-                    shopController.PlayPopUpSound();
+                    EventService.Instance.OnMaximumWeightExceed.InvokeEvent();
                     weightExceededPopUp.alpha = 1;
                     weightExceededPopUp.blocksRaycasts = true;
                     weightExceededPopUp.interactable = true;
@@ -139,7 +139,7 @@ public class ShopView : BaseItemListView, IItemListView
             }
             else
             {
-                shopController.PlayPopUpSound();
+                EventService.Instance.OnMaximumWeightExceed.InvokeEvent();
                 notEnoughMoneyPopup.alpha = 1;
                 notEnoughMoneyPopup.blocksRaycasts = true;
                 notEnoughMoneyPopup.interactable = true;
@@ -147,7 +147,7 @@ public class ShopView : BaseItemListView, IItemListView
         }
         else
         {
-            shopController.PlayNonClickableSound();
+            EventService.Instance.OnNonClickableButtonPressed.InvokeEvent();
         }
     }
 
