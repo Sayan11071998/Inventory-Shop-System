@@ -3,13 +3,14 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    private static SoundManager instance;
-    public static SoundManager Instance { get { return instance; } }
-
     [SerializeField] private AudioSource soundEffect;
     [SerializeField] private AudioSource soundMusic;
     [SerializeField] private SoundType[] sounds;
 
+    public static SoundManager Instance { get { return instance; } }
+
+    private static SoundManager instance;
+    
     private void Awake()
     {
         if (instance == null)

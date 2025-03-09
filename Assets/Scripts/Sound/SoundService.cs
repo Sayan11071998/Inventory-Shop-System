@@ -3,7 +3,7 @@ public class SoundService
     public SoundService()
     {
         EventService.Instance.OnGatherResourceButtonPressed.AddListener(PlayGatherResourceSound);
-        EventService.Instance.onItemSoldWithIntParams.AddListener((amount) => PlaySoldSound());
+        EventService.Instance.OnItemSoldWithIntParams.AddListener((amount) => PlaySoldSound());
         EventService.Instance.OnQuantityChanged.AddListener(PlayQuantityChangedSound);
         EventService.Instance.OnMaximumWeightExceed.AddListener(PlayPopSound);
         EventService.Instance.OnNonClickableButtonPressed.AddListener(PlayNonClickableSound);

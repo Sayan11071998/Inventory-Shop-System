@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class ShopView : BaseItemListView, IItemListView
 {
-    private ShopController shopController;
     [SerializeField] private FilterController shopFilterController;
 
     [Header("Buy Section")]
@@ -14,6 +13,7 @@ public class ShopView : BaseItemListView, IItemListView
 
     public bool isShopOn = true;
 
+    private ShopController shopController;
     private Dictionary<int, ItemView> itemViews = new Dictionary<int, ItemView>();
 
     private void OnEnable()
@@ -119,8 +119,8 @@ public class ShopView : BaseItemListView, IItemListView
                     shopController.DisplayBroughtItems(shopController.GetCurrentItem(), selectedQuantity);
                     shopController.SetItemQuantities(itemID, newQuantity);
                     shopController.GetCurrentItem().SetQuantityText(newQuantity);
-                    EventService.Instance.onItemChanged.InvokeEvent();
-                    EventService.Instance.onItemBroughtWithIntParams.InvokeEvent(amount);
+                    EventService.Instance.OnItemChanged.InvokeEvent();
+                    EventService.Instance.OnItemBroughtWithIntParams.InvokeEvent(amount);
                 }
                 else
                 {

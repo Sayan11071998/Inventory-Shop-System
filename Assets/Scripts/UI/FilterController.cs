@@ -9,7 +9,7 @@ public class FilterController : MonoBehaviour
     private ItemProperty.ItemTypes currentFilterState;
     private Dictionary<Toggle, ItemProperty.ItemTypes> toggleFilterMap;
     private List<ItemView> itemDisplay = new List<ItemView>();
-    bool showAll = true;
+    private bool showAll = true;
 
     private void Start() => Initialize();
 

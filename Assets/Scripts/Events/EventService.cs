@@ -17,12 +17,12 @@ public class EventService
     public EventController OnItemSelectedEvent { get; private set; }
     public EventController<bool, ItemView> OnItemSelectedEventWithParams { get; private set; }
 
-    public EventController<int> onItemBroughtWithIntParams { get; private set; }
+    public EventController<int> OnItemBroughtWithIntParams { get; private set; }
 
-    public EventController<int> onItemSoldWithIntParams { get; private set; }
-    public EventController<float> onItemSoldWithFloatParams { get; private set; }
+    public EventController<int> OnItemSoldWithIntParams { get; private set; }
+    public EventController<float> OnItemSoldWithFloatParams { get; private set; }
 
-    public EventController onItemChanged { get; private set; }
+    public EventController OnItemChanged { get; private set; }
     public EventController OnQuantityChanged { get; private set; }
 
     public EventController OnGatherResourceButtonPressed { get; private set; }
@@ -38,13 +38,14 @@ public class EventService
         OnItemSelectedEvent = new EventController();
         OnItemSelectedEventWithParams = new EventController<bool, ItemView>();
 
-        onItemBroughtWithIntParams = new EventController<int>();
+        OnItemBroughtWithIntParams = new EventController<int>();
 
-        onItemSoldWithIntParams = new EventController<int>();
-        onItemSoldWithFloatParams = new EventController<float>();
+        OnItemSoldWithIntParams = new EventController<int>();
+        OnItemSoldWithFloatParams = new EventController<float>();
 
-        onItemChanged = new EventController();
+        OnItemChanged = new EventController();
         OnQuantityChanged = new EventController();
+        
         OnGatherResourceButtonPressed = new EventController();
         OnMaximumWeightExceed = new EventController();
         OnNonClickableButtonPressed = new EventController();
