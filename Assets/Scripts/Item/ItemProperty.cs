@@ -12,25 +12,6 @@ public class ItemProperty : ScriptableObject
     public int buyingPrice;
     public int sellingPrice;
     public float weight;
-    public Rarity rarity;
+    public ItemRarity rarity;
     public int quantity;
-
-    [Serializable]
-    public enum ItemTypes
-    {
-        Materials,
-        Weapons,
-        Consumables,
-        Treasure
-    }
-
-    [Serializable]
-    public enum Rarity
-    {
-        VeryCommon,
-        Common,
-        Rare,
-        Epic,
-        Legendary,
-    }
 }

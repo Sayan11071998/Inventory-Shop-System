@@ -4,7 +4,7 @@ public class InventoryModel : BaseItemModel
 {
     public ItemView currentItem;
     public int numberOfResource { get; private set; }
-    public Dictionary<ItemProperty.Rarity, bool> isRarityAvailable;
+    public Dictionary<ItemRarity, bool> isRarityAvailable;
     public Dictionary<int, List<float>> itemWeight;
     private Dictionary<int, ItemView> instantiatedItems;
     public Dictionary<int, List<int>> itemQuantities;
@@ -27,12 +27,12 @@ public class InventoryModel : BaseItemModel
             itemWeight[item.itemID] = new List<float>();
         }
 
-        isRarityAvailable = new Dictionary<ItemProperty.Rarity, bool> {
-            { ItemProperty.Rarity.VeryCommon, true },
-            { ItemProperty.Rarity.Common, false },
-            { ItemProperty.Rarity.Rare, false },
-            { ItemProperty.Rarity.Epic, false },
-            { ItemProperty.Rarity.Legendary, false }
+        isRarityAvailable = new Dictionary<ItemRarity, bool> {
+            { ItemRarity.VeryCommon, true },
+            { ItemRarity.Common, false },
+            { ItemRarity.Rare, false },
+            { ItemRarity.Epic, false },
+            { ItemRarity.Legendary, false }
         };
     }
 
@@ -63,13 +63,13 @@ public class InventoryModel : BaseItemModel
     public void StoreInstantiatedItems(int itemID, ItemView itemView) => instantiatedItems[itemID] = itemView;
     public Dictionary<int, ItemView> GetInstatiatedItems() => instantiatedItems;
 
-    public void SetRarityAvailable(ItemProperty.Rarity rarity, bool value)
+    public void SetRarityAvailable(ItemRarity rarity, bool value)
     {
         if (isRarityAvailable.ContainsKey(rarity))
             isRarityAvailable[rarity] = value;
     }
 
-    public bool IsRarityAvailable(ItemProperty.Rarity rarity) => isRarityAvailable[rarity];
+    public bool IsRarityAvailable(ItemRarity rarity) => isRarityAvailable[rarity];
 
     public void RemoveInstatiatedItem(int itemID)
     {

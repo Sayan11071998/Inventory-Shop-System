@@ -62,33 +62,33 @@ public class InventoryController : BaseController<InventoryView, InventoryModel>
                 ItemView item = GetInstantiatedItem(itemID);
                 switch (item.itemProperty.rarity)
                 {
-                    case ItemProperty.Rarity.VeryCommon:
-                        model.SetRarityAvailable(ItemProperty.Rarity.VeryCommon, true);
+                    case ItemRarity.VeryCommon:
+                        model.SetRarityAvailable(ItemRarity.VeryCommon, true);
                         break;
-                    case ItemProperty.Rarity.Common:
-                        model.SetRarityAvailable(ItemProperty.Rarity.Common, true);
+                    case ItemRarity.Common:
+                        model.SetRarityAvailable(ItemRarity.Common, true);
                         break;
-                    case ItemProperty.Rarity.Rare:
-                        model.SetRarityAvailable(ItemProperty.Rarity.Rare, true);
+                    case ItemRarity.Rare:
+                        model.SetRarityAvailable(ItemRarity.Rare, true);
                         break;
-                    case ItemProperty.Rarity.Legendary:
-                        model.SetRarityAvailable(ItemProperty.Rarity.Legendary, true);
+                    case ItemRarity.Legendary:
+                        model.SetRarityAvailable(ItemRarity.Legendary, true);
                         break;
-                    case ItemProperty.Rarity.Epic:
-                        model.SetRarityAvailable(ItemProperty.Rarity.Epic, true);
+                    case ItemRarity.Epic:
+                        model.SetRarityAvailable(ItemRarity.Epic, true);
                         break;
                 }
             }
         }
         else
         {
-            model.SetRarityAvailable(ItemProperty.Rarity.VeryCommon, true);
+            model.SetRarityAvailable(ItemRarity.VeryCommon, true);
         }
     }
 
     private bool IsItemForValue(int index)
     {
-        ItemProperty.Rarity itemRarity = model.GetItemDatabase()[index].rarity;
+        ItemRarity itemRarity = model.GetItemDatabase()[index].rarity;
         return model.IsRarityAvailable(itemRarity);
     }
 

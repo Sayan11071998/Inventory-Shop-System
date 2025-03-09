@@ -6,8 +6,8 @@ public class FilterController : MonoBehaviour
 {
     [SerializeField] private List<Toggle> filterToggle;
 
-    private ItemProperty.ItemTypes currentFilterState;
-    private Dictionary<Toggle, ItemProperty.ItemTypes> toggleFilterMap;
+    private ItemTypes currentFilterState;
+    private Dictionary<Toggle, ItemTypes> toggleFilterMap;
     private List<ItemView> itemDisplay = new List<ItemView>();
     private bool showAll = true;
 
@@ -15,14 +15,14 @@ public class FilterController : MonoBehaviour
 
     private void Initialize()
     {
-        currentFilterState = ItemProperty.ItemTypes.Materials;
+        currentFilterState = ItemTypes.Materials;
 
-        toggleFilterMap = new Dictionary<Toggle, ItemProperty.ItemTypes>
+        toggleFilterMap = new Dictionary<Toggle, ItemTypes>
         {
-            {filterToggle[0], ItemProperty.ItemTypes.Materials},
-            {filterToggle[1], ItemProperty.ItemTypes.Weapons},
-            {filterToggle[2], ItemProperty.ItemTypes.Consumables},
-            {filterToggle[3], ItemProperty.ItemTypes.Treasure},
+            {filterToggle[0], ItemTypes.Materials},
+            {filterToggle[1], ItemTypes.Weapons},
+            {filterToggle[2], ItemTypes.Consumables},
+            {filterToggle[3], ItemTypes.Treasure},
         };
 
         foreach (Toggle toggle in filterToggle)

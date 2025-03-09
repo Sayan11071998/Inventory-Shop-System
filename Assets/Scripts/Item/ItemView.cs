@@ -13,8 +13,11 @@ public class ItemView : MonoBehaviour
     private ToggleGroup itemToggleGroup;
     public int quantityValue = 0;
 
-    public ItemProperty.ItemTypes itemType { get; private set; }
-    public ItemProperty.Rarity rarity { get; private set; }
+    // public ItemProperty.ItemTypes itemType { get; private set; }
+    // public ItemProperty.Rarity rarity { get; private set; }
+
+    public ItemTypes itemType { get; private set; }
+    public ItemRarity rarity { get; private set; }
     
     public void ShopDisplayUI()
     {
