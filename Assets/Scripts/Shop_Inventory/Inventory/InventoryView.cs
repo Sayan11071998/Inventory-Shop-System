@@ -60,12 +60,31 @@ public class InventoryView : BaseItemListView
         DisableVisibility();
     }
 
+    // public void GatherResource()
+    // {
+    //     if (inventoryController.GetPlayerBagWeight() < inventoryController.GetPlayerBagCapacity())
+    //     {
+    //         inventoryController.DisablePanel();
+    //         inventoryController.GatherResource();
+    //         inventoryController.SetBagWeight(inventoryController.GetTotalWeight());
+    //     }
+    //     else
+    //     {
+    //         EventService.Instance.OnMaximumWeightExceed.InvokeEvent();
+    //         weightExceededPopup.alpha = 1;
+    //         weightExceededPopup.blocksRaycasts = true;
+    //         weightExceededPopup.interactable = true;
+    //     }
+    // }
+
     public void GatherResource()
     {
-        if (inventoryController.GetPlayerBagWeight() < inventoryController.GetPlayerBagCapacity())
+        // Use the inventory's total weight for checking capacity.
+        if (inventoryController.GetTotalWeight() < inventoryController.GetPlayerBagCapacity())
         {
             inventoryController.DisablePanel();
             inventoryController.GatherResource();
+            // Immediately update the player's bag weight based on the current total.
             inventoryController.SetBagWeight(inventoryController.GetTotalWeight());
         }
         else
@@ -77,12 +96,21 @@ public class InventoryView : BaseItemListView
         }
     }
 
+
+
     public void DisplayGatheredItem(int index)
     {
         ItemProperty itemProperty = inventoryController.GetItemDatabase()[index];
         int newQuantity = inventoryController.GenerateRandomQuantity();
         InstantiateOrUpdateItem(itemProperty, newQuantity);
     }
+
+    public void DisplayGatheredItem(int index, int quantity)
+    {
+        ItemProperty itemProperty = inventoryController.GetItemDatabase()[index];
+        InstantiateOrUpdateItem(itemProperty, quantity);
+    }
+
 
     public void DisplayBroughtItem(ItemView itemView, int newQuantity)
     {

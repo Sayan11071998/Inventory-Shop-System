@@ -13,15 +13,85 @@ public class InventoryController : BaseController<InventoryView, InventoryModel>
         view.SetInventoryController(this);
     }
 
+    // public void GatherResource()
+    // {
+    //     EventService.Instance.OnGatherResourceButtonPressed.InvokeEvent();
+    //     for (int i = 0; i < model.numberOfResource; i++)
+    //     {
+    //         int index = GetRandomIndex();
+    //         view.DisplayGatheredItem(index);
+    //     }
+    // }
+
+    // public void GatherResource()
+    // {
+    //     // Notify that the gather button was pressed.
+    //     EventService.Instance.OnGatherResourceButtonPressed.InvokeEvent();
+
+    //     // Gather up to 'numberOfResource' items.
+    //     for (int i = 0; i < model.numberOfResource; i++)
+    //     {
+    //         int index = GetRandomIndex();
+    //         // Get the resource from the database.
+    //         ItemProperty resource = model.GetItemDatabase()[index];
+    //         // Generate a random quantity for this resource.
+    //         int quantityToAdd = GenerateRandomQuantity();
+    //         // Calculate additional weight needed.
+    //         float additionalWeight = quantityToAdd * resource.weight;
+
+    //         // Check if adding this resource would exceed the player's bag capacity.
+    //         if (GetPlayerBagWeight() + additionalWeight <= GetPlayerBagCapacity())
+    //         {
+    //             // Use the new overload that passes the quantity.
+    //             view.DisplayGatheredItem(index, quantityToAdd);
+    //         }
+    //         else
+    //         {
+    //             // If capacity would be exceeded, invoke the weight exceeded event and stop gathering.
+    //             EventService.Instance.OnMaximumWeightExceed.InvokeEvent();
+    //             break;
+    //         }
+    //     }
+    //     // Update the player's bag weight based on the new total.
+    //     SetBagWeight(GetTotalWeight());
+    // }
+
+
     public void GatherResource()
     {
+        // Fire the gather event.
         EventService.Instance.OnGatherResourceButtonPressed.InvokeEvent();
+
+        // Loop to gather up to 'numberOfResource' items.
         for (int i = 0; i < model.numberOfResource; i++)
         {
             int index = GetRandomIndex();
-            view.DisplayGatheredItem(index);
+            ItemProperty resource = model.GetItemDatabase()[index];
+            int quantityToAdd = GenerateRandomQuantity();
+            float additionalWeight = quantityToAdd * resource.weight;
+
+            // Use the inventory's total weight rather than the player's bag weight.
+            float currentInventoryWeight = GetTotalWeight();
+
+            // Check if adding this resource would exceed the bag capacity.
+            if (currentInventoryWeight + additionalWeight <= GetPlayerBagCapacity())
+            {
+                // Call the overload that passes quantity.
+                view.DisplayGatheredItem(index, quantityToAdd);
+
+                // Update the player's bag weight immediately.
+                SetBagWeight(GetTotalWeight());
+            }
+            else
+            {
+                // If capacity is exceeded, notify and stop gathering.
+                EventService.Instance.OnMaximumWeightExceed.InvokeEvent();
+                break;
+            }
         }
     }
+
+
 
     private int GetRandomIndex()
     {
@@ -90,16 +160,34 @@ public class InventoryController : BaseController<InventoryView, InventoryModel>
             DisablePanel();
     }
 
+    // public float GetTotalWeight()
+    // {
+    //     float totalWeight = 0;
+    //     foreach (var kvp in model.GetInstatiatedItems())
+    //     {
+    //         int itemID = kvp.Key;
+    //         totalWeight += GetItemWeight(itemID);
+    //     }
+    //     return totalWeight;
+    // }
+
     public float GetTotalWeight()
     {
         float totalWeight = 0;
+        // For each unique item in inventory:
         foreach (var kvp in model.GetInstatiatedItems())
         {
             int itemID = kvp.Key;
-            totalWeight += GetItemWeight(itemID);
+            // Get the current quantity for that item.
+            int quantity = model.GetQuantity(itemID).Sum();
+            // Get the unit weight from the instantiated ItemView.
+            ItemView itemView = kvp.Value;
+            float unitWeight = itemView.itemProperty.weight;
+            totalWeight += quantity * unitWeight;
         }
         return totalWeight;
     }
+
 
     public void EnableInventoryVisibility() => view.EnableInventoryVisibility();
     public void DisableInventoryVisibility() => view.DisableInventoryVisibility();
