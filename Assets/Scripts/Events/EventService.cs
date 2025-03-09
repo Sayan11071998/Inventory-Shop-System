@@ -29,7 +29,7 @@ public class EventService
     public EventController OnGatherResourceButtonPressed { get; private set; }
     public EventController OnMaximumWeightExceed { get; private set; }
     public EventController OnNonClickableButtonPressed { get; private set; }
-
+    public EventController OnFilterButtonPressed { get; private set; }
 
     public EventService()
     {
@@ -51,5 +51,6 @@ public class EventService
         OnGatherResourceButtonPressed = new EventController();
         OnMaximumWeightExceed = new EventController();
         OnNonClickableButtonPressed = new EventController();
+        OnFilterButtonPressed = new EventController();
     }
 }
