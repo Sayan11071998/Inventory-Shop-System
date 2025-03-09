@@ -124,12 +124,12 @@ public class ShopView : BaseItemListView, IItemListView
                     shopController.SetItemQuantities(itemID, newQuantity);
                     shopController.GetCurrentItem().SetQuantityText(newQuantity);
 
-                    EventService.Instance.OnItemChanged.InvokeEvent();
-                    EventService.Instance.OnItemBroughtWithIntParams.InvokeEvent(amount);
+                    EventService.Instance.OnItemChanged?.InvokeEvent();
+                    EventService.Instance.OnItemBroughtWithIntParams?.InvokeEvent(amount);
                 }
                 else
                 {
-                    EventService.Instance.OnMaximumWeightExceed.InvokeEvent();
+                    EventService.Instance.OnMaximumWeightExceed?.InvokeEvent();
                     weightExceededPopUp.alpha = 1;
                     weightExceededPopUp.blocksRaycasts = true;
                     weightExceededPopUp.interactable = true;
@@ -137,7 +137,7 @@ public class ShopView : BaseItemListView, IItemListView
             }
             else
             {
-                EventService.Instance.OnMaximumWeightExceed.InvokeEvent();
+                EventService.Instance.OnMaximumWeightExceed?.InvokeEvent();
                 notEnoughMoneyPopup.alpha = 1;
                 notEnoughMoneyPopup.blocksRaycasts = true;
                 notEnoughMoneyPopup.interactable = true;
@@ -145,7 +145,7 @@ public class ShopView : BaseItemListView, IItemListView
         }
         else
         {
-            EventService.Instance.OnNonClickableButtonPressed.InvokeEvent();
+            EventService.Instance.OnNonClickableButtonPressed?.InvokeEvent();
         }
     }
 

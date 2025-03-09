@@ -35,7 +35,7 @@ public class ShopController : BaseController<ShopView, ShopModel>, IShopControll
     public void DisplayBroughtItems(ItemView itemView, int quantity)
     {
         GameManager.Instance.inventoryController.DisplayBroughtItems(GetCurrentItem(), quantity);
-        EventService.Instance.OnItemSoldWithIntParams.InvokeEvent(quantity);
+        EventService.Instance.OnItemSoldWithIntParams?.InvokeEvent(quantity);
     }
 
     public void UpdateItemQuantityUI(int itemID)

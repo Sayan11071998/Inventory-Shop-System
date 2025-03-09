@@ -62,7 +62,7 @@ public class InventoryView : BaseItemListView
         }
         else
         {
-            EventService.Instance.OnMaximumWeightExceed.InvokeEvent();
+            EventService.Instance.OnMaximumWeightExceed?.InvokeEvent();
             weightExceededPopup.alpha = 1;
             weightExceededPopup.blocksRaycasts = true;
             weightExceededPopup.interactable = true;
@@ -153,7 +153,7 @@ public class InventoryView : BaseItemListView
 
     public void ShowWeightExceededPopup()
     {
-        EventService.Instance.OnMaximumWeightExceed.InvokeEvent();
+        EventService.Instance.OnMaximumWeightExceed?.InvokeEvent();
         weightExceededPopup.alpha = 1;
         weightExceededPopup.blocksRaycasts = true;
         weightExceededPopup.interactable = true;
@@ -179,16 +179,16 @@ public class InventoryView : BaseItemListView
             GameManager.Instance.shopController.IncreaseItemQuantity(itemID, sellQuantity);
             GameManager.Instance.shopController.UpdateItemQuantityUI(itemID);
 
-            EventService.Instance.OnItemChanged.InvokeEvent();
-            EventService.Instance.OnItemSoldWithIntParams.InvokeEvent(amount);
-            EventService.Instance.OnItemSoldWithFloatParams.InvokeEvent(inventoryController.GetTotalWeight());
+            EventService.Instance.OnItemChanged?.InvokeEvent();
+            EventService.Instance.OnItemSoldWithIntParams?.InvokeEvent(amount);
+            EventService.Instance.OnItemSoldWithFloatParams?.InvokeEvent(inventoryController.GetTotalWeight());
 
             if (newInventoryQuantity <= 0)
                 RemoveItem(itemID);
         }
         else
         {
-            EventService.Instance.OnNonClickableButtonPressed.InvokeEvent();
+            EventService.Instance.OnNonClickableButtonPressed?.InvokeEvent();
         }
     }
 

@@ -14,7 +14,7 @@ public class InventoryController : BaseController<InventoryView, InventoryModel>
 
     public void GatherResource()
     {
-        EventService.Instance.OnGatherResourceButtonPressed.InvokeEvent();
+        EventService.Instance.OnGatherResourceButtonPressed?.InvokeEvent();
 
         for (int i = 0; i < model.numberOfResource; i++)
         {
@@ -31,7 +31,7 @@ public class InventoryController : BaseController<InventoryView, InventoryModel>
             }
             else
             {
-                EventService.Instance.OnMaximumWeightExceed.InvokeEvent();
+                EventService.Instance.OnMaximumWeightExceed?.InvokeEvent();
                 view.ShowWeightExceededPopup();
                 break;
             }

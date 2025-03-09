@@ -49,8 +49,8 @@ public class ItemView : MonoBehaviour
     {
         if (isOn)
         {
-            EventService.Instance.OnItemSelectedSound.InvokeEvent();
-            EventService.Instance.OnItemSelectedEventWithParams.InvokeEvent(isOn, this);
+            EventService.Instance.OnItemSelectedSound?.InvokeEvent();
+            EventService.Instance.OnItemSelectedEventWithParams?.InvokeEvent(isOn, this);
         }
     }
 
