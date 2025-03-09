@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 
 public class InventoryModel : BaseItemModel
 {
@@ -42,7 +41,8 @@ public class InventoryModel : BaseItemModel
         if (!itemQuantities.ContainsKey(itemID))
             itemQuantities[itemID] = new List<int>();
         else
-            itemQuantities[itemID].Clear(); // Clear existing quantity entries before setting new quantity.
+            itemQuantities[itemID].Clear();
+
         itemQuantities[itemID].Add(newQuantity);
     }
 
@@ -95,11 +95,8 @@ public class InventoryModel : BaseItemModel
     {
         if (itemWeight.ContainsKey(itemID))
         {
-            // Remove as many weight entries as the sold quantity.
             for (int i = 0; i < quantity && itemWeight[itemID].Count > 0; i++)
-            {
                 itemWeight[itemID].RemoveAt(0);
-            }
         }
     }
 }

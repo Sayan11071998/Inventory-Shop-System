@@ -1,4 +1,3 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -36,16 +35,10 @@ public class InventoryView : BaseItemListView
     {
         inventoryController = controller;
         EventService.Instance.onItemChanged.AddListener(inventoryController.SetPanelViews);
-
-        // Set up the TransactionSectionController delegates.
-        sellSectionController.GetAvailableQuantity = () =>
-            inventoryController.GetItemQuantity(inventoryController.GetCurrentItem().itemProperty.itemID);
-        sellSectionController.GetUnitPrice = () =>
-            inventoryController.GetCurrentItem().itemProperty.sellingPrice;
-        sellSectionController.PlayQuantityChangedSound = () =>
-            EventService.Instance.OnQuantityChanged.InvokeEvent();
-        sellSectionController.PlayNonClickableSound = () =>
-            EventService.Instance.OnNonClickableButtonPressed.InvokeEvent();
+        sellSectionController.GetAvailableQuantity = () => inventoryController.GetItemQuantity(inventoryController.GetCurrentItem().itemProperty.itemID);
+        sellSectionController.GetUnitPrice = () => inventoryController.GetCurrentItem().itemProperty.sellingPrice;
+        sellSectionController.PlayQuantityChangedSound = () => EventService.Instance.OnQuantityChanged.InvokeEvent();
+        sellSectionController.PlayNonClickableSound = () => EventService.Instance.OnNonClickableButtonPressed.InvokeEvent();
     }
 
     public void EnableInventoryVisibility()
@@ -60,31 +53,12 @@ public class InventoryView : BaseItemListView
         DisableVisibility();
     }
 
-    // public void GatherResource()
-    // {
-    //     if (inventoryController.GetPlayerBagWeight() < inventoryController.GetPlayerBagCapacity())
-    //     {
-    //         inventoryController.DisablePanel();
-    //         inventoryController.GatherResource();
-    //         inventoryController.SetBagWeight(inventoryController.GetTotalWeight());
-    //     }
-    //     else
-    //     {
-    //         EventService.Instance.OnMaximumWeightExceed.InvokeEvent();
-    //         weightExceededPopup.alpha = 1;
-    //         weightExceededPopup.blocksRaycasts = true;
-    //         weightExceededPopup.interactable = true;
-    //     }
-    // }
-
     public void GatherResource()
     {
-        // Use the inventory's total weight for checking capacity.
         if (inventoryController.GetTotalWeight() < inventoryController.GetPlayerBagCapacity())
         {
             inventoryController.DisablePanel();
             inventoryController.GatherResource();
-            // Immediately update the player's bag weight based on the current total.
             inventoryController.SetBagWeight(inventoryController.GetTotalWeight());
         }
         else
@@ -95,8 +69,6 @@ public class InventoryView : BaseItemListView
             weightExceededPopup.interactable = true;
         }
     }
-
-
 
     public void DisplayGatheredItem(int index)
     {
@@ -114,83 +86,37 @@ public class InventoryView : BaseItemListView
 
     public void DisplayBroughtItem(ItemView itemView, int newQuantity)
     {
-        // Here we assume that the item is already instantiated in inventory.
         InstantiateOrUpdateItem(itemView.itemProperty, newQuantity);
         inventoryController.SetBagWeight(inventoryController.GetTotalWeight());
     }
-
-    /// <summary>
-    /// Checks if the item already exists. If yes, update its UI; otherwise, instantiate a new one.
-    /// </summary>
-    // private void InstantiateOrUpdateItem(ItemProperty itemProperty, int newQuantity)
-    // {
-    //     int itemID = itemProperty.itemID;
-    //     if (inventoryController.IsItemAlreadyInstantiated(itemID))
-    //     {
-    //         inventoryController.SetQuantity(itemID, newQuantity);
-    //         ItemView existingItem = inventoryController.GetInstantiatedItem(itemID);
-    //         inventoryController.SetItemWeight(itemID, existingItem.itemProperty.weight);
-    //         if (existingItem != null)
-    //         {
-    //             int totalQuantity = inventoryController.GetItemQuantity(existingItem.itemProperty.itemID);
-    //             existingItem.InventoryDisplayUI(totalQuantity);
-    //         }
-    //     }
-    //     else
-    //     {
-    //         // Use the base method from BaseItemListView
-    //         ItemView itemView = CreateItemView(itemProperty);
-    //         if (itemView != null)
-    //         {
-    //             inventoryController.StoreItem(itemView, inventoryFilterController);
-    //             inventoryController.SetQuantity(itemView.itemProperty.itemID, newQuantity);
-    //             inventoryController.SetItemWeight(itemID, itemView.itemProperty.weight);
-    //             inventoryController.StoreInstantiatedItem(itemView.itemProperty.itemID, itemView);
-    //             itemView.InventoryDisplayUI(inventoryController.GetItemQuantity(itemView.itemProperty.itemID));
-    //         }
-    //     }
-    //     inventoryController.ApplyFilter(inventoryFilterController);
-    //     EventSystem.current.SetSelectedGameObject(null);
-    // }
 
     private void InstantiateOrUpdateItem(ItemProperty itemProperty, int quantityToAdd)
     {
         int itemID = itemProperty.itemID;
         if (inventoryController.IsItemAlreadyInstantiated(itemID))
         {
-            // Get existing quantity and calculate new total.
             int existingQuantity = inventoryController.GetItemQuantity(itemID);
             int newTotalQuantity = existingQuantity + quantityToAdd;
             inventoryController.SetQuantity(itemID, newTotalQuantity);
 
-            // Add weight for each newly purchased unit.
             for (int i = 0; i < quantityToAdd; i++)
-            {
                 inventoryController.SetItemWeight(itemID, itemProperty.weight);
-            }
 
-            // Update the UI for the existing item.
             ItemView existingItem = inventoryController.GetInstantiatedItem(itemID);
+            
             if (existingItem != null)
-            {
                 existingItem.InventoryDisplayUI(newTotalQuantity);
-            }
         }
         else
         {
-            // Instantiate a new item.
             ItemView itemView = CreateItemView(itemProperty);
             if (itemView != null)
             {
                 inventoryController.StoreItem(itemView, inventoryFilterController);
-                // Set quantity for the new item.
                 inventoryController.SetQuantity(itemID, quantityToAdd);
 
-                // Add weight entries for each unit purchased.
                 for (int i = 0; i < quantityToAdd; i++)
-                {
                     inventoryController.SetItemWeight(itemID, itemProperty.weight);
-                }
 
                 inventoryController.StoreInstantiatedItem(itemID, itemView);
                 itemView.InventoryDisplayUI(quantityToAdd);
@@ -228,11 +154,10 @@ public class InventoryView : BaseItemListView
         sellSectionController.ResetSection();
     }
 
-
     public void Sell()
     {
         int amount = int.Parse(sellSectionController.GetPriceText());
-        int sellQuantity = int.Parse(sellSectionController.GetQuantityText()); // capture sell quantity
+        int sellQuantity = int.Parse(sellSectionController.GetQuantityText());
         int itemID = inventoryController.GetCurrentItem().itemProperty.itemID;
 
         if (amount > 0 && sellQuantity > 0)
@@ -240,15 +165,13 @@ public class InventoryView : BaseItemListView
             sellSectionController.ResetSection();
             inventoryController.RemoveWeight(itemID, sellQuantity);
 
-            // Subtract sold quantity from inventory.
             int newInventoryQuantity = inventoryController.GetItemQuantity(itemID) - sellQuantity;
+            
             inventoryController.ResetQuantities(itemID);
             inventoryController.SetQuantity(itemID, newInventoryQuantity);
             inventoryController.GetCurrentItem().SetQuantityText(newInventoryQuantity);
 
-            // Increase the shop's stock.
             GameManager.Instance.shopController.IncreaseItemQuantity(itemID, sellQuantity);
-            // Update the shop UI.
             GameManager.Instance.shopController.UpdateItemQuantityUI(itemID);
 
             EventService.Instance.onItemChanged.InvokeEvent();
@@ -263,9 +186,6 @@ public class InventoryView : BaseItemListView
             EventService.Instance.OnNonClickableButtonPressed.InvokeEvent();
         }
     }
-
-
-
 
     private void RemoveItem(int itemID)
     {

@@ -18,7 +18,6 @@ public class ShopController : BaseController<ShopView, ShopModel>, IShopControll
 
     public void EnableShopVisibility() => view.EnableShopVisibility();
     public void DisableShopVisibility() => view.DisableShopVisibility();
-
     public void StoreItem(ItemView itemDisplay, FilterController shopFilterController) => shopFilterController.AddItemDisplay(itemDisplay);
 
     public ItemView GetCurrentItem()
@@ -39,6 +38,14 @@ public class ShopController : BaseController<ShopView, ShopModel>, IShopControll
         PlayBroughtSound();
     }
 
+    public void UpdateItemQuantityUI(int itemID)
+    {
+        int updatedQuantity = model.GetQuantity(itemID);
+        view.UpdateItemQuantityUI(itemID, updatedQuantity);
+    }
+
+    public void IncreaseItemQuantity(int itemID, int soldQuantity) => model.IncreaseItemQuantity(itemID, soldQuantity);
+
     public void PlayBroughtSound() => SoundManager.Instance.PlaySound(Sounds.MoneySound);
     public void PlayQuantityChangedSound() => SoundManager.Instance.PlaySound(Sounds.QuantityChanged);
     public void PlayPopUpSound() => SoundManager.Instance.PlaySound(Sounds.ErrorSound);
@@ -52,16 +59,4 @@ public class ShopController : BaseController<ShopView, ShopModel>, IShopControll
     public void SetItemQuantities(int itemID, int quantity) => model.SetItemQuantities(itemID, quantity);
     public void SetCurrentSelectedItem(ItemView itemView) => model.currentItem = itemView;
     public void SetItemWeight(int itemID, float newWeight) => model.SetItemWeight(itemID, newWeight);
-
-    public void IncreaseItemQuantity(int itemID, int soldQuantity)
-    {
-        model.IncreaseItemQuantity(itemID, soldQuantity);
-    }
-
-    // NEW: Update the shop's UI for the given item.
-    public void UpdateItemQuantityUI(int itemID)
-    {
-        int updatedQuantity = model.GetQuantity(itemID);
-        view.UpdateItemQuantityUI(itemID, updatedQuantity);
-    }
 }
