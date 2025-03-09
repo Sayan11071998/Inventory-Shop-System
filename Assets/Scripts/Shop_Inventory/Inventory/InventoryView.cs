@@ -153,6 +153,14 @@ public class InventoryView : BaseItemListView
         sellSectionController.ResetSection();
     }
 
+    public void ShowWeightExceededPopup()
+    {
+        EventService.Instance.OnMaximumWeightExceed.InvokeEvent();
+        weightExceededPopup.alpha = 1;
+        weightExceededPopup.blocksRaycasts = true;
+        weightExceededPopup.interactable = true;
+    }
+
     public void Sell()
     {
         int amount = int.Parse(sellSectionController.GetPriceText());

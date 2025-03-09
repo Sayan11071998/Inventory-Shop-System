@@ -32,6 +32,7 @@ public class InventoryController : BaseController<InventoryView, InventoryModel>
             else
             {
                 EventService.Instance.OnMaximumWeightExceed.InvokeEvent();
+                view.ShowWeightExceededPopup();
                 break;
             }
         }
