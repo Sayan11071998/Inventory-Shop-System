@@ -1,10 +1,12 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class InventoryView : BaseItemListView
 {
     [SerializeField] private FilterController inventoryFilterController;
     [SerializeField] private CanvasGroup weightExceededPopup;
+    [SerializeField] private Button gatherResourceButton;
 
     [Header("Sell Section")]
     [SerializeField] private CanvasGroup sellSection;
@@ -157,6 +159,9 @@ public class InventoryView : BaseItemListView
         weightExceededPopup.alpha = 1;
         weightExceededPopup.blocksRaycasts = true;
         weightExceededPopup.interactable = true;
+
+        if (gatherResourceButton != null)
+            gatherResourceButton.interactable = false;
     }
 
     public void Sell()
@@ -207,5 +212,8 @@ public class InventoryView : BaseItemListView
         weightExceededPopup.alpha = 0;
         weightExceededPopup.blocksRaycasts = false;
         weightExceededPopup.interactable = false;
+
+        if (gatherResourceButton != null)
+            gatherResourceButton.interactable = true;
     }
 }

@@ -36,7 +36,7 @@ public class GameManager : GenericMonoSingelton<GameManager>
     {
         InventoryModel inventoryModel = new InventoryModel(itemDatabase);
         inventoryView = GameObject.FindFirstObjectByType<InventoryView>();
-        inventoryController = new InventoryController(inventoryView, inventoryModel, soundService);
+        inventoryController = new InventoryController(inventoryView, inventoryModel);
     }
 
     private void CreateUI()

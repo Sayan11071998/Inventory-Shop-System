@@ -3,12 +3,9 @@ using System.Linq;
 
 public class InventoryController : BaseController<InventoryView, InventoryModel>, IInventoryController
 {
-    private SoundService soundService;
-
-    public InventoryController(InventoryView _inventoryView, InventoryModel _inventoryModel, SoundService _soundService)
+    public InventoryController(InventoryView _inventoryView, InventoryModel _inventoryModel)
         : base(_inventoryView, _inventoryModel)
     {
-        soundService = _soundService;
         view.SetInventoryController(this);
     }
 
