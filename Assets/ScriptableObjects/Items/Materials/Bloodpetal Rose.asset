@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 640bac49251657d47bb1207f83593d81, type: 3}
+  m_Name: Bloodpetal Rose
+  m_EditorClassIdentifier: 
+  itemID: 106
+  itemName: Bloodpetal Rose
+  item: 0
+  itemIcon: {fileID: -5881872488891482235, guid: 4e501bb6aade76743b71fa31358656ff, type: 3}
+  ItemDescription: A deep red rose with a metallic scent. Its petals are used in
+    dark rituals or potions that restore health at a grave cost
+  buyingPrice: 17
+  sellingPrice: 15
+  weight: 0.3
+  rarity: 2
+  quantity: 6

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 640bac49251657d47bb1207f83593d81, type: 3}
+  m_Name: Diary of the Mad Alchemist
+  m_EditorClassIdentifier: 
+  itemID: 406
+  itemName: Diary of the Mad Alchemist
+  item: 3
+  itemIcon: {fileID: -995999849252856806, guid: ece25f23e9f5fd74981ece710addce55, type: 3}
+  ItemDescription: A journal filled with frantic notes and formulas for powerful
+    potions, written by a deranged alchemist
+  buyingPrice: 30
+  sellingPrice: 16
+  weight: 3.2
+  rarity: 3
+  quantity: 2

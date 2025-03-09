@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 640bac49251657d47bb1207f83593d81, type: 3}
+  m_Name: Invisibility Potion
+  m_EditorClassIdentifier: 
+  itemID: 306
+  itemName: Invisibility Potion
+  item: 2
+  itemIcon: {fileID: 6651665345201606284, guid: 6a32564659c513f4a8234e61785fd1f0, type: 3}
+  ItemDescription: Grants temporary invisibility
+  buyingPrice: 50
+  sellingPrice: 35
+  weight: 0.3
+  rarity: 3
+  quantity: 1

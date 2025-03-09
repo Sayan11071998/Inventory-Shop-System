@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 640bac49251657d47bb1207f83593d81, type: 3}
+  m_Name: The Lost Empire
+  m_EditorClassIdentifier: 
+  itemID: 403
+  itemName: The Lost Empire
+  item: 3
+  itemIcon: {fileID: -836673275599225964, guid: 3483b750d3d78164898803c598a59487, type: 3}
+  ItemDescription: An ancient historical record detailing the rise and fall of a
+    forgotten empire, with clues to hidden treasures
+  buyingPrice: 40
+  sellingPrice: 30
+  weight: 2
+  rarity: 3
+  quantity: 2
