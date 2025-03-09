@@ -10,15 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 640bac49251657d47bb1207f83593d81, type: 3}
-  m_Name: WoodLog_SO
+  m_Name: Gloomthorn
   m_EditorClassIdentifier: 
   itemID: 102
-  itemName: Wood Log
+  itemName: Gloomthorn
   item: 0
-  itemIcon: {fileID: 21300000, guid: 7d84c9a0ef474dc42812bf290d722f7e, type: 3}
-  ItemDescription: A sturdy log of wood ideal for building or fuel
-  buyingPrice: 8
-  sellingPrice: 5
-  weight: 1.5
+  itemIcon: {fileID: 413130554485193310, guid: b23d4efa5ea0ccd4a96fd5509a1885a2, type: 3}
+  ItemDescription: A spiky, dark plant that thrives in swampy shadows. Its thorns
+    are ground into a paste for potions that cause confusion or hallucinations
+  buyingPrice: 12
+  sellingPrice: 8
+  weight: 0.3
   rarity: 1
-  quantity: 1
+  quantity: 10

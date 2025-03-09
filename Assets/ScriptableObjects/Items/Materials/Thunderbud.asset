@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 640bac49251657d47bb1207f83593d81, type: 3}
+  m_Name: Thunderbud
+  m_EditorClassIdentifier: 
+  itemID: 105
+  itemName: Thunderbud
+  item: 0
+  itemIcon: {fileID: -562888806833489069, guid: 06aceea8c7d3fd2418ba4d044e3496f1, type: 3}
+  ItemDescription: A small, electric-yellow bud that crackles with energy. Brewed
+    into potions that boost speed or unleash a jolt of lightning
+  buyingPrice: 17
+  sellingPrice: 12
+  weight: 0.3
+  rarity: 2
+  quantity: 7

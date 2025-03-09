@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 640bac49251657d47bb1207f83593d81, type: 3}
+  m_Name: Mistveil Lily
+  m_EditorClassIdentifier: 
+  itemID: 107
+  itemName: Mistveil Lily
+  item: 0
+  itemIcon: {fileID: -2890213933894101002, guid: 548a5e071fb723d4988a0bdd285968e3, type: 3}
+  ItemDescription: A pale lily shrouded in faint mist, found near enchanted waters.
+    Used in concoctions that create illusions or conceal the user
+  buyingPrice: 18
+  sellingPrice: 15
+  weight: 0.5
+  rarity: 3
+  quantity: 5

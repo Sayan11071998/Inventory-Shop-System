@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 640bac49251657d47bb1207f83593d81, type: 3}
+  m_Name: Luminous Moss
+  m_EditorClassIdentifier: 
+  itemID: 103
+  itemName: Luminous Moss
+  item: 0
+  itemIcon: {fileID: -3745404482200651316, guid: 383433a089a1ac244979233c3b35678b, type: 3}
+  ItemDescription: A soft, glowing moss found clinging to cave walls. Essential for
+    crafting salves that heal wounds or emit light in darkness
+  buyingPrice: 15
+  sellingPrice: 12
+  weight: 0.3
+  rarity: 1
+  quantity: 10
