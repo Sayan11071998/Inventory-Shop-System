@@ -3,13 +3,14 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    private static SoundManager instance;
-    public static SoundManager Instance { get { return instance; } }
-
     [SerializeField] private AudioSource soundEffect;
     [SerializeField] private AudioSource soundMusic;
     [SerializeField] private SoundType[] sounds;
 
+    public static SoundManager Instance { get { return instance; } }
+
+    private static SoundManager instance;
+    
     private void Awake()
     {
         if (instance == null)
@@ -49,27 +50,4 @@ public class SoundManager : MonoBehaviour
         return type;
     }
 
-}
-
-[Serializable]
-public class SoundType
-{
-    public Sounds sound;
-    public AudioClip soundClip;
-
-    [Range(1, 100)]
-    public int volume;
-}
-
-public enum Sounds
-{
-    ShopInventorySwitchButton,
-    ItemSelected,
-    QuantityChanged,
-    MoneySound,
-    FilterButtonSound,
-    ErrorSound,
-    NonClickable,
-    GatherResource,
-    Music,
 }

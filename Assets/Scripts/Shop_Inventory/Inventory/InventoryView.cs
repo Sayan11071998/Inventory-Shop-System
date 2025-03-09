@@ -3,13 +3,14 @@ using UnityEngine.EventSystems;
 
 public class InventoryView : BaseItemListView
 {
-    private InventoryController inventoryController;
     [SerializeField] private FilterController inventoryFilterController;
     [SerializeField] private CanvasGroup weightExceededPopup;
 
     [Header("Sell Section")]
     [SerializeField] private CanvasGroup sellSection;
     [SerializeField] private TransactionSectionController sellSectionController;
+
+    private InventoryController inventoryController;
 
     public bool isInventoryOn = false;
 
@@ -28,13 +29,13 @@ public class InventoryView : BaseItemListView
         EventService.Instance.OnShopToggledOnEvent.RemoveListener(DisableInventoryVisibility);
         EventService.Instance.OnShopToggledOnEvent.RemoveListener(DisableSellSection);
         EventService.Instance.OnItemSelectedEvent.RemoveListener(EnableSellSection);
-        EventService.Instance.onItemChanged.RemoveListener(inventoryController.SetPanelViews);
+        EventService.Instance.OnItemChanged.RemoveListener(inventoryController.SetPanelViews);
     }
 
     public void SetInventoryController(InventoryController controller)
     {
         inventoryController = controller;
-        EventService.Instance.onItemChanged.AddListener(inventoryController.SetPanelViews);
+        EventService.Instance.OnItemChanged.AddListener(inventoryController.SetPanelViews);
         sellSectionController.GetAvailableQuantity = () => inventoryController.GetItemQuantity(inventoryController.GetCurrentItem().itemProperty.itemID);
         sellSectionController.GetUnitPrice = () => inventoryController.GetCurrentItem().itemProperty.sellingPrice;
         sellSectionController.PlayQuantityChangedSound = () => EventService.Instance.OnQuantityChanged.InvokeEvent();
@@ -83,7 +84,6 @@ public class InventoryView : BaseItemListView
         InstantiateOrUpdateItem(itemProperty, quantity);
     }
 
-
     public void DisplayBroughtItem(ItemView itemView, int newQuantity)
     {
         InstantiateOrUpdateItem(itemView.itemProperty, newQuantity);
@@ -103,7 +103,7 @@ public class InventoryView : BaseItemListView
                 inventoryController.SetItemWeight(itemID, itemProperty.weight);
 
             ItemView existingItem = inventoryController.GetInstantiatedItem(itemID);
-            
+
             if (existingItem != null)
                 existingItem.InventoryDisplayUI(newTotalQuantity);
         }
@@ -125,7 +125,6 @@ public class InventoryView : BaseItemListView
         inventoryController.ApplyFilter(inventoryFilterController);
         EventSystem.current.SetSelectedGameObject(null);
     }
-
 
     public void EnableSellSection()
     {
@@ -154,6 +153,14 @@ public class InventoryView : BaseItemListView
         sellSectionController.ResetSection();
     }
 
+    public void ShowWeightExceededPopup()
+    {
+        EventService.Instance.OnMaximumWeightExceed.InvokeEvent();
+        weightExceededPopup.alpha = 1;
+        weightExceededPopup.blocksRaycasts = true;
+        weightExceededPopup.interactable = true;
+    }
+
     public void Sell()
     {
         int amount = int.Parse(sellSectionController.GetPriceText());
@@ -166,7 +173,7 @@ public class InventoryView : BaseItemListView
             inventoryController.RemoveWeight(itemID, sellQuantity);
 
             int newInventoryQuantity = inventoryController.GetItemQuantity(itemID) - sellQuantity;
-            
+
             inventoryController.ResetQuantities(itemID);
             inventoryController.SetQuantity(itemID, newInventoryQuantity);
             inventoryController.GetCurrentItem().SetQuantityText(newInventoryQuantity);
@@ -174,9 +181,9 @@ public class InventoryView : BaseItemListView
             GameManager.Instance.shopController.IncreaseItemQuantity(itemID, sellQuantity);
             GameManager.Instance.shopController.UpdateItemQuantityUI(itemID);
 
-            EventService.Instance.onItemChanged.InvokeEvent();
-            EventService.Instance.onItemSoldWithIntParams.InvokeEvent(amount);
-            EventService.Instance.onItemSoldWithFloatParams.InvokeEvent(inventoryController.GetTotalWeight());
+            EventService.Instance.OnItemChanged.InvokeEvent();
+            EventService.Instance.OnItemSoldWithIntParams.InvokeEvent(amount);
+            EventService.Instance.OnItemSoldWithFloatParams.InvokeEvent(inventoryController.GetTotalWeight());
 
             if (newInventoryQuantity <= 0)
                 RemoveItem(itemID);

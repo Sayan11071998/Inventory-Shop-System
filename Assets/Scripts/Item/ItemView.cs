@@ -4,16 +4,21 @@ using UnityEngine.UI;
 
 public class ItemView : MonoBehaviour
 {
-    public ItemProperty itemProperty;
     [SerializeField] private Image itemImage;
     [SerializeField] public TextMeshProUGUI quantity;
     [SerializeField] private Toggle itemToggle;
-    private ToggleGroup itemToggleGroup;
 
-    public ItemProperty.ItemTypes itemType { get; private set; }
-    public ItemProperty.Rarity rarity { get; private set; }
+    public ItemProperty itemProperty;
+
+    private ToggleGroup itemToggleGroup;
     public int quantityValue = 0;
 
+    // public ItemProperty.ItemTypes itemType { get; private set; }
+    // public ItemProperty.Rarity rarity { get; private set; }
+
+    public ItemTypes itemType { get; private set; }
+    public ItemRarity rarity { get; private set; }
+    
     public void ShopDisplayUI()
     {
         SetValues();
