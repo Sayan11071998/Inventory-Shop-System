@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InventoryView : BaseItemListView
+public class InventoryView : BaseView
 {
     [SerializeField] private FilterController inventoryFilterController;
     [SerializeField] private CanvasGroup weightExceededPopup;
@@ -71,12 +71,12 @@ public class InventoryView : BaseItemListView
         }
     }
 
-    public void DisplayGatheredItem(int index)
-    {
-        ItemProperty itemProperty = inventoryController.GetItemDatabase()[index];
-        int newQuantity = inventoryController.GenerateRandomQuantity();
-        InstantiateOrUpdateItem(itemProperty, newQuantity);
-    }
+    // public void DisplayGatheredItem(int index)
+    // {
+    //     ItemProperty itemProperty = inventoryController.GetItemDatabase()[index];
+    //     int newQuantity = inventoryController.GenerateRandomQuantity();
+    //     InstantiateOrUpdateItem(itemProperty, newQuantity);
+    // }
 
     public void DisplayGatheredItem(int index, int quantity)
     {
