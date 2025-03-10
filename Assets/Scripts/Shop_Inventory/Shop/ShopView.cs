@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShopView : BaseItemListView, IItemListView
+public class ShopView : BaseView
 {
     [SerializeField] private FilterController shopFilterController;
 
@@ -148,7 +148,6 @@ public class ShopView : BaseItemListView, IItemListView
             EventService.Instance.OnNonClickableButtonPressed?.InvokeEvent();
         }
     }
-
 
     public void DisableNotEnoughMoneyPopUp()
     {

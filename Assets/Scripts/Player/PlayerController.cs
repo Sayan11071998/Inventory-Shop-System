@@ -17,16 +17,16 @@ public class PlayerController
         playerView.SetCoinText();
     }
 
-    public void SetBagWeight(float Weight)
-    {
-        playerModel.bagWeight = Weight;
-        playerView.SetBagWeightText();
-    }
-
     public void DecreasePlayerCoin(int coin)
     {
         playerModel.numberOfCoins -= coin;
         playerView.SetCoinText();
+    }
+
+    public void SetBagWeight(float Weight)
+    {
+        playerModel.bagWeight = Weight;
+        playerView.SetBagWeightText();
     }
 
     public int GetPlayerCoinCount() => playerModel.numberOfCoins;

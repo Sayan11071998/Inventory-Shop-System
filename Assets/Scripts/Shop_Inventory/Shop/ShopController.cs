@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShopController : BaseController<ShopView, ShopModel>, IShopController
+public class ShopController : BaseController<ShopView, ShopModel>
 {
     public ShopController(ShopView _shopView, ShopModel _shopModel)
         : base(_shopView, _shopModel)
@@ -27,6 +27,7 @@ public class ShopController : BaseController<ShopView, ShopModel>, IShopControll
             Debug.LogError("GetCurrentItem: currentItem is NULL!");
             return null;
         }
+
         return model.currentItem;
     }
 
@@ -46,12 +47,5 @@ public class ShopController : BaseController<ShopView, ShopModel>, IShopControll
 
     public void IncreaseItemQuantity(int itemID, int soldQuantity) => model.IncreaseItemQuantity(itemID, soldQuantity);
 
-    public int GetItemQuantity(int itemID) => model.GetQuantity(itemID);
-    public float GetPlayerBagWeight() => GameManager.Instance.playerController.GetBagWeight();
-    public float GetPlayerBagCapacity() => GameManager.Instance.playerController.GetBagCapacity();
-    public int GetPlayerCoin() => GameManager.Instance.playerController.GetPlayerCoinCount();
-    public float GetItemWeight(int itemID) => model.GetItemWeight(itemID);
-    public void SetItemQuantities(int itemID, int quantity) => model.SetItemQuantities(itemID, quantity);
     public void SetCurrentSelectedItem(ItemView itemView) => model.currentItem = itemView;
-    public void SetItemWeight(int itemID, float newWeight) => model.SetItemWeight(itemID, newWeight);
 }
