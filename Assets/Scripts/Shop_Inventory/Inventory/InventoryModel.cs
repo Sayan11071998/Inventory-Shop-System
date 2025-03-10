@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class InventoryModel : BaseModel
 {
-    public int numberOfResource { get; private set; }
     public Dictionary<ItemRarity, bool> isRarityAvailable;
     private Dictionary<int, ItemView> instantiatedItems;
 
@@ -14,13 +13,12 @@ public class InventoryModel : BaseModel
 
     private void Initialize()
     {
-        numberOfResource = 5;
         instantiatedItems = new Dictionary<int, ItemView>();
 
         isRarityAvailable = new Dictionary<ItemRarity, bool> {
             { ItemRarity.VeryCommon, true },
-            { ItemRarity.Common, false },
-            { ItemRarity.Rare, false },
+            { ItemRarity.Common, true },
+            { ItemRarity.Rare, true },
             { ItemRarity.Epic, false },
             { ItemRarity.Legendary, false }
         };

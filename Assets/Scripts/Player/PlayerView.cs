@@ -44,5 +44,5 @@ public class PlayerView : MonoBehaviour
     }
 
     public void SetCoinText() => playerCoinCountText.text = playerController.GetPlayerCoinCount().ToString();
-    public void SetPlayerBagCapacityText() => playerBagCapacityText.text = " / " + playerController.GetBagCapacity().ToString() + " kg";
+    public void SetPlayerBagCapacityText() => playerBagCapacityText.text = " / " + playerController.GetBagCapacity().ToString();
 }

@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 
-public abstract class BaseController<TView, TModel> where TModel : BaseModel
+public abstract class BaseController<TView, TModel>
+    where TView : BaseView
+    where TModel : BaseModel
 {
     protected TView view;
     protected TModel model;

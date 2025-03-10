@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 
 public class InventoryController : BaseController<InventoryView, InventoryModel>
 {
@@ -13,10 +12,14 @@ public class InventoryController : BaseController<InventoryView, InventoryModel>
     {
         EventService.Instance.OnGatherResourceButtonPressed?.InvokeEvent();
 
-        for (int i = 0; i < model.numberOfResource; i++)
+        int totalItemTypes = ItemTypes.GetNames(typeof(ItemTypes)).Length;
+        int resourceCountToGather = UnityEngine.Random.Range(1, totalItemTypes + 1);
+
+        for (int i = 0; i < resourceCountToGather; i++)
         {
             int index = GetRandomIndex();
             ItemProperty resource = model.GetItemDatabase()[index];
+
             int quantityToAdd = GenerateRandomQuantity();
             float additionalWeight = quantityToAdd * resource.weight;
             float currentInventoryWeight = GetTotalWeight();

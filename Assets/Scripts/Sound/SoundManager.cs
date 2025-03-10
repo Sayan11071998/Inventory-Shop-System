@@ -8,7 +8,6 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private SoundType[] sounds;
 
     public static SoundManager Instance { get { return instance; } }
-
     private static SoundManager instance;
     
     private void Awake()
@@ -49,5 +48,4 @@ public class SoundManager : MonoBehaviour
         SoundType type = Array.Find(sounds, i => i.sound == sound);
         return type;
     }
-
 }
