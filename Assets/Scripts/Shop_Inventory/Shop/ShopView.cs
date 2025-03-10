@@ -37,7 +37,7 @@ public class ShopView : BaseView
     public void SetShopController(ShopController controller)
     {
         shopController = controller;
-        buySectionController.GetAvailableQuantity = () => shopController.GetItemQuantity(shopController.GetCurrentItem().itemProperty.itemID);
+        buySectionController.GetAvailableQuantity = () => shopController.GetItemQuantity(shopController.GetCurrentItem().itemProperty.GetInstanceID());
         buySectionController.GetUnitPrice = () => shopController.GetCurrentItem().itemProperty.buyingPrice;
     }
 
@@ -60,8 +60,9 @@ public class ShopView : BaseView
             ItemView itemDisplay = CreateItemView(item);
             if (itemDisplay != null)
             {
-                itemViews[item.itemID] = itemDisplay;
-                shopController.SetItemQuantities(itemDisplay.itemProperty.itemID, itemDisplay.itemProperty.quantity);
+                int key = item.GetInstanceID();
+                itemViews[key] = itemDisplay;
+                shopController.SetItemQuantities(key, itemDisplay.itemProperty.quantity);
                 itemDisplay.ShopDisplayUI();
             }
             shopController.StoreItem(itemDisplay, shopFilterController);
@@ -105,7 +106,7 @@ public class ShopView : BaseView
     {
         int amount = int.Parse(buySectionController.GetPriceText());
         int selectedQuantity = int.Parse(buySectionController.GetQuantityText());
-        int itemID = shopController.GetCurrentItem().itemProperty.itemID;
+        int itemID = shopController.GetCurrentItem().itemProperty.GetInstanceID();
 
         if (amount > 0 && selectedQuantity > 0)
         {

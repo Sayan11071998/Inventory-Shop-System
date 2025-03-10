@@ -26,13 +26,13 @@ public class UIController
     {
         if (GameManager.Instance.inventoryController.ISInventoryOn())
         {
-            int itemID = GameManager.Instance.inventoryController.GetCurrentItem().itemProperty.itemID;
+            int itemID = GameManager.Instance.inventoryController.GetCurrentItem().itemProperty.GetInstanceID();
             int quantity = GameManager.Instance.inventoryController.GetItemQuantity(itemID);
             return quantity;
         }
         if (GameManager.Instance.shopController.ISShopOn())
         {
-            int itemID = GameManager.Instance.shopController.GetCurrentItem().itemProperty.itemID;
+            int itemID = GameManager.Instance.shopController.GetCurrentItem().itemProperty.GetInstanceID();
             int quantity = GameManager.Instance.shopController.GetItemQuantity(itemID);
             return quantity;
         }

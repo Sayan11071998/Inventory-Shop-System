@@ -20,8 +20,9 @@ public abstract class BaseModel
 
         foreach (ItemProperty item in itemDatabase.items)
         {
-            itemQuantities[item.itemID] = 0;
-            itemWeight[item.itemID] = 0f;
+            int key = item.GetInstanceID();
+            itemQuantities[key] = 0;
+            itemWeight[key] = 0f;
         }
     }
 
