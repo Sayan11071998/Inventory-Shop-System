@@ -105,7 +105,7 @@ public class InventoryController : BaseController<InventoryView, InventoryModel>
         foreach (var kvp in model.GetInstatiatedItems())
         {
             int itemID = kvp.Key;
-            int quantity = model.GetQuantity(itemID).Sum();
+            int quantity = model.GetQuantity(itemID);
             ItemView itemView = kvp.Value;
             float unitWeight = itemView.itemProperty.weight;
             totalWeight += quantity * unitWeight;
@@ -127,7 +127,7 @@ public class InventoryController : BaseController<InventoryView, InventoryModel>
     public void StoreItem(ItemView itemDisplay, FilterController filterController) => filterController.AddItemDisplay(itemDisplay);
 
     public List<ItemProperty> GetItemDatabase() => model.GetItemDatabase();
-    public int GetItemQuantity(int itemID) => model.GetQuantity(itemID).Sum();
+    public int GetItemQuantity(int itemID) => model.GetQuantity(itemID);
     public ItemView GetCurrentItem() => model.currentItem;
     public ItemView GetInstantiatedItem(int itemID) => model.GetInstatiatedItems().TryGetValue(itemID, out ItemView itemView) ? itemView : null;
     public float GetItemWeight(int itemID) => model.GetItemWeight(itemID).Sum();

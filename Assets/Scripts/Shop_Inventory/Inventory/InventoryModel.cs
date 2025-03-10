@@ -7,7 +7,7 @@ public class InventoryModel : BaseItemModel
     public Dictionary<ItemRarity, bool> isRarityAvailable;
     public Dictionary<int, List<float>> itemWeight;
     private Dictionary<int, ItemView> instantiatedItems;
-    public Dictionary<int, List<int>> itemQuantities;
+    public Dictionary<int, int> itemQuantities;
 
     public InventoryModel(ItemDatabase _itemDatabase) : base(_itemDatabase)
     {
@@ -18,12 +18,12 @@ public class InventoryModel : BaseItemModel
     {
         numberOfResource = 5;
         instantiatedItems = new Dictionary<int, ItemView>();
-        itemQuantities = new Dictionary<int, List<int>>();
+        itemQuantities = new Dictionary<int, int>();
         itemWeight = new Dictionary<int, List<float>>();
 
         foreach (ItemProperty item in itemDatabase.items)
         {
-            itemQuantities[item.itemID] = new List<int>();
+            itemQuantities[item.itemID] = 0;
             itemWeight[item.itemID] = new List<float>();
         }
 
@@ -38,26 +38,22 @@ public class InventoryModel : BaseItemModel
 
     public void SetItemQuantities(int itemID, int newQuantity)
     {
-        if (!itemQuantities.ContainsKey(itemID))
-            itemQuantities[itemID] = new List<int>();
-        else
-            itemQuantities[itemID].Clear();
-
-        itemQuantities[itemID].Add(newQuantity);
+        if (itemQuantities.ContainsKey(itemID))
+            itemQuantities[itemID] = newQuantity;
     }
 
 
     public void ResetQuantities(int itemID)
     {
         if (itemQuantities.ContainsKey(itemID))
-            itemQuantities[itemID].Clear();
+            itemQuantities[itemID] = 0;
     }
 
-    public List<int> GetQuantity(int itemID)
+    public int GetQuantity(int itemID)
     {
         if (itemQuantities.ContainsKey(itemID))
             return itemQuantities[itemID];
-        return new List<int>();
+        return 0;
     }
 
     public void StoreInstantiatedItems(int itemID, ItemView itemView) => instantiatedItems[itemID] = itemView;
