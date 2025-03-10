@@ -71,13 +71,6 @@ public class InventoryView : BaseView
         }
     }
 
-    // public void DisplayGatheredItem(int index)
-    // {
-    //     ItemProperty itemProperty = inventoryController.GetItemDatabase()[index];
-    //     int newQuantity = inventoryController.GenerateRandomQuantity();
-    //     InstantiateOrUpdateItem(itemProperty, newQuantity);
-    // }
-
     public void DisplayGatheredItem(int index, int quantity)
     {
         ItemProperty itemProperty = inventoryController.GetItemDatabase()[index];

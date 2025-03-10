@@ -149,7 +149,6 @@ public class ShopView : BaseView
         }
     }
 
-
     public void DisableNotEnoughMoneyPopUp()
     {
         notEnoughMoneyPopup.alpha = 0;
