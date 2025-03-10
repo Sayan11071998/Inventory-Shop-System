@@ -38,7 +38,7 @@ public class InventoryView : BaseView
     {
         inventoryController = controller;
         EventService.Instance.OnItemChanged.AddListener(inventoryController.SetPanelViews);
-        sellSectionController.GetAvailableQuantity = () => inventoryController.GetItemQuantity(inventoryController.GetCurrentItem().itemProperty.itemID);
+        sellSectionController.GetAvailableQuantity = () => inventoryController.GetItemQuantity(inventoryController.GetCurrentItem().itemProperty.GetInstanceID());
         sellSectionController.GetUnitPrice = () => inventoryController.GetCurrentItem().itemProperty.sellingPrice;
     }
 
@@ -85,17 +85,17 @@ public class InventoryView : BaseView
 
     private void InstantiateOrUpdateItem(ItemProperty itemProperty, int quantityToAdd)
     {
-        int itemID = itemProperty.itemID;
-        if (inventoryController.IsItemAlreadyInstantiated(itemID))
+        int key = itemProperty.GetInstanceID();
+        if (inventoryController.IsItemAlreadyInstantiated(key))
         {
-            int existingQuantity = inventoryController.GetItemQuantity(itemID);
+            int existingQuantity = inventoryController.GetItemQuantity(key);
             int newTotalQuantity = existingQuantity + quantityToAdd;
-            inventoryController.SetQuantity(itemID, newTotalQuantity);
+            inventoryController.SetQuantity(key, newTotalQuantity);
 
             for (int i = 0; i < quantityToAdd; i++)
-                inventoryController.SetItemWeight(itemID, itemProperty.weight);
+                inventoryController.SetItemWeight(key, itemProperty.weight);
 
-            ItemView existingItem = inventoryController.GetInstantiatedItem(itemID);
+            ItemView existingItem = inventoryController.GetInstantiatedItem(key);
 
             if (existingItem != null)
                 existingItem.InventoryDisplayUI(newTotalQuantity);
@@ -106,12 +106,12 @@ public class InventoryView : BaseView
             if (itemView != null)
             {
                 inventoryController.StoreItem(itemView, inventoryFilterController);
-                inventoryController.SetQuantity(itemID, quantityToAdd);
+                inventoryController.SetQuantity(key, quantityToAdd);
 
                 for (int i = 0; i < quantityToAdd; i++)
-                    inventoryController.SetItemWeight(itemID, itemProperty.weight);
+                    inventoryController.SetItemWeight(key, itemProperty.weight);
 
-                inventoryController.StoreInstantiatedItem(itemID, itemView);
+                inventoryController.StoreInstantiatedItem(key, itemView);
                 itemView.InventoryDisplayUI(quantityToAdd);
             }
         }
@@ -161,7 +161,7 @@ public class InventoryView : BaseView
     {
         int amount = int.Parse(sellSectionController.GetPriceText());
         int sellQuantity = int.Parse(sellSectionController.GetQuantityText());
-        int itemID = inventoryController.GetCurrentItem().itemProperty.itemID;
+        int itemID = inventoryController.GetCurrentItem().itemProperty.GetInstanceID();
 
         if (amount > 0 && sellQuantity > 0)
         {
