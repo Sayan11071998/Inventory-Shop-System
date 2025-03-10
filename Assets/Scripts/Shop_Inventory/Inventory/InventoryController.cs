@@ -130,7 +130,7 @@ public class InventoryController : BaseController<InventoryView, InventoryModel>
     public int GetItemQuantity(int itemID) => model.GetQuantity(itemID);
     public ItemView GetCurrentItem() => model.currentItem;
     public ItemView GetInstantiatedItem(int itemID) => model.GetInstatiatedItems().TryGetValue(itemID, out ItemView itemView) ? itemView : null;
-    public float GetItemWeight(int itemID) => model.GetItemWeight(itemID).Sum();
+    public float GetItemWeight(int itemID) => model.GetItemWeight(itemID);
     public float GetPlayerBagWeight() => GameManager.Instance.playerController.GetBagWeight();
     public float GetPlayerBagCapacity() => GameManager.Instance.playerController.GetBagCapacity();
 
