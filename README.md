@@ -48,3 +48,23 @@ I'm thrilled to unveil my latest creation – a comprehensive Inventory & Shop s
 - 🔹 Overcame performance challenges with a well-synchronized, event-driven design.
 
 This project is a culmination of deep technical learning and creative problem-solving. I’m excited to see where this robust system takes my game development journey next!
+
+![Image](https://github.com/user-attachments/assets/cb40eef5-947d-4257-8476-770d5f1b1db6)
+
+![Image](https://github.com/user-attachments/assets/15aceaba-9943-4bee-9f79-92191dccd581)
+
+![Image](https://github.com/user-attachments/assets/1dcef6ad-ddf8-4efc-bb8a-c77b24ee6449)
+
+![Image](https://github.com/user-attachments/assets/09ef28fd-f6d0-4f8c-9b81-a6f325b18b0b)
+
+![Image](https://github.com/user-attachments/assets/d4143c92-8d67-46d8-aad3-301af9852dd3)
+
+![Image](https://github.com/user-attachments/assets/e5eec387-6a7a-4cfd-b4a3-091760163d74)
+
+![Image](https://github.com/user-attachments/assets/858e4c26-9bad-4063-91d3-71c27fd2dcbd)
+
+![Image](https://github.com/user-attachments/assets/4e3866c0-ea7c-4c3b-b4a9-1036a9fa54af)
+
+![Image](https://github.com/user-attachments/assets/642e7458-4051-4564-a5df-2878b7faa0eb)
+
+![Image](https://github.com/user-attachments/assets/72de53d2-cbcf-470b-9633-4954971467ed)
