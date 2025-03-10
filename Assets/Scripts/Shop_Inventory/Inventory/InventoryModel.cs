@@ -1,13 +1,14 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public class InventoryModel : BaseItemModel
 {
     public ItemView currentItem;
     public int numberOfResource { get; private set; }
     public Dictionary<ItemRarity, bool> isRarityAvailable;
-    public Dictionary<int, List<float>> itemWeight;
+    public Dictionary<int, float> itemWeight;
     private Dictionary<int, ItemView> instantiatedItems;
-    public Dictionary<int, List<int>> itemQuantities;
+    public Dictionary<int, int> itemQuantities;
 
     public InventoryModel(ItemDatabase _itemDatabase) : base(_itemDatabase)
     {
@@ -18,13 +19,13 @@ public class InventoryModel : BaseItemModel
     {
         numberOfResource = 5;
         instantiatedItems = new Dictionary<int, ItemView>();
-        itemQuantities = new Dictionary<int, List<int>>();
-        itemWeight = new Dictionary<int, List<float>>();
+        itemQuantities = new Dictionary<int, int>();
+        itemWeight = new Dictionary<int, float>();
 
         foreach (ItemProperty item in itemDatabase.items)
         {
-            itemQuantities[item.itemID] = new List<int>();
-            itemWeight[item.itemID] = new List<float>();
+            itemQuantities[item.itemID] = 0;
+            itemWeight[item.itemID] = 0f;
         }
 
         isRarityAvailable = new Dictionary<ItemRarity, bool> {
@@ -38,26 +39,22 @@ public class InventoryModel : BaseItemModel
 
     public void SetItemQuantities(int itemID, int newQuantity)
     {
-        if (!itemQuantities.ContainsKey(itemID))
-            itemQuantities[itemID] = new List<int>();
-        else
-            itemQuantities[itemID].Clear();
-
-        itemQuantities[itemID].Add(newQuantity);
+        if (itemQuantities.ContainsKey(itemID))
+            itemQuantities[itemID] = newQuantity;
     }
 
 
     public void ResetQuantities(int itemID)
     {
         if (itemQuantities.ContainsKey(itemID))
-            itemQuantities[itemID].Clear();
+            itemQuantities[itemID] = 0;
     }
 
-    public List<int> GetQuantity(int itemID)
+    public int GetQuantity(int itemID)
     {
         if (itemQuantities.ContainsKey(itemID))
             return itemQuantities[itemID];
-        return new List<int>();
+        return 0;
     }
 
     public void StoreInstantiatedItems(int itemID, ItemView itemView) => instantiatedItems[itemID] = itemView;
@@ -80,23 +77,25 @@ public class InventoryModel : BaseItemModel
     public void SetItemWeight(int itemID, float newWeight)
     {
         if (!itemWeight.ContainsKey(itemID))
-            itemWeight[itemID] = new List<float>();
-        itemWeight[itemID].Add(newWeight);
+            itemWeight[itemID] = newWeight;
     }
 
-    public List<float> GetItemWeight(int itemID)
+    public float GetItemWeight(int itemID)
     {
         if (itemWeight.ContainsKey(itemID))
             return itemWeight[itemID];
-        return new List<float>();
+        return 0f;
     }
 
     public void RemoveWeight(int itemID, int quantity)
     {
         if (itemWeight.ContainsKey(itemID))
         {
-            for (int i = 0; i < quantity && itemWeight[itemID].Count > 0; i++)
-                itemWeight[itemID].RemoveAt(0);
+            float unitWeight = 0f;
+            if (instantiatedItems.ContainsKey(itemID))
+                unitWeight = instantiatedItems[itemID].itemProperty.weight;
+            float removalAmount = quantity * unitWeight;
+            itemWeight[itemID] = Mathf.Max(0f, itemWeight[itemID] - removalAmount);
         }
     }
 }
