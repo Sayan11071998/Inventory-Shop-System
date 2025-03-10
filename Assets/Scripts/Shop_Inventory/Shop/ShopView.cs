@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShopView : BaseItemListView, IItemListView
+public class ShopView : BaseItemListView
 {
     [SerializeField] private FilterController shopFilterController;
 

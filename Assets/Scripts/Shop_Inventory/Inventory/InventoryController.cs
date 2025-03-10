@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class InventoryController : BaseController<InventoryView, InventoryModel>, IInventoryController
+public class InventoryController : BaseController<InventoryView, InventoryModel>
 {
     public InventoryController(InventoryView _inventoryView, InventoryModel _inventoryModel)
         : base(_inventoryView, _inventoryModel)
@@ -126,17 +126,11 @@ public class InventoryController : BaseController<InventoryView, InventoryModel>
     public bool ISInventoryOn() => view.isInventoryOn;
     public void StoreItem(ItemView itemDisplay, FilterController filterController) => filterController.AddItemDisplay(itemDisplay);
 
-    public List<ItemProperty> GetItemDatabase() => model.GetItemDatabase();
-    public int GetItemQuantity(int itemID) => model.GetQuantity(itemID);
     public ItemView GetCurrentItem() => model.currentItem;
     public ItemView GetInstantiatedItem(int itemID) => model.GetInstatiatedItems().TryGetValue(itemID, out ItemView itemView) ? itemView : null;
-    public float GetItemWeight(int itemID) => model.GetItemWeight(itemID);
-    public float GetPlayerBagWeight() => GameManager.Instance.playerController.GetBagWeight();
-    public float GetPlayerBagCapacity() => GameManager.Instance.playerController.GetBagCapacity();
 
     public void SetQuantity(int itemID, int quantity) => model.SetItemQuantities(itemID, quantity);
     public void SetCurrentItem(ItemView itemView) => model.currentItem = itemView;
-    public void SetItemWeight(int itemID, float newWeight) => model.SetItemWeight(itemID, newWeight);
     public void SetBagWeight(float weight) => GameManager.Instance.playerController.SetBagWeight(weight);
     public void SetPanelViews() => GameManager.Instance.uiController.SetItemDetailsPanel(true, GetCurrentItem());
 }
