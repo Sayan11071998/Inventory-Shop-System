@@ -1,4 +1,4 @@
-# ***🚀 Project Milestone: Ultimate Inventory & Shop System!***
+# ***🚀 Ultimate Inventory & Shop System!***
 I'm thrilled to unveil my latest creation – a comprehensive Inventory & Shop system built in Unity. I set out to create an inventory system that can be integrated with any project. This project isn’t just about buying and selling; it’s a robust framework with deep architecture, clean design patterns, and powerful features that truly enhance gameplay. Here’s a deep dive into what went into it:
 
 ## **✨ What It Does:**
