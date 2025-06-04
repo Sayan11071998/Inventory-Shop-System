@@ -63,7 +63,7 @@
 ---
 
 ## Play Link
-
+https://sayannandi.itch.io/inventory-shop-system
 
 [![Watch the video](https://img.youtube.com/vi/x6bbBza0w_4/maxresdefault.jpg)](https://youtu.be/x6bbBza0w_4)
 ### [Gameplay Video](https://youtu.be/x6bbBza0w_4)
